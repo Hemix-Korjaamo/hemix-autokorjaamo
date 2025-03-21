@@ -9,7 +9,7 @@
     <style>
         /* General Styles */
         body {
-            font-family: 'Roboto', Arial, sans-serif; /* Changed to Roboto */
+            font-family: 'Roboto', Arial, sans-serif;
             margin: 0;
             padding: 0;
             line-height: 1.6;
@@ -28,6 +28,7 @@
             color: black;
             padding: 20px;
             text-align: center;
+            position: relative;
         }
         header h1 {
             margin: 0;
@@ -36,6 +37,58 @@
         header p {
             margin: 5px 0;
             font-size: 1.2em;
+        }
+
+        /* Language Switcher with Flags */
+        .language-switcher {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .flag-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .flag-container:hover {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+        .flag {
+            width: 30px;
+            height: 20px;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .language-text {
+            font-size: 0.8em;
+            color: #333;
+            margin-top: 5px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 2px 5px;
+            border-radius: 3px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .flag-container:hover .language-text {
+            background-color: #FF5733;
+            color: white;
+        }
+
+        /* RTL Support for Arabic */
+        body.rtl {
+            direction: rtl;
+            text-align: right;
+        }
+        body.rtl .service-column,
+        body.rtl .map-container,
+        body.rtl .text-container {
+            direction: ltr; /* Keep services and map LTR for layout consistency */
         }
 
         /* Sections */
@@ -136,6 +189,42 @@
             margin: 0;
         }
 
+        /* Scroll Down Indicator */
+        .scroll-down {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: #fff;
+            font-size: 1em;
+            font-weight: 500;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            z-index: 1001;
+            display: none;
+            animation: breathe 2s infinite ease-in-out;
+        }
+        .scroll-down span {
+            display: block;
+        }
+        .scroll-down .arrow {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #fff;
+            margin: 5px auto 0;
+        }
+
+        /* Breathing Animation */
+        @keyframes breathe {
+            0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+            50% { transform: translateX(-50%) scale(1.05); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+        }
+
         /* Responsive Design */
         @media (max-width: 600px) {
             header h1 {
@@ -153,133 +242,90 @@
             #location {
                 padding-bottom: 60px;
             }
+            .scroll-down {
+                display: block;
+            }
+            .language-switcher {
+                flex-wrap: wrap;
+                justify-content: center;
+                top: 5px;
+                right: 5px;
+            }
+            .flag-container {
+                margin: 5px;
+            }
         }
-/* Scroll Down Indicator */
-.scroll-down {
-    position: fixed;
-    bottom: 60px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    color: #fff;
-    font-size: 1em;
-    font-weight: 500;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 10px 20px;
-    border-radius: 20px;
-    z-index: 1001;
-    display: none; /* Hidden by default */
-    animation: breathe 2s infinite ease-in-out;
-}
-
-.scroll-down span {
-    display: block;
-}
-
-.scroll-down .arrow {
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid #fff;
-    margin: 5px auto 0;
-}
-
-/* Breathing Animation */
-@keyframes breathe {
-    0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-    50% { transform: translateX(-50%) scale(1.05); opacity: 1; }
-    100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-}
-
-/* Show on Mobile Initially */
-@media (max-width: 600px) {
-    .scroll-down {
-        display: block; /* JavaScript will override this when at bottom */
-    }
-}
-}
-
-.scroll-down .arrow {
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid #fff;
-    margin: 5px auto 0;
-}
-
-/* Breathing Animation */
-@keyframes breathe {
-    0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-    50% { transform: translateX(-50%) scale(1.05); opacity: 1; }
-    100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-}
-
-/* Show on Mobile */
-@media (max-width: 600px) {
-    .scroll-down {
-        display: block;
-    }
-}
     </style>
 </head>
 <body>
     <div class="scroll-down">
-        <span>Selaa alas</span>
+        <span id="scroll-down">Selaa alas</span>
         <div class="arrow"></div>
     </div>
     <!-- Header -->
     <header>
-        <h1>Hemix Automaalaamo ja Autokorjaamo</h1>
-        <p>Nopeaa ja luotettavaa autohuoltoa</p>
+        <div class="language-switcher">
+    <div class="flag-container" data-lang="fi">
+        <img src="https://flagcdn.com/w40/fi.png" alt="Finnish Flag" class="flag">
+        <span class="language-text">Vaihda kieli tästä</span>
+    </div>
+    <div class="flag-container" data-lang="en">
+        <img src="https://flagcdn.com/w40/gb.png" alt="UK Flag" class="flag">
+        <span class="language-text">Change language here</span>
+    </div>
+    <div class="flag-container" data-lang="ru">
+        <img src="https://flagcdn.com/w40/ru.png" alt="Russian Flag" class="flag">
+        <span class="language-text">Сменить язык здесь</span>
+    </div>
+    <div class="flag-container" data-lang="ar">
+        <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Flag" class="flag">
+        <span class="language-text">غير اللغة هنا</span>
+    </div>
+</div>
+        <h1 id="header-title">Hemix Automaalaamo ja Autokorjaamo</h1>
+        <p id="header-subtitle">Nopeaa ja luotettavaa autohuoltoa</p>
     </header>
 
     <!-- About Section -->
     <section id="about">
-        <h2>Meistä</h2>
-        <p>Hemix on luotettava kumppanisi kaikissa automaalaukseen ja autokorjaukseen liittyvissä tarpeissa. Yli kymmenen vuoden kokemuksella alalta tarjoamme asiakkaillemme ensiluokkaista palvelua, joka yhdistää ammattitaidon, modernit työvälineet ja henkilökohtaisen lähestymistavan. Oli kyse sitten auton korimaalauksesta, vauriokorjauksista tai mekaanisista huolloista, meillä jokainen auto saa ansaitsemansa huolenpidon, jotta se pysyy turvallisena, toimintakuntoisena ja tyylikkäänä vuodesta toiseen.</p>
-        
-<p>Tiimimme koostuu koulutetuista ja intohimoisista autoalan ammattilaisista, jotka hallitsevat sekä automaalauksen että korjaamotoiminnan uusimmat tekniikat. Käytämme työssämme ainoastaan laadukkaita maaleja, varaosia ja menetelmiä, jotta lopputulos vastaa odotuksiasi – ja usein ylittääkin ne. Olipa tarpeenasi kolhujen korjaus, täydellinen uudelleenmaalaus tai tekninen vianetsintä, voit luottaa siihen, että hoidamme työn huolellisesti ja tehokkaasti.</p>
-        
-<p>Sijaintimme Helsingissä, Rattitie 15:ssä, mahdollistaa helpon pääsyn palveluihimme pääkaupunkiseudun asiakkaille. Hemix ei ole pelkkä korjaamo tai maalaamo, vaan paikka, jossa autosi ulkonäkö ja toimivuus nostetaan uudelle tasolle. Tule käymään tai ota yhteyttä – autamme mielellämme kaikissa automaalaukseen ja -korjaukseen liittyvissä kysymyksissäsi!
-
-</p>
+        <h2 id="about-title">Meistä</h2>
+        <p id="about-p1">Hemix on luotettava kumppanisi kaikissa automaalaukseen ja autokorjaukseen liittyvissä tarpeissa. Yli kymmenen vuoden kokemuksella alalta tarjoamme asiakkaillemme ensiluokkaista palvelua, joka yhdistää ammattitaidon, modernit työvälineet ja henkilökohtaisen lähestymistavan. Oli kyse sitten auton korimaalauksesta, vauriokorjauksista tai mekaanisista huolloista, meillä jokainen auto saa ansaitsemansa huolenpidon, jotta se pysyy turvallisena, toimintakuntoisena ja tyylikkäänä vuodesta toiseen.</p>
+        <p id="about-p2">Tiimimme koostuu koulutetuista ja intohimoisista autoalan ammattilaisista, jotka hallitsevat sekä automaalauksen että korjaamotoiminnan uusimmat tekniikat. Käytämme työssämme ainoastaan laadukkaita maaleja, varaosia ja menetelmiä, jotta lopputulos vastaa odotuksiasi – ja usein ylittääkin ne. Olipa tarpeenasi kolhujen korjaus, täydellinen uudelleenmaalaus tai tekninen vianetsintä, voit luottaa siihen, että hoidamme työn huolellisesti ja tehokkaasti.</p>
+        <p id="about-p3">Sijaintimme Helsingissä, Rattitie 15:ssä, mahdollistaa helpon pääsyn palveluihimme pääkaupunkiseudun asiakkaille. Hemix ei ole pelkkä korjaamo tai maalaamo, vaan paikka, jossa autosi ulkonäkö ja toimivuus nostetaan uudelle tasolle. Tule käymään tai ota yhteyttä – autamme mielellämme kaikissa automaalaukseen ja -korjaukseen liittyvissä kysymyksissäsi!</p>
     </section>
 
-    <!-- Services Section (Palvelumme & Huollot Side by Side) -->
+    <!-- Services Section -->
     <section id="services">
         <div class="service-column">
-            <h2>Palvelumme</h2>
+            <h2 id="services-title">Palvelumme</h2>
             <ul>
-                <li>Korikorjaukset</li>
-                <li>Kolarikorjaukset</li>
-                <li>Automaalaamo</li>
-                <li>Tuulilasinvaihdot</li>
-                <li>Ruostekorjaukset</li>
-                <li>Vahingotarkastukset</li>
-                <!-- Removed "Mekaaniset Korjaukset" -->
+                <li id="service-1">Korikorjaukset</li>
+                <li id="service-2">Kolarikorjaukset</li>
+                <li id="service-3">Automaalaamo</li>
+                <li id="service-4">Tuulilasinvaihdot</li>
+                <li id="service-5">Ruostekorjaukset</li>
+                <li id="service-6">Vahingotarkastukset</li>
             </ul>
         </div>
         <div class="service-column">
-            <h2>Huollot</h2>
+            <h2 id="maintenance-title">Huollot</h2>
             <ul>
-                <li>Katsastuspalvelu</li>
-                <li>Vikakoodien Luku</li>
-                <li>Ilmastointihuollot</li>
-                <li>Nelipyöräsuuntaukset</li>
-                <li>Rengasmyynti ja -työt</li>
-                <li>Automaattivaihteiston Huuhtelu</li>
+                <li id="maintenance-1">Katsastuspalvelu</li>
+                <li id="maintenance-2">Vikakoodien Luku</li>
+                <li id="maintenance-3">Ilmastointihuollot</li>
+                <li id="maintenance-4">Nelipyöräsuuntaukset</li>
+                <li id="maintenance-5">Rengasmyynti ja -työt</li>
+                <li id="maintenance-6">Automaattivaihteiston Huuhtelu</li>
             </ul>
         </div>
     </section>
 
     <!-- Contact Section -->
     <section id="contact">
-        <h2>Ota yhteyttä</h2>
-        <p>Puhelin: 044 972 2221 & 044 974 2055</p> <!-- Updated phone numbers -->
-        <p>Sähköposti: info@hemix.fi</p>
-        <p>Osoite: Rattitie 15, 00770 Helsinki</p>
+        <h2 id="contact-title">Ota yhteyttä</h2>
+        <p id="contact-phone">Puhelin: 044 972 2221 & 044 974 2055</p>
+        <p id="contact-email">Sähköposti: info@hemix.fi</p>
+        <p id="contact-address">Osoite: Rattitie 15, 00770 Helsinki</p>
     </section>
 
     <!-- Location Section -->
@@ -288,29 +334,172 @@
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1980.987167754614!2d25.046424916179897!3d60.24597598198178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x469209e8e2f2c2ab%3A0x6e8f8e8e8e8e8e8e!2sRattitie%2015%2C%2000770%20Helsinki%2C%20Finland!5e0!3m2!1sen!2sus!4v1698765432109!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <div class="text-container">
-            <h2>Sijaintimme</h2>
-            <p>Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.</p>
+            <h2 id="location-title">Sijaintimme</h2>
+            <p id="location-text">Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.</p>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>Aukioloajat: Ma-Pe 08.00-16.30</p>
+        <p id="footer-text">Aukioloajat: Ma-Pe 08.00-16.30</p>
     </footer>
-<script>
-    window.addEventListener('scroll', function() {
-        const scrollDown = document.querySelector('.scroll-down');
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        const scrollPosition = window.scrollY + windowHeight;
 
-        // Hide when near the bottom (within 100px)
-        if (scrollPosition >= documentHeight - 100) {
-            scrollDown.style.display = 'none';
-        } else {
-            scrollDown.style.display = 'block';
-        }
-    });
-</script>
+    <!-- Language Switching Script -->
+    <script>
+        const translations = {
+            fi: {
+                "header-title": "Hemix Automaalaamo ja Autokorjaamo",
+                "header-subtitle": "Nopeaa ja luotettavaa autohuoltoa",
+                "about-title": "Meistä",
+                "about-p1": "Hemix on luotettava kumppanisi kaikissa automaalaukseen ja autokorjaukseen liittyvissä tarpeissa. Yli kymmenen vuoden kokemuksella alalta tarjoamme asiakkaillemme ensiluokkaista palvelua, joka yhdistää ammattitaidon, modernit työvälineet ja henkilökohtaisen lähestymistavan. Oli kyse sitten auton korimaalauksesta, vauriokorjauksista tai mekaanisista huolloista, meillä jokainen auto saa ansaitsemansa huolenpidon, jotta se pysyy turvallisena, toimintakuntoisena ja tyylikkäänä vuodesta toiseen.",
+                "about-p2": "Tiimimme koostuu koulutetuista ja intohimoisista autoalan ammattilaisista, jotka hallitsevat sekä automaalauksen että korjaamotoiminnan uusimmat tekniikat. Käytämme työssämme ainoastaan laadukkaita maaleja, varaosia ja menetelmiä, jotta lopputulos vastaa odotuksiasi – ja usein ylittääkin ne. Olipa tarpeenasi kolhujen korjaus, täydellinen uudelleenmaalaus tai tekninen vianetsintä, voit luottaa siihen, että hoidamme työn huolellisesti ja tehokkaasti.",
+                "about-p3": "Sijaintimme Helsingissä, Rattitie 15:ssä, mahdollistaa helpon pääsyn palveluihimme pääkaupunkiseudun asiakkaille. Hemix ei ole pelkkä korjaamo tai maalaamo, vaan paikka, jossa autosi ulkonäkö ja toimivuus nostetaan uudelle tasolle. Tule käymään tai ota yhteyttä – autamme mielellämme kaikissa automaalaukseen ja -korjaukseen liittyvissä kysymyksissäsi!",
+                "services-title": "Palvelumme",
+                "service-1": "Korikorjaukset",
+                "service-2": "Kolarikorjaukset",
+                "service-3": "Automaalaamo",
+                "service-4": "Tuulilasinvaihdot",
+                "service-5": "Ruostekorjaukset",
+                "service-6": "Vahingotarkastukset",
+                "maintenance-title": "Huollot",
+                "maintenance-1": "Katsastuspalvelu",
+                "maintenance-2": "Vikakoodien Luku",
+                "maintenance-3": "Ilmastointihuollot",
+                "maintenance-4": "Nelipyöräsuuntaukset",
+                "maintenance-5": "Rengasmyynti ja -työt",
+                "maintenance-6": "Automaattivaihteiston Huuhtelu",
+                "contact-title": "Ota yhteyttä",
+                "contact-phone": "Puhelin: 044 972 2221 & 044 974 2055",
+                "contact-email": "Sähköposti: info@hemix.fi",
+                "contact-address": "Osoite: Rattitie 15, 00770 Helsinki",
+                "location-title": "Sijaintimme",
+                "location-text": "Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.",
+                "footer-text": "Aukioloajat: Ma-Pe 08.00-16.30",
+                "scroll-down": "Selaa alas"
+            },
+            en: {
+                "header-title": "Hemix Car Painting and Auto Repair",
+                "header-subtitle": "Fast and Reliable Car Services",
+                "about-title": "About Us",
+                "about-p1": "Hemix is your trusted partner for all car painting and auto repair needs. With over ten years of industry experience, we provide top-notch service that combines expertise, modern tools, and a personal approach. Whether it’s body painting, damage repairs, or mechanical maintenance, every vehicle receives the care it deserves to stay safe, functional, and stylish year after year.",
+                "about-p2": "Our team consists of trained and passionate automotive professionals who master the latest techniques in car painting and repair. We use only high-quality paints, parts, and methods to ensure results that meet—and often exceed—your expectations. From dent fixes to full repaints or technical diagnostics, you can trust us to handle the job with care and efficiency.",
+                "about-p3": "Located in Helsinki at Rattitie 15, we offer easy access to our services for customers across the capital region. Hemix isn’t just a repair shop or paint studio—it’s a place where your car’s appearance and performance are elevated to the next level. Visit us or get in touch—we’re happy to assist with all your car painting and repair questions!",
+                "services-title": "Our Services",
+                "service-1": "Body Repairs",
+                "service-2": "Collision Repairs",
+                "service-3": "Car Painting",
+                "service-4": "Windshield Replacement",
+                "service-5": "Rust Repairs",
+                "service-6": "Damage Inspections",
+                "maintenance-title": "Maintenance",
+                "maintenance-1": "Inspection Service",
+                "maintenance-2": "Error Code Reading",
+                "maintenance-3": "AC Maintenance",
+                "maintenance-4": "Wheel Alignment",
+                "maintenance-5": "Tire Sales and Services",
+                "maintenance-6": "Automatic Transmission Flush",
+                "contact-title": "Contact Us",
+                "contact-phone": "Phone: 044 972 2221 & 044 974 2055",
+                "contact-email": "Email: info@hemix.fi",
+                "contact-address": "Address: Rattitie 15, 00770 Helsinki",
+                "location-title": "Our Location",
+                "location-text": "Hemix is conveniently located in Helsinki at Rattitie 15, 00770 Helsinki. Easily accessible by car or public transport, we serve customers throughout the capital region. Visit our modern facility and friendly staff, ready to assist with all your car service needs.",
+                "footer-text": "Opening Hours: Mon-Fri 08:00-16:30",
+                "scroll-down": "Scroll Down"
+            },
+            ru: {
+                "header-title": "Hemix: Покраска и Ремонт Автомобилей",
+                "header-subtitle": "Быстрое и Надежное Обслуживание Автомобилей",
+                "about-title": "О Нас",
+                "about-p1": "Hemix — ваш надежный партнер во всем, что касается покраски и ремонта автомобилей. С более чем десятилетним опытом в отрасли мы предоставляем первоклассные услуги, сочетая профессионализм, современное оборудование и индивидуальный подход. Будь то покраска кузова, ремонт повреждений или механическое обслуживание, каждый автомобиль получает должный уход, чтобы оставаться безопасным, функциональным и стильным из года в год.",
+                "about-p2": "Наша команда состоит из обученных и увлеченных специалистов автодела, владеющих новейшими техниками покраски и ремонта. Мы используем только качественные краски, запчасти и методы, чтобы результат соответствовал вашим ожиданиям — и часто превосходил их. От устранения вмятин до полной перекраски или диагностики неисправностей — вы можете быть уверены, что мы выполним работу тщательно и эффективно.",
+                "about-p3": "Мы находимся в Хельсинки по адресу Раттитие 15, что обеспечивает легкий доступ к нашим услугам для клиентов столичного региона. Hemix — это не просто мастерская или покрасочная студия, это место, где внешний вид и работоспособность вашего автомобиля поднимаются на новый уровень. Заходите или свяжитесь с нами — мы с радостью поможем с любыми вопросами по покраске и ремонту автомобилей!",
+                "services-title": "Наши Услуги",
+                "service-1": "Ремонт кузова",
+                "service-2": "Ремонт после аварий",
+                "service-3": "Покраска автомобилей",
+                "service-4": "Замена лобового стекла",
+                "service-5": "Ремонт ржавчины",
+                "service-6": "Осмотр повреждений",
+                "maintenance-title": "Обслуживание",
+                "maintenance-1": "Услуги техосмотра",
+                "maintenance-2": "Чтение кодов ошибок",
+                "maintenance-3": "Обслуживание кондиционеров",
+                "maintenance-4": "Развал-схождение",
+                "maintenance-5": "Продажа и работа с шинами",
+                "maintenance-6": "Промывка автоматической коробки передач",
+                "contact-title": "Связаться с Нами",
+                "contact-phone": "Телефон: 044 972 2221 & 044 974 2055",
+                "contact-email": "Эл. почта: info@hemix.fi",
+                "contact-address": "Адрес: Раттитие 15, 00770 Хельсинки",
+                "location-title": "Наше Местоположение",
+                "location-text": "Hemix удобно расположен в Хельсинки по адресу Раттитие 15, 00770 Хельсинки. До нас легко добраться на машине или общественном транспорте, и мы обслуживаем клиентов по всему столичному региону. Посетите наш современный центр и дружелюбный персонал, готовый помочь со всеми вашими потребностями в обслуживании автомобиля.",
+                "footer-text": "Часы работы: Пн-Пт 08:00-16:30",
+                "scroll-down": "Прокрутить вниз"
+            },
+            ar: {
+                "header-title": "هيميكس: طلاء السيارات وإصلاحها",
+                "header-subtitle": "خدمات سيارات سريعة وموثوقة",
+                "about-title": "معلومات عنا",
+                "about-p1": "هيميكس هو شريكك الموثوق لجميع احتياجات طلاء السيارات وإصلاحها. مع أكثر من عشر سنوات من الخبرة في هذا المجال، نحن نقدم خدمات متميزة تجمع بين المهارة، الأدوات الحديثة، والنهج الشخصي. سواء كان الأمر يتعلق بطلاء الهيكل، إصلاح الأضرار، أو الصيانة الميكانيكية، كل سيارة تحصل على الرعاية التي تستحقها لتبقى آمنة، عملية، وأنيقة عامًا بعد عام.",
+                "about-p2": "يتكون فريقنا من محترفين مدربين ومتحمسين في مجال السيارات، يتقنون أحدث تقنيات الطلاء والإصلاح. نحن نستخدم فقط الدهانات والقطع والطرق عالية الجودة لضمان نتائج تلبي توقعاتك – وغالبًا ما تتجاوزها. سواء كنت بحاجة إلى إصلاح الخدوش، إعادة طلاء كاملة، أو تشخيص تقني، يمكنك الاعتماد علينا لأداء العمل بعناية وكفاءة.",
+                "about-p3": "يقع موقعنا في هلسنكي في راتيتي 15، مما يتيح الوصول السهل إلى خدماتنا لعملاء منطقة العاصمة. هيميكس ليس مجرد ورشة إصلاح أو استوديو طلاء، بل مكان يرتقي بمظهر سيارتك وأدائها إلى مستوى جديد. تفضل بزيارتنا أو تواصل معنا – نحن سعداء بمساعدتك في جميع استفساراتك المتعلقة بطلاء السيارات وإصلاحها!",
+                "services-title": "خدماتنا",
+                "service-1": "إصلاح الهيكل",
+                "service-2": "إصلاح التصادم",
+                "service-3": "طلاء السيارات",
+                "service-4": "استبدال الزجاج الأمامي",
+                "service-5": "إصلاح الصدأ",
+                "service-6": "فحص الأضرار",
+                "maintenance-title": "الصيانة",
+                "maintenance-1": "خدمة الفحص",
+                "maintenance-2": "قراءة رموز الأخطاء",
+                "maintenance-3": "صيانة المكيفات",
+                "maintenance-4": "موازنة العجلات",
+                "maintenance-5": "بيع وخدمات الإطارات",
+                "maintenance-6": "تنظيف ناقل الحركة الأوتوماتيكي",
+                "contact-title": "تواصل معنا",
+                "contact-phone": "هاتف: 044 972 2221 و 044 974 2055",
+                "contact-email": "البريد الإلكتروني: info@hemix.fi",
+                "contact-address": "العنوان: راتيتي 15، 00770 هلسنكي",
+                "location-title": "موقعنا",
+                "location-text": "يقع هيميكس بسهولة في هلسنكي في راتيتي 15، 00770 هلسنكي. يمكن الوصول إلينا بسهولة بالسيارة أو وسائل النقل العام، ونخدم عملاء منطقة العاصمة على نطاق واسع. تفضل بزيارة منشآتنا الحديثة وطاقمنا الودود، الجاهز لمساعدتك في جميع احتياجات صيانة سيارتك.",
+                "footer-text": "ساعات العمل: الإثنين-الجمعة 08:00-16:30",
+                "scroll-down": "تمرير للأسفل"
+            }
+        };
+
+        document.querySelectorAll('.flag-container').forEach(container => {
+            container.addEventListener('click', function() {
+                const lang = this.getAttribute('data-lang');
+                document.body.classList.remove('rtl');
+                if (lang === 'ar') {
+                    document.body.classList.add('rtl');
+                }
+                for (const [key, value] of Object.entries(translations[lang])) {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.textContent = value;
+                    }
+                }
+            });
+        });
+    </script>
+
+    <!-- Scroll Hiding Script -->
+    <script>
+        window.addEventListener('scroll', function() {
+            const scrollDown = document.querySelector('.scroll-down');
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            const scrollPosition = window.scrollY + windowHeight;
+
+            if (scrollPosition >= documentHeight - 100) {
+                scrollDown.style.display = 'none';
+            } else {
+                scrollDown.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
