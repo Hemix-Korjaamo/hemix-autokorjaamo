@@ -297,5 +297,20 @@
     <footer>
         <p>Aukioloajat: Ma-Pe 08.00-16.30</p>
     </footer>
+<script>
+    window.addEventListener('scroll', function() {
+        const scrollDown = document.querySelector('.scroll-down');
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        const scrollPosition = window.scrollY + windowHeight;
+
+        // Hide when near the bottom (within 100px)
+        if (scrollPosition >= documentHeight - 100) {
+            scrollDown.style.display = 'none';
+        } else {
+            scrollDown.style.display = 'block';
+        }
+    });
+</script>
 </body>
 </html>
