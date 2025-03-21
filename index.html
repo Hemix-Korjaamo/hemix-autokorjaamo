@@ -157,7 +157,7 @@
 /* Scroll Down Indicator */
 .scroll-down {
     position: fixed;
-    bottom: 60px; /* Moved higher to avoid footer overlap */
+    bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -192,10 +192,10 @@
     100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
 }
 
-/* Show on Mobile */
+/* Show on Mobile Initially */
 @media (max-width: 600px) {
     .scroll-down {
-        display: block;
+        display: block; /* JavaScript will override this when at bottom */
     }
 }
 }
