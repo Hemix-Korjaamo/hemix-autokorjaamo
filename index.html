@@ -154,6 +154,50 @@
                 padding-bottom: 60px;
             }
         }
+/* Scroll Down Indicator */
+.scroll-down {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #fff;
+    font-size: 1em;
+    font-weight: 500;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    padding: 10px 20px;
+    border-radius: 20px;
+    z-index: 1001; /* Above footer */
+    display: none; /* Hidden by default */
+    animation: breathe 2s infinite ease-in-out; /* Breathing effect */
+}
+
+.scroll-down span {
+    display: block;
+}
+
+.scroll-down .arrow {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #fff;
+    margin: 5px auto 0;
+}
+
+/* Breathing Animation */
+@keyframes breathe {
+    0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+    50% { transform: translateX(-50%) scale(1.05); opacity: 1; }
+    100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+}
+
+/* Show on Mobile */
+@media (max-width: 600px) {
+    .scroll-down {
+        display: block;
+    }
+}
     </style>
 </head>
 <body>
