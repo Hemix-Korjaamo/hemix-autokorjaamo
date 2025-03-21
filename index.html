@@ -40,235 +40,223 @@
         }
 
         /* Language Switcher with Flags */
-.language-switcher {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap; /* Ensure wrapping works on small screens */
-    z-index: 1002; /* Keep above other elements */
-}
-.flag-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.flag-container:hover {
-    transform: scale(1.1);
-    opacity: 0.8;
-}
-.flag {
-    width: 30px;
-    height: 20px;
-    border-radius: 3px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-.language-text {
-    font-size: 0.7em; /* Slightly smaller for mobile fit */
-    color: #333;
-    margin-top: 3px;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 2px 4px;
-    border-radius: 3px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-.flag-container:hover .language-text {
-    background-color: #FF5733;
-    color: white;
-}
+        .language-switcher {
+            display: flex;
+            gap: 10px;
+            justify-content: center; /* Center flags on all screens */
+            padding: 10px 0; /* Space above and below */
+            background-color: rgba(252, 191, 40, 0.9); /* Match header color */
+            z-index: 1002; /* Above other content */
+        }
+        .flag-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .flag-container:hover {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+        .flag {
+            width: 30px;
+            height: 20px;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .language-text {
+            font-size: 0.7em;
+            color: #333;
+            margin-top: 3px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .flag-container:hover .language-text {
+            background-color: #FF5733;
+            color: white;
+        }
 
-/* RTL Support for Arabic */
-body.rtl {
-    direction: rtl;
-    text-align: right;
-}
-body.rtl .service-column,
-body.rtl .map-container,
-body.rtl .text-container {
-    direction: ltr; /* Keep services and map LTR for layout consistency */
-}
+        /* RTL Support for Arabic */
+        body.rtl {
+            direction: rtl;
+            text-align: right;
+        }
+        body.rtl .service-column,
+        body.rtl .map-container,
+        body.rtl .text-container {
+            direction: ltr; /* Keep services and map LTR for layout consistency */
+        }
 
-/* Sections */
-section {
-    padding: 30px 15px;
-    max-width: 1200px;
-    width: 90%;
-    margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-}
+        /* Sections */
+        section {
+            padding: 30px 15px;
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+        }
 
-/* About Section */
-#about {
-    /* No solid background */
-}
+        /* About Section */
+        #about {
+            /* No solid background */
+        }
 
-/* Services Section (Palvelumme & Huollot) */
-#services {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between;
-}
-#services .service-column {
-    flex: 1;
-    min-width: 300px;
-}
-#services ul {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    list-style: none;
-    padding: 0;
-}
-#services li {
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 1.1em;
-    font-weight: 500;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s, color 0.3s;
-}
-#services li:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    color: #FF5733;
-}
+        /* Services Section (Palvelumme & Huollot) */
+        #services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+        #services .service-column {
+            flex: 1;
+            min-width: 300px;
+        }
+        #services ul {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+        }
+        #services li {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, color 0.3s;
+        }
+        #services li:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: #FF5733;
+        }
 
-/* Contact Section */
-#contact {
-    /* No solid background */
-}
-#contact p {
-    font-weight: bold;
-    font-size: 1.1em;
-    margin: 10px 0;
-}
+        /* Contact Section */
+        #contact {
+            /* No solid background */
+        }
+        #contact p {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
 
-/* Location Section */
-#location {
-    padding-bottom: 80px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: space-between;
-}
-#location .map-container {
-    flex: 1;
-    min-width: 300px;
-}
-#location .map-container iframe {
-    width: 100%;
-    height: 400px;
-    border: 0;
-    border-radius: 8px;
-}
-#location .text-container {
-    flex: 1;
-    min-width: 300px;
-}
+        /* Location Section */
+        #location {
+            padding-bottom: 80px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-between;
+        }
+        #location .map-container {
+            flex: 1;
+            min-width: 300px;
+        }
+        #location .map-container iframe {
+            width: 100%;
+            height: 400px;
+            border: 0;
+            border-radius: 8px;
+        }
+        #location .text-container {
+            flex: 1;
+            min-width: 300px;
+        }
 
-/* Footer */
-footer {
-    background-color: #FCBF28;
-    color: black;
-    text-align: center;
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 1000;
-}
-footer p {
-    font-weight: bold;
-    margin: 0;
-}
+        /* Footer */
+        footer {
+            background-color: #FCBF28;
+            color: black;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        footer p {
+            font-weight: bold;
+            margin: 0;
+        }
 
-/* Scroll Down Indicator */
-.scroll-down {
-    position: fixed;
-    bottom: 60px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    color: #fff;
-    font-size: 1em;
-    font-weight: 500;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 10px 20px;
-    border-radius: 20px;
-    z-index: 1001;
-    display: none;
-    animation: breathe 2s infinite ease-in-out;
-}
-.scroll-down span {
-    display: block;
-}
-.scroll-down .arrow {
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid #fff;
-    margin: 5px auto 0;
-}
+        /* Scroll Down Indicator */
+        .scroll-down {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: #fff;
+            font-size: 1em;
+            font-weight: 500;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            z-index: 1001;
+            display: none;
+            animation: breathe 2s infinite ease-in-out;
+        }
+        .scroll-down span {
+            display: block;
+        }
+        .scroll-down .arrow {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #fff;
+            margin: 5px auto 0;
+        }
 
-/* Breathing Animation */
-@keyframes breathe {
-    0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-    50% { transform: translateX(-50%) scale(1.05); opacity: 1; }
-    100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-}
+        /* Breathing Animation */
+        @keyframes breathe {
+            0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+            50% { transform: translateX(-50%) scale(1.05); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+        }
 
-/* Responsive Design */
-@media (max-width: 600px) {
-    header {
-        padding: 60px 10px 20px; /* Extra top padding for flags */
-    }
-    header h1 {
-        font-size: 1.8em;
-    }
-    header p {
-        font-size: 1em;
-    }
-    #services {
-        flex-direction: column;
-    }
-    #location iframe {
-        height: 300px;
-    }
-    #location {
-        padding-bottom: 60px;
-    }
-    .scroll-down {
-        display: block;
-    }
-    .language-switcher {
-        top: 5px;
-        right: 5px;
-        justify-content: flex-end; /* Align flags to the right */
-        gap: 6px; /* Slightly smaller gap for mobile */
-        padding: 0 5px; /* Add some padding to prevent edge cutoff */
-    }
-    .flag-container {
-        margin: 2px; /* Reduced margin for tighter fit */
-    }
-    .flag {
-        width: 25px; /* Slightly smaller flags */
-        height: 17px;
-    }
-    .language-text {
-        font-size: 0.65em; /* Even smaller text for mobile */
-        padding: 1px 3px;
-    }
-}
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            header p {
+                font-size: 1em;
+            }
+            .language-switcher {
+                gap: 5px; /* Tighter spacing on mobile */
+                padding: 5px 0; /* Less vertical padding */
+            }
+            .flag {
+                width: 25px; /* Slightly smaller flags */
+                height: 17px;
+            }
+            .language-text {
+                display: none; /* Hide text on mobile */
+            }
+            #services {
+                flex-direction: column;
+            }
+            #location iframe {
+                height: 300px;
+            }
+            #location {
+                padding-bottom: 60px;
+            }
+            .scroll-down {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
@@ -278,27 +266,29 @@ footer p {
     </div>
     <!-- Header -->
     <header>
-        <div class="language-switcher">
-    <div class="flag-container" data-lang="fi">
-        <img src="https://flagcdn.com/w40/fi.png" alt="Finnish Flag" class="flag">
-        <span class="language-text">Vaihda kieli tästä</span>
-    </div>
-    <div class="flag-container" data-lang="en">
-        <img src="https://flagcdn.com/w40/gb.png" alt="UK Flag" class="flag">
-        <span class="language-text">Change language here</span>
-    </div>
-    <div class="flag-container" data-lang="ru">
-        <img src="https://flagcdn.com/w40/ru.png" alt="Russian Flag" class="flag">
-        <span class="language-text">Сменить язык здесь</span>
-    </div>
-    <div class="flag-container" data-lang="ar">
-        <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Flag" class="flag">
-        <span class="language-text">غير اللغة هنا</span>
-    </div>
-</div>
         <h1 id="header-title">Hemix Automaalaamo ja Autokorjaamo</h1>
         <p id="header-subtitle">Nopeaa ja luotettavaa autohuoltoa</p>
     </header>
+
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <div class="flag-container" data-lang="fi">
+            <img src="https://flagcdn.com/w40/fi.png" alt="Finnish Flag" class="flag">
+            <span class="language-text">Suomi</span>
+        </div>
+        <div class="flag-container" data-lang="en">
+            <img src="https://flagcdn.com/w40/gb.png" alt="UK Flag" class="flag">
+            <span class="language-text">English</span>
+        </div>
+        <div class="flag-container" data-lang="ru">
+            <img src="https://flagcdn.com/w40/ru.png" alt="Russian Flag" class="flag">
+            <span class="language-text">Русский</span>
+        </div>
+        <div class="flag-container" data-lang="ar">
+            <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Flag" class="flag">
+            <span class="language-text">العربية</span>
+        </div>
+    </div>
 
     <!-- About Section -->
     <section id="about">
@@ -349,7 +339,7 @@ footer p {
         </div>
         <div class="text-container">
             <h2 id="location-title">Sijaintimme</h2>
-            <p id="location-text">Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.</p>
+            <p id="location-text">Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.</p>
         </div>
     </section>
 
@@ -387,7 +377,7 @@ footer p {
                 "contact-email": "Sähköposti: info@hemix.fi",
                 "contact-address": "Osoite: Rattitie 15, 00770 Helsinki",
                 "location-title": "Sijaintimme",
-                "location-text": "Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.",
+                "location-text": "Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.",
                 "footer-text": "Aukioloajat: Ma-Pe 08.00-16.30",
                 "scroll-down": "Selaa alas"
             },
