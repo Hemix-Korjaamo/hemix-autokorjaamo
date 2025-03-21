@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemix Automaalaamo ja Autokorjaamo</title>
+    <!-- Google Fonts: Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Roboto', Arial, sans-serif; /* Changed to Roboto */
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: lightgray;
+        }
+
+        /* Header */
+        header {
+            background-color: #FCBF28;
+            color: black;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        header p {
+            margin: 5px 0;
+            font-size: 1.2em;
+        }
+
+        /* Sections */
+        section {
+            padding: 30px 15px;
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+        }
+
+        /* About Section */
+        #about {
+            /* No solid background */
+        }
+
+        /* Services Section (Palvelumme & Huollot) */
+        #services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+        #services .service-column {
+            flex: 1;
+            min-width: 300px;
+        }
+        #services ul {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+        }
+        #services li {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, color 0.3s;
+        }
+        #services li:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: #FF5733;
+        }
+
+        /* Contact Section */
+        #contact {
+            /* No solid background */
+        }
+        #contact p {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+
+        /* Location Section */
+        #location {
+            padding-bottom: 80px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-between;
+        }
+        #location .map-container {
+            flex: 1;
+            min-width: 300px;
+        }
+        #location .map-container iframe {
+            width: 100%;
+            height: 400px;
+            border: 0;
+            border-radius: 8px;
+        }
+        #location .text-container {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #FCBF28;
+            color: black;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        footer p {
+            font-weight: bold;
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            header p {
+                font-size: 1em;
+            }
+            #services {
+                flex-direction: column;
+            }
+            #location iframe {
+                height: 300px;
+            }
+            #location {
+                padding-bottom: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Hemix Automaalaamo ja Autokorjaamo</h1>
+        <p>Nopeaa ja luotettavaa autohuoltoa</p>
+    </header>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>Meistä</h2>
+        <p>Hemix on luotettava kumppanisi kaikissa automaalaukseen ja autokorjaukseen liittyvissä tarpeissa. Yli kymmenen vuoden kokemuksella alalta tarjoamme asiakkaillemme ensiluokkaista palvelua, joka yhdistää ammattitaidon, modernit työvälineet ja henkilökohtaisen lähestymistavan. Oli kyse sitten auton korimaalauksesta, vauriokorjauksista tai mekaanisista huolloista, meillä jokainen auto saa ansaitsemansa huolenpidon, jotta se pysyy turvallisena, toimintakuntoisena ja tyylikkäänä vuodesta toiseen.</p>
+        
+<p>Tiimimme koostuu koulutetuista ja intohimoisista autoalan ammattilaisista, jotka hallitsevat sekä automaalauksen että korjaamotoiminnan uusimmat tekniikat. Käytämme työssämme ainoastaan laadukkaita maaleja, varaosia ja menetelmiä, jotta lopputulos vastaa odotuksiasi – ja usein ylittääkin ne. Olipa tarpeenasi kolhujen korjaus, täydellinen uudelleenmaalaus tai tekninen vianetsintä, voit luottaa siihen, että hoidamme työn huolellisesti ja tehokkaasti.</p>
+        
+<p>Sijaintimme Helsingissä, Rattitie 15:ssä, mahdollistaa helpon pääsyn palveluihimme pääkaupunkiseudun asiakkaille. Hemix ei ole pelkkä korjaamo tai maalaamo, vaan paikka, jossa autosi ulkonäkö ja toimivuus nostetaan uudelle tasolle. Tule käymään tai ota yhteyttä – autamme mielellämme kaikissa automaalaukseen ja -korjaukseen liittyvissä kysymyksissäsi!
+
+</p>
+    </section>
+
+    <!-- Services Section (Palvelumme & Huollot Side by Side) -->
+    <section id="services">
+        <div class="service-column">
+            <h2>Palvelumme</h2>
+            <ul>
+                <li>Korikorjaukset</li>
+                <li>Kolarikorjaukset</li>
+                <li>Automaalaamo</li>
+                <li>Tuulilasinvaihdot</li>
+                <li>Ruostekorjaukset</li>
+                <li>Vahingotarkastukset</li>
+                <!-- Removed "Mekaaniset Korjaukset" -->
+            </ul>
+        </div>
+        <div class="service-column">
+            <h2>Huollot</h2>
+            <ul>
+                <li>Katsastuspalvelu</li>
+                <li>Vikakoodien Luku</li>
+                <li>Ilmastointihuollot</li>
+                <li>Nelipyöräsuuntaukset</li>
+                <li>Rengasmyynti ja -työt</li>
+                <li>Automaattivaihteiston Huuhtelu</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Ota yhteyttä</h2>
+        <p>Puhelin: 044 972 2221 & 044 974 2055</p> <!-- Updated phone numbers -->
+        <p>Sähköposti: info@hemix.fi</p>
+        <p>Osoite: Rattitie 15, 00770 Helsinki</p>
+    </section>
+
+    <!-- Location Section -->
+    <section id="location">
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1980.987167754614!2d25.046424916179897!3d60.24597598198178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x469209e8e2f2c2ab%3A0x6e8f8e8e8e8e8e8e!2sRattitie%2015%2C%2000770%20Helsinki%2C%20Finland!5e0!3m2!1sen!2sus!4v1698765432109!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="text-container">
+            <h2>Sijaintimme</h2>
+            <p>Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Aukioloajat: Ma-Pe 08.00-16.30</p>
+    </footer>
+</body>
+</html>
