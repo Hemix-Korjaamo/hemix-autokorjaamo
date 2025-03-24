@@ -1,615 +1,725 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hemix Automaalaamo ja Autokorjaamo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #FCBF28;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-        #preloader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #fff;
-            border-top: 5px solid #FF5733;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        body {
-            font-family: 'Open Sans', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            scroll-behavior: smooth;
-            background: url('background1.jpg'), linear-gradient(135deg, #f5f5f5cc, #e0e0e0cc);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-        header {
-            background: linear-gradient(135deg, #FCBF28 0%, #FFA500 100%);
-            color: black;
-            padding: 1.5rem 1rem;
-            text-align: center;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: -100px;
-            z-index: 1000;
-            transition: top 0.3s ease;
-        }
-        header.visible {
-            top: 0;
-        }
-        header h1 {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        header p {
-            margin: 0.5rem 0 0;
-            font-size: clamp(1rem, 3vw, 1.2rem);
-            font-weight: 400;
-            opacity: 0.9;
-        }
-        .language-switcher {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            padding: 0.75rem 0;
-            background: rgba(252, 191, 40, 0.95);
-            border-radius: 15px;
-            margin: 0.5rem auto;
-            max-width: 1200px;
-            width: 90%;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        .flag-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            padding: 0.25rem;
-            transition: transform 0.3s ease;
-        }
-        .flag-container:hover {
-            transform: translateY(-3px);
-        }
-        .flag {
-            width: 2rem;
-            height: 1.5rem;
-            border-radius: 5px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-        }
-        .language-text {
-            font-size: 0.8rem;
-            color: #333;
-            margin-top: 0.25rem;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 0.2rem 0.5rem;
-            border-radius: 10px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .flag-container:hover .language-text {
-            background-color: #FF5733;
-            color: white;
-        }
-        body.rtl {
-            direction: rtl;
-            text-align: right;
-        }
-        body.rtl .service-column,
-        body.rtl .map-container,
-        body.rtl .text-container {
-            direction: ltr;
-        }
-        section {
-            padding: 2rem 1rem;
-            max-width: 1200px;
-            width: 90%;
-            margin: 1.5rem auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        #about {
-            text-align: left;
-        }
-        #about h2 {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.8rem;
-            color: #333;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        #about p {
-            font-size: 1.1rem;
-            color: #555;
-            margin: 1rem auto;
-            font-weight: 300;
-            line-height: 1.8;
-            letter-spacing: 0.5px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            max-width: 800px;
-        }
-        #about p strong {
-            font-weight: 600;
-            color: #333;
-        }
-        #about-cta {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
-            margin: 2rem auto;
-            display: block;
-            max-width: 800px;
-            line-height: 1.4;
-            letter-spacing: 1px;
-            text-align: center;
-        }
-        #services {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            padding: 1rem;
-        }
-        .service-column h2 {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.6rem;
-            color: #333;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-        #services ul {
-            list-style: none;
-            padding: 0;
-            display: grid;
-            gap: 0.75rem;
-        }
-        #services li {
-            background: #fff;
-            padding: 1rem;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: 500;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            color: #333; /* Default text color */
-        }
-        #services li:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            color: #FF5733; /* Text color changes to orange on hover */
-        }
-        #contact h2 {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.8rem;
-            color: #333;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-        #contact p {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #444;
-            margin: 0.75rem 0;
-            text-align: center;
-        }
-        #contact a {
-            color: #3498db;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        #contact a:hover {
-            color: #FF5733;
-        }
-        #location {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            padding-bottom: 5rem;
-        }
-        #location h2 {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.8rem;
-            color: #333;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-        #location .map-container iframe {
-            width: 100%;
-            height: 350px;
-            border-radius: 15px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        }
-        #location .text-container p {
-            font-size: 1rem;
-            color: #555;
-            font-weight: 300;
-        }
-        footer {
-            background: linear-gradient(135deg, #FCBF28 0%, #FFA500 100%);
-            color: black;
-            text-align: center;
-            padding: 1rem;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-        footer p {
-            font-family: 'Roboto', sans-serif;
-            font-weight: 600;
-            margin: 0;
-            font-size: 1rem;
-        }
-        #scroll-to-bottom {
-            display: none;
-            position: fixed;
-            bottom: 5rem;
-            left: 1rem;
-            background: linear-gradient(135deg, #FCBF28, #FFA500);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 1001;
-        }
-        #scroll-to-bottom.visible {
-            opacity: 0.8;
-            display: flex;
-        }
-        #scroll-to-bottom:hover {
-            opacity: 1;
-        }
-        #back-to-top {
-            display: none;
-            position: fixed;
-            bottom: 5rem;
-            right: 1rem;
-            background: linear-gradient(135deg, #FCBF28, #FFA500);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 1001;
-        }
-        #back-to-top.visible {
-            opacity: 0.8;
-            display: flex;
-        }
-        #back-to-top:hover {
-            opacity: 1;
-        }
-        @media (max-width: 600px) {
-            header { padding: 1rem 0.75rem; }
-            .language-switcher { gap: 0.5rem; padding: 0.5rem 0; border-radius: 10px; }
-            .flag { width: 1.75rem; height: 1.25rem; }
-            .language-text { display: none; }
-            section { margin: 1rem auto; padding: 1.5rem 0.75rem; }
-            #about h2, #services h2, #contact h2, #location h2 { font-size: 1.5rem; }
-            #about p { font-size: 1rem; }
-            #about-cta { font-size: 1.3rem; max-width: 95%; }
-            #services li { font-size: 1rem; }
-            #location .map-container iframe { height: 250px; }
-            footer { padding: 0.75rem; }
-            #scroll-to-bottom { bottom: 4rem; left: 0.75rem; }
-            #back-to-top { bottom: 4rem; right: 0.75rem; }
-        }
-    </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="description" content="Hemix Automaalaamo ja Autokorjaamo - Nopeaa ja luotettavaa autohuoltoa Helsingissä.">
+ <meta name="keywords" content="automaalaamo, autokorjaamo, Helsinki, autohuolto, korikorjaukset, automaalaus">
+ <meta name="robots" content="index, follow">
+ <meta property="og:title" content="Hemix Automaalaamo ja Autokorjaamo">
+ <meta property="og:description" content="Nopeaa ja luotettavaa autohuoltoa Helsingissä.">
+ <meta property="og:image" content="https://i.imgur.com/Vr0AZYi.png">
+ <meta property="og:type" content="website">
+ <title>Hemix Automaalaamo ja Autokorjaamo</title>
+ <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+ <style>
+ /* Global Reset and Base Styles */
+ * {
+ box-sizing: border-box;
+ margin: 0;
+ padding: 0;
+ }
+
+ body {
+ font-family: 'Open Sans', Arial, sans-serif;
+ line-height: 1.6;
+ scroll-behavior: smooth;
+ background: url('/images/background1.jpg') center/cover no-repeat fixed, linear-gradient(135deg, #f5f5f5cc, #e0e0e0cc);
+ overflow-x: hidden;
+ min-height: 100vh;
+ padding-top: 0; /* Managed by JS */
+ }
+
+ /* Preloader */
+ #preloader {
+ position: fixed;
+ inset: 0;
+ background: #FCBF28;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ z-index: 9999;
+ transition: opacity 0.5s ease;
+ }
+ #preloader.hidden {
+ opacity: 0;
+ pointer-events: none;
+ }
+ .loader {
+ width: 50px;
+ height: 50px;
+ border: 5px solid #fff;
+ border-top: 5px solid #FF5733;
+ border-radius: 50%;
+ animation: spin 1s linear infinite;
+ }
+ @keyframes spin {
+ to { transform: rotate(360deg); }
+ }
+
+ /* Header */
+ header {
+ background: linear-gradient(135deg, #FCBF28, #FFA500);
+ color: #000;
+ padding: 1.5rem 1rem;
+ text-align: center;
+ border-bottom-left-radius: 20px;
+ border-bottom-right-radius: 20px;
+ box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+ position: fixed;
+ top: 0;
+ width: 100%;
+ z-index: 1000;
+ transition: transform 0.3s ease;
+ }
+ header.hidden {
+ transform: translateY(-100%);
+ }
+ header h1 {
+ font-family: 'Roboto', sans-serif;
+ font-size: clamp(2.2rem, 6vw, 3rem); /* Bigger */
+ font-weight: 900; /* Bolder */
+ letter-spacing: 1.5px;
+ margin-bottom: 0.5rem;
+ }
+ header .subtitle {
+ font-family: 'Roboto', sans-serif;
+ font-size: clamp(1rem, 3vw, 1.2rem);
+ font-weight: 500;
+ opacity: 0.9;
+ }
+
+ /* Language Switcher */
+ .language-switcher {
+ display: flex;
+ gap: 1rem;
+ justify-content: center;
+ padding: 0.75rem;
+ background: rgba(252, 191, 40, 0.95);
+ border-radius: 15px;
+ margin: 0 auto;
+ max-width: 1200px;
+ width: 90%;
+ box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+ position: fixed;
+ left: 0;
+ right: 0;
+ z-index: 999;
+ transition: top 0.3s ease;
+ }
+ .flag-container {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ cursor: pointer;
+ padding: 0.25rem;
+ transition: transform 0.3s ease;
+ }
+ .flag-container:hover, .flag-container:focus {
+ transform: translateY(-3px);
+ }
+ .flag-container:focus {
+ outline: 2px solid #FF5733;
+ outline-offset: 2px;
+ }
+ .flag {
+ width: 2rem;
+ height: 1.5rem;
+ border-radius: 5px;
+ box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+ }
+ .language-text {
+ font-size: 0.8rem;
+ color: #333;
+ margin-top: 0.25rem;
+ background: rgba(255, 255, 255, 0.85);
+ padding: 0.2rem 0.5rem;
+ border-radius: 10px;
+ transition: background-color 0.3s ease, color 0.3s ease;
+ }
+ .flag-container:hover .language-text, .flag-container:focus .language-text {
+ background-color: #FF5733;
+ color: #fff;
+ }
+ body.rtl {
+ direction: rtl;
+ text-align: right;
+ }
+
+ /* Section Base Styles */
+ section {
+ padding: 2rem 1rem;
+ max-width: 1200px;
+ width: 90%;
+ margin: 1.5rem auto;
+ background: rgba(255, 255, 255, 0.95);
+ border-radius: 20px;
+ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+ opacity: 0;
+ transform: translateY(20px);
+ transition: opacity 0.5s ease, transform 0.5s ease;
+ will-change: opacity, transform;
+ }
+ section.visible {
+ opacity: 1;
+ transform: translateY(0);
+ }
+
+ /* Enhanced About Section */
+ #about {
+ background: linear-gradient(135deg, #fff, #f9f9f9);
+ position: relative;
+ overflow: hidden;
+ padding: 3rem 2rem;
+ border: 2px solid #FCBF28;
+ }
+ #about::before {
+ content: '';
+ position: absolute;
+ top: -50px;
+ left: -50px;
+ width: 150px;
+ height: 150px;
+ background: radial-gradient(circle, rgba(252, 191, 40, 0.3), transparent);
+ z-index: 0;
+ }
+ #about::after {
+ content: '';
+ position: absolute;
+ bottom: -50px;
+ right: -50px;
+ width: 150px;
+ height: 150px;
+ background: radial-gradient(circle, rgba(255, 87, 51, 0.3), transparent);
+ z-index: 0;
+ }
+ #about h2 {
+ font-family: 'Roboto', sans-serif;
+ font-size: 2.2rem;
+ color: #FF5733;
+ margin-bottom: 1.5rem;
+ text-align: center;
+ position: relative;
+ z-index: 1;
+ text-transform: uppercase;
+ letter-spacing: 2px;
+ background: linear-gradient(135deg, #FCBF28, #FF5733);
+ -webkit-background-clip: text;
+ background-clip: text;
+ color: transparent;
+ }
+ #about .about-content {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 2rem;
+ align-items: center;
+ position: relative;
+ z-index: 1;
+ }
+ #about .about-text p {
+ font-size: 1.1rem;
+ color: #444;
+ margin: 0.75rem 0;
+ font-weight: 400;
+ line-height: 1.8;
+ }
+ #about .about-text p strong {
+ color: #FF5733;
+ font-weight: 700;
+ }
+ #about .about-highlight {
+ background: rgba(252, 191, 40, 0.1);
+ padding: 1rem;
+ border-left: 4px solid #FCBF28;
+ font-style: italic;
+ color: #333;
+ }
+ #about .about-cta {
+ text-align: center;
+ margin-top: 2rem;
+ }
+ #about .cta-button {
+ display: inline-block;
+ padding: 1rem 2rem;
+ background: linear-gradient(135deg, #FCBF28, #FF5733);
+ color: #fff;
+ font-family: 'Roboto', sans-serif;
+ font-size: 1.2rem;
+ font-weight: 600;
+ text-decoration: none;
+ border-radius: 25px;
+ box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+ transition: transform 0.3s ease, box-shadow 0.3s ease;
+ }
+ #about .cta-button:hover, #about .cta-button:focus {
+ transform: translateY(-3px);
+ box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+ }
+ #about .cta-button:focus {
+ outline: 2px solid #FF5733;
+ outline-offset: 2px;
+ }
+
+ /* Services Section */
+ #services {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+ gap: 1.5rem;
+ padding: 1rem;
+ }
+ .service-column h2 {
+ font-family: 'Roboto', sans-serif;
+ font-size: 1.6rem;
+ color: #333;
+ text-align: center;
+ margin-bottom: 1rem;
+ }
+ #services ul {
+ list-style: none;
+ padding: 0;
+ display: grid;
+ gap: 0.75rem;
+ }
+ #services li {
+ background: #fff;
+ padding: 1rem;
+ border-radius: 15px;
+ text-align: center;
+ font-size: 1.1rem;
+ font-weight: 500;
+ box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+ transition: all 0.3s ease;
+ color: #333;
+ }
+ #services li:hover, #services li:focus {
+ transform: scale(1.03);
+ box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+ color: #FF5733;
+ }
+
+ /* Contact Section */
+ #contact h2 {
+ font-family: 'Roboto', sans-serif;
+ font-size: 1.8rem;
+ color: #333;
+ text-align: center;
+ margin-bottom: 1rem;
+ }
+ #contact p {
+ font-size: 1rem;
+ font-weight: 600;
+ color: #444;
+ margin: 0.75rem 0;
+ text-align: center;
+ }
+ #contact a {
+ color: #3498db;
+ transition: color 0.3s ease;
+ }
+ #contact a:hover, #contact a:focus {
+ color: #FF5733;
+ }
+ #contact a:focus {
+ outline: 2px solid #FF5733;
+ outline-offset: 2px;
+ }
+
+ /* Location Section */
+ #location {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+ gap: 1.5rem;
+ padding-bottom: 5rem;
+ }
+ #location h2 {
+ font-family: 'Roboto', sans-serif;
+ font-size: 1.8rem;
+ color: #333;
+ text-align: center;
+ margin-bottom: 1rem;
+ }
+ #location .map-container iframe {
+ width: 100%;
+ height: 350px;
+ border-radius: 15px;
+ box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+ border: none;
+ }
+ #location .text-container p {
+ font-size: 1rem;
+ color: #555;
+ font-weight: 300;
+ }
+
+ /* Footer */
+ footer {
+ background: linear-gradient(135deg, #FCBF28, #FFA500);
+ color: #000;
+ text-align: center;
+ padding: 1rem;
+ position: fixed;
+ bottom: 0;
+ width: 100%;
+ border-top-left-radius: 20px;
+ border-top-right-radius: 20px;
+ box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+ z-index: 1000;
+ }
+ footer p {
+ font-family: 'Roboto', sans-serif;
+ font-weight: 600;
+ font-size: 1rem;
+ }
+
+ /* Scroll Buttons */
+ #scroll-to-bottom, #back-to-top {
+ position: fixed;
+ bottom: 5rem;
+ background: linear-gradient(135deg, #FCBF28, #FFA500);
+ color: #fff;
+ width: 40px;
+ height: 40px;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 1.2rem;
+ cursor: pointer;
+ opacity: 0;
+ transition: opacity 0.3s ease;
+ z-index: 1001;
+ }
+ #scroll-to-bottom { left: 1rem; }
+ #back-to-top { right: 1rem; }
+ #scroll-to-bottom.visible, #back-to-top.visible {
+ opacity: 0.8;
+ }
+ #scroll-to-bottom:hover, #back-to-top:hover,
+ #scroll-to-bottom:focus, #back-to-top:focus {
+ opacity: 1;
+ }
+ #scroll-to-bottom:focus, #back-to-top:focus {
+ outline: 2px solid #FF5733;
+ outline-offset: 2px;
+ }
+
+ /* Media Queries */
+ @media (max-width: 768px) {
+ #about .about-content {
+ grid-template-columns: 1fr;
+ }
+ #about h2 { font-size: 1.8rem; }
+ }
+ @media (max-width: 600px) {
+ header { padding: 1rem 0.75rem; }
+ .language-switcher {
+ gap: 0.5rem;
+ padding: 0.5rem;
+ }
+ .flag { width: 1.75rem; height: 1.25rem; }
+ .language-text { display: none; }
+ section { padding: 1.5rem 0.75rem; }
+ #about { padding: 2rem 1rem; }
+ #about h2 { font-size: 1.5rem; }
+ #services h2, #contact h2, #location h2 { font-size: 1.5rem; }
+ #location .map-container iframe { height: 250px; }
+ }
+ </style>
 </head>
 <body>
-    <div id="preloader">
-        <div class="loader"></div>
-    </div>
-    <div id="scroll-to-bottom" title="Scroll to Bottom">↓</div>
-    <div id="back-to-top" title="Back to Top">↑</div>
-    <header>
-        <h1 id="header-title">Hemix Automaalaamo ja Autokorjaamo</h1>
-        <p id="header-subtitle">Nopeaa ja luotettavaa autohuoltoa</p>
-    </header>
-    <div class="language-switcher">
-        <div class="flag-container" data-lang="fi">
-            <img src="https://flagcdn.com/w40/fi.png" alt="Finnish Flag" class="flag">
-            <span class="language-text">Suomi</span>
-        </div>
-        <div class="flag-container" data-lang="en">
-            <img src="https://flagcdn.com/w40/gb.png" alt="UK Flag" class="flag">
-            <span class="language-text">English</span>
-        </div>
-        <div class="flag-container" data-lang="ru">
-            <img src="https://flagcdn.com/w40/ru.png" alt="Russian Flag" class="flag">
-            <span class="language-text">Русский</span>
-        </div>
-        <div class="flag-container" data-lang="ar">
-            <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Flag" class="flag">
-            <span class="language-text">العربية</span>
-        </div>
-    </div>
-    <section id="about">
-        <h2 id="about-title">Meistä</h2>
-        <p id="about-p1">Hemix on <strong>luotettava kumppanisi</strong> kaikissa automaalaukseen ja autokorjaukseen liittyvissä tarpeissa. Yli kymmenen vuoden kokemuksella alalta tarjoamme asiakkaillemme <strong>ensiluokkaista palvelua</strong>, joka yhdistää ammattitaidon, modernit työvälineet ja henkilökohtaisen lähestymistavan. Oli kyse sitten auton korimaalauksesta, vauriokorjauksista tai mekaanisista huolloista, meillä jokainen auto saa ansaitsemansa huolenpidon, jotta se pysyy turvallisena, toimintakuntoisena ja tyylikkäänä vuodesta toiseen.</p>
-        <p id="about-p2">Tiimimme koostuu <strong>koulutetuista ja intohimoisista</strong> autoalan ammattilaisista, jotka hallitsevat sekä automaalauksen että korjaamotoiminnan uusimmat tekniikat. Käytämme työssämme ainoastaan laadukkaita maaleja, varaosia ja menetelmiä, jotta lopputulos vastaa odotuksiasi – ja usein ylittääkin ne. Olipa tarpeenasi kolhujen korjaus, täydellinen uudelleenmaalaus tai tekninen vianetsintä, voit luottaa siihen, että hoidamme työn huolellisesti ja tehokkaasti.</p>
-        <p id="about-p3">Sijaintimme Helsingissä, Rattitie 15:ssä, mahdollistaa helpon pääsyn palveluihimme pääkaupunkiseudun asiakkaille. Hemix ei ole pelkkä korjaamo tai maalaamo, vaan <strong>paikka, jossa autosi ulkonäkö ja toimivuus nostetaan uudelle tasolle</strong>.</p>
-        <p id="about-cta">Tule käymään tai ota yhteyttä – autamme mielellämme kaikissa automaalaukseen ja -korjaukseen liittyvissä kysymyksissäsi!</p>
-    </section>
-    <section id="services">
-        <div class="service-column">
-            <h2 id="services-title">Palvelumme</h2>
-            <ul>
-                <li id="service-1">Korikorjaukset</li>
-                <li id="service-2">Kolarikorjaukset</li>
-                <li id="service-3">Automaalaamo</li>
-                <li id="service-4">Tuulilasinvaihdot</li>
-                <li id="service-5">Ruostekorjaukset</li>
-                <li id="service-6">Vahingotarkastukset</li>
-            </ul>
-        </div>
-        <div class="service-column">
-            <h2 id="maintenance-title">Huollot</h2>
-            <ul>
-                <li id="maintenance-1">Katsastuspalvelu</li>
-                <li id="maintenance-2">Vikakoodien Luku</li>
-                <li id="maintenance-3">Ilmastointihuollot</li>
-                <li id="maintenance-4">Nelipyöräsuuntaukset</li>
-                <li id="maintenance-5">Rengasmyynti ja -työt</li>
-                <li id="maintenance-6">Automaattivaihteiston Huuhtelu</li>
-            </ul>
-        </div>
-    </section>
-    <section id="contact">
-        <h2 id="contact-title">Ota yhteyttä</h2>
-        <p id="contact-phone">Puhelin: <a href="tel:+358449722221">044 972 2221</a> & <a href="tel:+358449742055">044 974 2055</a></p>
-        <p id="contact-email">Sähköposti: <a href="mailto:info@hemix.fi">info@hemix.fi</a></p>
-        <p id="contact-address">Osoite: Rattitie 15, 00770 Helsinki</p>
-    </section>
-    <section id="location">
-        <div class="map-container">
-            <iframe loading="lazy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1980.987167754614!2d25.046424916179897!3d60.24597598198178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x469209e8e2f2c2ab%3A0x6e8f8e8e8e8e8e8e!2sRattitie%2015%2C%2000770%20Helsinki%2C%20Finland!5e0!3m2!1sen!2sus!4v1698765432109!5m2!1sen!2sus" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-        <div class="text-container">
-            <h2 id="location-title">Sijaintimme</h2>
-            <p id="location-text">Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.</p>
-        </div>
-    </section>
-    <footer>
-        <p id="footer-text">Aukioloajat: Ma-Pe 08.00-16.30</p>
-    </footer>
-    <script>
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            preloader.classList.add('hidden');
-            setTimeout(() => preloader.style.display = 'none', 500);
-        });
-        let lastScroll = 0;
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            const scrollToBottom = document.getElementById('scroll-to-bottom');
-            const backToTop = document.getElementById('back-to-top');
-            const currentScroll = window.scrollY;
-            const documentHeight = document.documentElement.scrollHeight;
-            const windowHeight = window.innerHeight;
-            if (currentScroll > lastScroll && currentScroll > 100) {
-                header.classList.remove('visible');
-            } else if (currentScroll < lastScroll) {
-                header.classList.add('visible');
-            }
-            if (window.innerWidth <= 600) {
-                if (currentScroll < 200) {
-                    scrollToBottom.classList.add('visible');
-                    backToTop.classList.remove('visible');
-                } else if (currentScroll > 300 && currentScroll < documentHeight - windowHeight - 100) {
-                    scrollToBottom.classList.remove('visible');
-                    backToTop.classList.add('visible');
-                } else {
-                    scrollToBottom.classList.remove('visible');
-                    backToTop.classList.remove('visible');
-                }
-            }
-            lastScroll = currentScroll;
-        });
-        document.getElementById('scroll-to-bottom').addEventListener('click', () => {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        });
-        document.getElementById('back-to-top').addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        const sections = document.querySelectorAll('section');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-        sections.forEach(section => observer.observe(section));
-        const translations = {
-            fi: {
-                "header-title": "Hemix Automaalaamo ja Autokorjaamo",
-                "header-subtitle": "Nopeaa ja luotettavaa autohuoltoa",
-                "about-title": "Meistä",
-                "about-p1": "Hemix on <strong>luotettava kumppanisi</strong> kaikissa automaalaukseen ja autokorjaukseen liittyvissä tarpeissa. Yli kymmenen vuoden kokemuksella alalta tarjoamme asiakkaillemme <strong>ensiluokkaista palvelua</strong>, joka yhdistää ammattitaidon, modernit työvälineet ja henkilökohtaisen lähestymistavan. Oli kyse sitten auton korimaalauksesta, vauriokorjauksista tai mekaanisista huolloista, meillä jokainen auto saa ansaitsemansa huolenpidon, jotta se pysyy turvallisena, toimintakuntoisena ja tyylikkäänä vuodesta toiseen.",
-                "about-p2": "Tiimimme koostuu <strong>koulutetuista ja intohimoisista</strong> autoalan ammattilaisista, jotka hallitsevat sekä automaalauksen että korjaamotoiminnan uusimmat tekniikat. Käytämme työssämme ainoastaan laadukkaita maaleja, varaosia ja menetelmiä, jotta lopputulos vastaa odotuksiasi – ja usein ylittääkin ne. Olipa tarpeenasi kolhujen korjaus, täydellinen uudelleenmaalaus tai tekninen vianetsintä, voit luottaa siihen, että hoidamme työn huolellisesti ja tehokkaasti.",
-                "about-p3": "Sijaintimme Helsingissä, Rattitie 15:ssä, mahdollistaa helpon pääsyn palveluihimme pääkaupunkiseudun asiakkaille. Hemix ei ole pelkkä korjaamo tai maalaamo, vaan <strong>paikka, jossa autosi ulkonäkö ja toimivuus nostetaan uudelle tasolle</strong>.",
-                "about-cta": "Tule käymään tai ota yhteyttä – autamme mielellämme kaikissa automaalaukseen ja -korjaukseen liittyvissä kysymyksissäsi!",
-                "services-title": "Palvelumme",
-                "service-1": "Korikorjaukset",
-                "service-2": "Kolarikorjaukset",
-                "service-3": "Automaalaamo",
-                "service-4": "Tuulilasinvaihdot",
-                "service-5": "Ruostekorjaukset",
-                "service-6": "Vahingotarkastukset",
-                "maintenance-title": "Huollot",
-                "maintenance-1": "Katsastuspalvelu",
-                "maintenance-2": "Vikakoodien Luku",
-                "maintenance-3": "Ilmastointihuollot",
-                "maintenance-4": "Nelipyöräsuuntaukset",
-                "maintenance-5": "Rengasmyynti ja -työt",
-                "maintenance-6": "Automaattivaihteiston Huuhtelu",
-                "contact-title": "Ota yhteyttä",
-                "contact-phone": "Puhelin: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
-                "contact-email": "Sähköposti: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
-                "contact-address": "Osoite: Rattitie 15, 00770 Helsinki",
-                "location-title": "Sijaintimme",
-                "location-text": "Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.",
-                "footer-text": "Aukioloajat: Ma-Pe 08.00-16.30"
-            },
-            en: {
-                "header-title": "Hemix Car Painting and Auto Repair",
-                "header-subtitle": "Fast and Reliable Car Services",
-                "about-title": "About Us",
-                "about-p1": "Hemix is your <strong>trusted partner</strong> for all car painting and auto repair needs. With over ten years of industry experience, we provide <strong>top-notch service</strong> that combines expertise, modern tools, and a personal approach. Whether it’s body painting, damage repairs, or mechanical maintenance, every vehicle receives the care it deserves to stay safe, functional, and stylish year after year.",
-                "about-p2": "Our team consists of <strong>trained and passionate</strong> automotive professionals who master the latest techniques in car painting and repair. We use only high-quality paints, parts, and methods to ensure results that meet—and often exceed—your expectations. From dent fixes to full repaints or technical diagnostics, you can trust us to handle the job with care and efficiency.",
-                "about-p3": "Located in Helsinki at Rattitie 15, we offer easy access to our services for customers across the capital region. Hemix isn’t just a repair shop or paint studio—it’s a <strong>place where your car’s appearance and performance are elevated to the next level</strong>.",
-                "about-cta": "Visit us or get in touch – we’re happy to assist with all your car painting and repair questions!",
-                "services-title": "Our Services",
-                "service-1": "Body Repairs",
-                "service-2": "Collision Repairs",
-                "service-3": "Car Painting",
-                "service-4": "Windshield Replacement",
-                "service-5": "Rust Repairs",
-                "service-6": "Damage Inspections",
-                "maintenance-title": "Maintenance",
-                "maintenance-1": "Inspection Service",
-                "maintenance-2": "Error Code Reading",
-                "maintenance-3": "AC Maintenance",
-                "maintenance-4": "Wheel Alignment",
-                "maintenance-5": "Tire Sales and Services",
-                "maintenance-6": "Automatic Transmission Flush",
-                "contact-title": "Contact Us",
-                "contact-phone": "Phone: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
-                "contact-email": "Email: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
-                "contact-address": "Address: Rattitie 15, 00770 Helsinki",
-                "location-title": "Our Location",
-                "location-text": "Hemix is conveniently located in Helsinki at Rattitie 15, 00770 Helsinki. Easily accessible by car or public transport, we serve customers throughout the capital region. Visit our modern facility and friendly staff, ready to assist with all your car service needs.",
-                "footer-text": "Opening Hours: Mon-Fri 08:00-16:30"
-            },
-            ru: {
-                "header-title": "Hemix: Покраска и Ремонт Автомобилей",
-                "header-subtitle": "Быстрое и Надежное Обслуживание Автомобилей",
-                "about-title": "О Нас",
-                "about-p1": "Hemix — ваш <strong>надежный партнер</strong> во всем, что касается покраски и ремонта автомобилей. С более чем десятилетним опытом в отрасли мы предоставляем <strong>первоклассные услуги</strong>, сочетая профессионализм, современное оборудование и индивидуальный подход. Будь то покраска кузова, ремонт повреждений или механическое обслуживание, каждый автомобиль получает должный уход, чтобы оставаться безопасным, функциональным и стильным из года в год.",
-                "about-p2": "Наша команда состоит из <strong>обученных и увлеченных</strong> специалистов автодела, владеющих новейшими техниками покраски и ремонта. Мы используем только качественные краски, запчасти и методы, чтобы результат соответствовал вашим ожиданиям — и часто превосходил их. От устранения вмятин до полной перекраски или диагностики неисправностей — вы можете быть уверены, что мы выполним работу тщательно и эффективно.",
-                "about-p3": "Мы находимся в Хельсинки по адресу Раттитие 15, что обеспечивает легкий доступ к нашим услугам для клиентов столичного региона. Hemix — это не просто мастерская или покрасочная студия, это <strong>место, где внешний вид и работоспособность вашего автомобиля поднимаются на новый уровень</strong>.",
-                "about-cta": "Заходите или свяжитесь с нами — мы с радостью поможем с любыми вопросами по покраске и ремонту автомобилей!",
-                "services-title": "Наши Услуги",
-                "service-1": "Ремонт кузова",
-                "service-2": "Ремонт после аварий",
-                "service-3": "Покраска автомобилей",
-                "service-4": "Замена лобового стекла",
-                "service-5": "Ремонт ржавчины",
-                "service-6": "Осмотр повреждений",
-                "maintenance-title": "Обслуживание",
-                "maintenance-1": "Услуги техосмотра",
-                "maintenance-2": "Чтение кодов ошибок",
-                "maintenance-3": "Обслуживание кондиционеров",
-                "maintenance-4": "Развал-схождение",
-                "maintenance-5": "Продажа и работа с шинами",
-                "maintenance-6": "Промывка автоматической коробки передач",
-                "contact-title": "Связаться с Нами",
-                "contact-phone": "Телефон: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
-                "contact-email": "Эл. почта: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
-                "contact-address": "Адрес: Раттитие 15, 00770 Хельсинки",
-                "location-title": "Наше Местоположение",
-                "location-text": "Hemix удобно расположен в Хельсинки по адресу Раттитие 15, 00770 Хельсинки. До нас легко добраться на машине или общественном транспорте, и мы обслуживаем клиентов по всему столичному региону. Посетите наш современный центр и дружелюбный персонал, готовый помочь со всеми вашими потребностями в обслуживании автомобиля.",
-                "footer-text": "Часы работы: Пн-Пт 08:00-16:30"
-            },
-            ar: {
-                "header-title": "هيميكس: طلاء السيارات وإصلاحها",
-                "header-subtitle": "خدمات سيارات سريعة وموثوقة",
-                "about-title": "معلومات عنا",
-                "about-p1": "هيميكس هو <strong>شريكك الموثوق</strong> لجميع احتياجات طلاء السيارات وإصلاحها. مع أكثر من عشر سنوات من الخبرة في هذا المجال، نحن نقدم <strong>خدمات متميزة</strong> تجمع بين المهارة، الأدوات الحديثة، والنهج الشخصي. سواء كان الأمر يتعلق بطلاء الهيكل، إصلاح الأضرار، أو الصيانة الميكانيكية، كل سيارة تحصل على الرعاية التي تستحقها لتبقى آمنة، عملية، وأنيقة عامًا بعد عام.",
-                "about-p2": "يتكون فريقنا من <strong>محترفين مدربين ومتحمسين</strong> في مجال السيارات، يتقنون أحدث تقنيات الطلاء والإصلاح. نحن نستخدم فقط الدهانات والقطع والطرق عالية الجودة لضمان نتائج تلبي توقعاتك – وغالبًا ما تتجاوزها. سواء كنت بحاجة إلى إصلاح الخدوش، إعادة طلاء كاملة، أو تشخيص تقني، يمكنك الاعتماد علينا لأداء العمل بعناية وكفاءة.",
-                "about-p3": "يقع موقعنا في هلسنكي في راتيتي 15، مما يتيح الوصول السهل إلى خدماتنا لعملاء منطقة العاصمة. هيميكس ليس مجرد ورشة إصلاح أو استوديو طلاء، بل <strong>مكان يرتقي بمظهر سيارتك وأدائها إلى مستوى جديد</strong>.",
-                "about-cta": "تفضل بزيارتنا أو تواصل معنا – نحن سعداء بمساعدتك في جميع استفساراتك المتعلقة بطلاء السيارات وإصلاحها!",
-                "services-title": "خدماتنا",
-                "service-1": "إصلاح الهيكل",
-                "service-2": "إصلاح التصادم",
-                "service-3": "طلاء السيارات",
-                "service-4": "استبدال الزجاج الأمامي",
-                "service-5": "إصلاح الصدأ",
-                "service-6": "فحص الأضرار",
-                "maintenance-title": "الصيانة",
-                "maintenance-1": "خدمة الفحص",
-                "maintenance-2": "قراءة رموز الأخطاء",
-                "maintenance-3": "صيانة المكيفات",
-                "maintenance-4": "موازنة العجلات",
-                "maintenance-5": "بيع وخدمات الإطارات",
-                "maintenance-6": "تنظيف ناقل الحركة الأوتوماتيكي",
-                "contact-title": "تواصل معنا",
-                "contact-phone": "هاتف: <a href=\"tel:+358449722221\">044 972 2221</a> و <a href=\"tel:+358449742055\">044 974 2055</a>",
-                "contact-email": "البريد الإلكتروني: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
-                "contact-address": "العنوان: راتيتي 15، 00770 هلسنكي",
-                "location-title": "موقعنا",
-                "location-text": "يقع هيميكس بسهولة في هلسنكي في راتيتي 15، 00770 هلسنكي. يمكن الوصول إلينا بسهولة بالسيارة أو وسائل النقل العام، ونخدم عملاء منطقة العاصمة على نطاق واسع. تفضل بزيارة منشآتنا الحديثة وطاقمنا الودود، الجاهز لمساعدتك في جميع احتياجات صيانة سيارتك.",
-                "footer-text": "ساعات العمل: الإثنين-الجمعة 08:00-16:30"
-            }
-        };
-        document.querySelectorAll('.flag-container').forEach(container => {
-            container.addEventListener('click', function() {
-                const lang = this.getAttribute('data-lang');
-                document.body.classList.remove('rtl');
-                if (lang === 'ar') {
-                    document.body.classList.add('rtl');
-                }
-                for (const [key, value] of Object.entries(translations[lang])) {
-                    const element = document.getElementById(key);
-                    if (element) {
-                        element.innerHTML = value;
-                    }
-                }
-            });
-        });
-    </script>
+ <div id="preloader" aria-hidden="true">
+ <div class="loader"></div>
+ </div>
+ <div id="scroll-to-bottom" title="Scroll to Bottom" aria-label="Scroll to bottom of page">↓</div>
+ <div id="back-to-top" title="Back to Top" aria-label="Scroll to top of page">↑</div>
+ <header>
+ <h1 id="header-title">Hemix Oy</h1>
+ <div class="subtitle" id="header-subtitle">Automaalaamo ja Autokorjaamo</div>
+ </header>
+ <nav class="language-switcher" aria-label="Language selection">
+ <div class="flag-container" data-lang="fi" role="button" tabindex="0" aria-label="Switch to Finnish">
+ <img src="https://flagcdn.com/w40/fi.png" alt="Finnish Flag" class="flag" loading="lazy">
+ <span class="language-text">Suomi</span>
+ </div>
+ <div class="flag-container" data-lang="en" role="button" tabindex="0" aria-label="Switch to English">
+ <img src="https://flagcdn.com/w40/gb.png" alt="UK Flag" class="flag" loading="lazy">
+ <span class="language-text">English</span>
+ </div>
+ <div class="flag-container" data-lang="ru" role="button" tabindex="0" aria-label="Switch to Russian">
+ <img src="https://flagcdn.com/w40/ru.png" alt="Russian Flag" class="flag" loading="lazy">
+ <span class="language-text">Русский</span>
+ </div>
+ <div class="flag-container" data-lang="ar" role="button" tabindex="0" aria-label="Switch to Arabic">
+ <img src="https://flagcdn.com/w40/sa.png" alt="Saudi Flag" class="flag" loading="lazy">
+ <span class="language-text">العربية</span>
+ </div>
+ </nav>
+ <section id="about">
+ <h2 id="about-title">Meistä</h2>
+ <div class="about-content">
+ <div class="about-text">
+ <p id="about-p1">Hemix on <strong>luotettava kumppanisi</strong> automaalauksessa ja autokorjauksessa. Yli 10 vuoden kokemuksella tarjoamme <strong>ensiluokkaista palvelua</strong>, yhdistämällä ammattitaidon ja modernit menetelmät.</p>
+ <p id="about-p2" class="about-highlight">Tiimimme koostuu <strong>koulutetuista ammattilaisista</strong>, jotka takaavat laadukkaan lopputuloksen – olipa kyse kolhuista, maalauksesta tai huolloista.</p>
+ <p id="about-p3">Sijaitsemme Helsingissä, Rattitie 15:ssä, ja nostamme autosi ulkonäön ja toimivuuden uudelle tasolle.</p>
+ </div>
+ <div class="about-image">
+ <img src="https://i.imgur.com/Vr0AZYi.png" alt="Hemix team working on a car" loading="lazy" onerror="this.src='/fallback-image.jpg'" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+ </div>
+ </div>
+ <div class="about-cta">
+ <a href="#contact" id="about-cta" class="cta-button">Ota yhteyttä nyt!</a>
+ </div>
+ </section>
+ <section id="services">
+ <div class="service-column">
+ <h2 id="services-title">Palvelumme</h2>
+ <ul aria-label="List of repair services">
+ <li id="service-1">Korikorjaukset</li>
+ <li id="service-2">Kolarikorjaukset</li>
+ <li id="service-3">Automaalaamo</li>
+ <li id="service-4">Tuulilasinvaihdot</li>
+ <li id="service-5">Ruostekorjaukset</li>
+ <li id="service-6">Vahingotarkastukset</li>
+ </ul>
+ </div>
+ <div class="service-column">
+ <h2 id="maintenance-title">Huollot</h2>
+ <ul aria-label="List of maintenance services">
+ <li id="maintenance-1">Katsastuspalvelu</li>
+ <li id="maintenance-2">Vikakoodien Luku</li>
+ <li id="maintenance-3">Ilmastointihuollot</li>
+ <li id="maintenance-4">Nelipyöräsuuntaukset</li>
+ <li id="maintenance-5">Rengasmyynti ja -työt</li>
+ <li id="maintenance-6">Automaattivaihteiston Huuhtelu</li>
+ </ul>
+ </div>
+ </section>
+ <section id="contact">
+ <h2 id="contact-title">Ota yhteyttä</h2>
+ <p id="contact-phone">Puhelin: <a href="tel:+358449722221">044 972 2221</a> & <a href="tel:+358449742055">044 974 2055</a></p>
+ <p id="contact-email">Sähköposti: <a href="mailto:info@hemix.fi">info@hemix.fi</a></p>
+ <p id="contact-address">Osoite: Rattitie 15, 00770 Helsinki</p>
+ </section>
+ <section id="location">
+ <div class="map-container">
+ <iframe loading="lazy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1980.987167754614!2d25.046424916179897!3d60.24597598198178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x469209e8e2f2c2ab%3A0x6e8f8e8e8e8e8e8e!2sRattitie%2015%2C%2000770%20Helsinki%2C%20Finland!5e0!3m2!1sen!2sus!4v1698765432109!5m2!1sen!2sus" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Map of Hemix location at Rattitie 15, Helsinki"></iframe>
+ </div>
+ <div class="text-container">
+ <h2 id="location-title">Sijaintimme</h2>
+ <p id="location-text">Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 007 70 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä.</p>
+ </div>
+ </section>
+ <footer>
+ <p id="footer-text">Aukioloajat: Ma-Pe 08.00-16.30</p>
+ </footer>
+ <noscript>
+ <p style="text-align: center; padding: 1rem; background: #FF5733; color: #fff;">Tämä sivu vaatii JavaScriptin toimiakseen täysin. Ota JavaScript käyttöön selaimessasi.</p>
+ </noscript>
+ <script>
+ // Preloader (your pasted part, unchanged)
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    preloader.classList.add('hidden');
+    setTimeout(() => preloader.remove(), 500);
+    updatePositions(); // Set initial positions after load
+});
+
+// Dynamic Positioning (the part to modify)
+const header = document.querySelector('header');
+const languageSwitcher = document.querySelector('.language-switcher');
+const body = document.body;
+
+function updatePositions() {
+    const headerHeight = header.offsetHeight;
+    const languageHeight = languageSwitcher.offsetHeight;
+    const isHeaderHidden = header.classList.contains('hidden');
+
+    // Set language switcher position below header with 20px gap
+    languageSwitcher.style.top = isHeaderHidden ? '0px' : `${headerHeight + 20}px`;
+
+    // Set body padding to push content below both elements with 20px gap
+    body.style.paddingTop = isHeaderHidden ? `${languageHeight}px` : `${headerHeight + languageHeight + 20}px`;
+}
+
+ // Scroll Behavior
+ let lastScroll = 0;
+ window.addEventListener('scroll', () => {
+ const currentScroll = window.scrollY;
+ const documentHeight = document.documentElement.scrollHeight;
+ const windowHeight = window.innerHeight;
+
+ header.classList.toggle('hidden', currentScroll > 100 && currentScroll > lastScroll);
+ document.getElementById('scroll-to-bottom').classList.toggle('visible', currentScroll < documentHeight - windowHeight - 200);
+ document.getElementById('back-to-top').classList.toggle('visible', currentScroll > 300);
+
+ updatePositions(); // Update positions on scroll
+ lastScroll = currentScroll;
+ });
+
+ // Resize Handler
+ window.addEventListener('resize', updatePositions);
+
+ // Scroll Buttons
+ document.getElementById('scroll-to-bottom').addEventListener('click', () => {
+ window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+ });
+ document.getElementById('back-to-top').addEventListener('click', () => {
+ window.scrollTo({ top: 0, behavior: 'smooth' });
+ });
+
+ // Section Animation
+ const sections = document.querySelectorAll('section');
+ const observer = new IntersectionObserver((entries) => {
+ entries.forEach(entry => {
+ if (entry.isIntersecting) {
+ entry.target.classList.add('visible');
+ observer.unobserve(entry.target);
+ }
+ });
+ }, { threshold: 0.1 });
+ sections.forEach(section => observer.observe(section));
+
+ // Language Switching
+ const translations = {
+ fi: {
+ "header-title": "Hemix Oy",
+ "header-subtitle": "Automaalaamo ja Autokorjaamo",
+ "about-title": "Meistä",
+ "about-p1": "Hemix on <strong>luotettava kumppanisi</strong> automaalauksessa ja autokorjauksessa. Yli 10 vuoden kokemuksella tarjoamme <strong>ensiluokkaista palvelua</strong>, yhdistämällä ammattitaidon ja modernit menetelmät.",
+ "about-p2": "Tiimimme koostuu <strong>koulutetuista ammattilaisista</strong>, jotka takaavat laadukkaan lopputuloksen – olipa kyse kolhuista, maalauksesta tai huolloista.",
+ "about-p3": "Sijaitsemme Helsingissä, Rattitie 15:ssä, ja nostamme autosi ulkonäön ja toimivuuden uudelle tasolle.",
+ "about-cta": "Ota yhteyttä nyt!",
+ "services-title": "Palvelumme",
+ "service-1": "Korikorjaukset",
+ "service-2": "Kolarikorjaukset",
+ "service-3": "Automaalaamo",
+ "service-4": "Tuulilasinvaihdot",
+ "service-5": "Ruostekorjaukset",
+ "service-6": "Vahingotarkastukset",
+ "maintenance-title": "Huollot",
+ "maintenance-1": "Katsastuspalvelu",
+ "maintenance-2": "Vikakoodien Luku",
+ "maintenance-3": "Ilmastointihuollot",
+ "maintenance-4": "Nelipyöräsuuntaukset",
+ "maintenance-5": "Rengasmyynti ja -työt",
+ "maintenance-6": "Automaattivaihteiston Huuhtelu",
+ "contact-title": "Ota yhteyttä",
+ "contact-phone": "Puhelin: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
+ "contact-email": "Sähköposti: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
+ "contact-address": "Osoite: Rattitie 15, 00770 Helsinki",
+ "location-title": "Sijaintimme",
+ "location-text": "Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä.",
+ "footer-text": "Aukioloajat: Ma-Pe 08.00-16.30"
+ },
+ en: {
+ "header-title": "Hemix Oy",
+ "header-subtitle": "Car Painting and Auto Repair",
+ "about-title": "About Us",
+ "about-p1": "Hemix is your <strong>trusted partner</strong> for all car painting and auto repair needs. With over 10 years of experience, we provide <strong>top-notch service</strong> combining expertise and modern methods.",
+ "about-p2": "Our team consists of <strong>trained professionals</strong> who ensure high-quality results – whether it’s dents, painting, or maintenance.",
+ "about-p3": "Located in Helsinki at Rattitie 15, we elevate your car’s appearance and performance to the next level.",
+ "about-cta": "Contact us now!",
+ "services-title": "Our Services",
+ "service-1": "Body Repairs",
+ "service-2": "Collision Repairs",
+ "service-3": "Car Painting",
+ "service-4": "Windshield Replacement",
+ "service-5": "Rust Repairs",
+ "service-6": "Damage Inspections",
+ "maintenance-title": "Maintenance",
+ "maintenance-1": "Inspection Service",
+ "maintenance-2": "Error Code Reading",
+ "maintenance-3": "AC Maintenance",
+ "maintenance-4": "Wheel Alignment",
+ "maintenance-5": "Tire Sales and Services",
+ "maintenance-6": "Automatic Transmission Flush",
+ "contact-title": "Contact Us",
+ "contact-phone": "Phone: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
+ "contact-email": "Email: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
+ "contact-address": "Address: Rattitie 15, 00770 Helsinki",
+ "location-title": "Our Location",
+ "location-text": "Hemix is conveniently located in Helsinki at Rattitie 15, 00770 Helsinki. Easily accessible by car or public transport.",
+ "footer-text": "Opening Hours: Mon-Fri 08:00-16:30"
+ },
+ ru: {
+ "header-title": "Hemix Oy",
+ "header-subtitle": "Покраска и Ремонт Автомобилей",
+ "about-title": "О Нас",
+ "about-p1": "Hemix — ваш <strong>надежный партнер</strong> во всем, что касается покраски и ремонта автомобилей. С более чем 10-летним опытом мы предоставляем <strong>первоклассные услуги</strong>, сочетая профессионализм и современные методы.",
+ "about-p2": "Наша команда состоит из <strong>обученных профессионалов</strong>, которые гарантируют качественный результат — будь то вмятины, покраска или обслуживание.",
+ "about-p3": "Мы находимся в Хельсинки по адресу Раттитие 15 и поднимаем внешний вид и производительность вашего автомобиля на новый уровень.",
+ "about-cta": "Свяжитесь с нами сейчас!",
+ "services-title": "Наши Услуги",
+ "service-1": "Ремонт кузова",
+ "service-2": "Ремонт после аварий",
+ "service-3": "Покраска автомобилей",
+ "service-4": "Замена лобового стекла",
+ "service-5": "Ремонт ржавчины",
+ "service-6": "Осмотр повреждений",
+ "maintenance-title": "Обслуживание",
+ "maintenance-1": "Услуги техосмотра",
+ "maintenance-2": "Чтение кодов ошибок",
+ "maintenance-3": "Обслуживание кондиционеров",
+ "maintenance-4": "Развал-схождение",
+ "maintenance-5": "Продажа и работа с шинами",
+ "maintenance-6": "Промывка автоматической коробки передач",
+ "contact-title": "Связаться с Нами",
+ "contact-phone": "Телефон: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
+ "contact-email": "Эл. почта: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
+ "contact-address": "Адрес: Раттитие 15, 00770 Хельсинки",
+ "location-title": "Наше Местоположение",
+ "location-text": "Hemix удобно расположен в Хельсинки по адресу Раттитие 15, 00770 Хельсинки. До нас легко добраться на машине или общественном транспорте.",
+ "footer-text": "Часы работы: Пн-Пт 08:00-16:30"
+ },
+ ar: {
+ "header-title": "هيميكس أوي",
+ "header-subtitle": "طلاء السيارات وإصلاحها",
+ "about-title": "معلومات عنا",
+ "about-p1": "هيميكس هو <strong>شريكك الموثوق</strong> لجميع احتياجات طلاء السيارات وإصلاحها. مع أكثر من 10 سنوات من الخبرة، نحن نقدم <strong>خدمات متميزة</strong> تجمع بين المهارة والطرق الحديثة.",
+ "about-p2": "يتكون فريقنا من <strong>محترفين مدربين</strong> يضمنون نتائج عالية الجودة – سواء كانت خدوشًا، طلاءً، أو صيانة.",
+ "about-p3": "نقع في هلسنكي في راتيتي 15، ونرفع مظهر سيارتك وأدائها إلى مستوى جديد.",
+ "about-cta": "تواصل معنا الآن!",
+ "services-title": "خدماتنا",
+ "service-1": "إصلاح الهيكل",
+ "service-2": "إصلاح التصادم",
+ "service-3": "طلاء السيارات",
+ "service-4": "استبدال الزجاج الأمامي",
+ "service-5": "إصلاح الصدأ",
+ "service-6": "فحص الأضرار",
+ "maintenance-title": "الصيانة",
+ "maintenance-1": "خدمة الفحص",
+ "maintenance-2": "قراءة رموز الأخطاء",
+ "maintenance-3": "صيانة المكيفات",
+ "maintenance-4": "موازنة العجلات",
+ "maintenance-5": "بيع وخدمات الإطارات",
+ "maintenance-6": "تنظيف ناقل الحركة الأوتوماتيكي",
+ "contact-title": "تواصل معنا",
+ "contact-phone": "هاتف: <a href=\"tel:+358449722221\">044 972 2221</a> و <a href=\"tel:+358449742055\">044 974 2055</a>",
+ "contact-email": "البريد الإلكتروني: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
+ "contact-address": "العنوان: رات يتي 15، 00770 هلسنكي",
+ "location-title": "موقعنا",
+ "location-text": "يقع هيميكس بسهولة في هلسنكي في راتيتي 15، 00770 هلسنكي. يمكن الوصول إلينا بسهولة بالسيارة أو وسائل النقل العام.",
+ "footer-text": "ساعات العمل: الإثنين-الجمعة 08:00-16:30"
+ }
+ };
+
+ document.querySelectorAll('.flag-container').forEach(container => {
+ container.addEventListener('click', function() {
+ const lang = this.getAttribute('data-lang');
+ document.body.classList.toggle('rtl', lang === 'ar');
+ document.documentElement.lang = lang;
+ for (const [key, value] of Object.entries(translations[lang])) {
+ const element = document.getElementById(key);
+ if (element) element.innerHTML = value;
+ }
+ updatePositions(); // Update positions after language change
+ });
+ container.addEventListener('keydown', (e) => {
+ if (e.key === 'Enter' || e.key === ' ') {
+ container.click();
+ }
+ });
+ });
+ </script>
 </body>
 </html>
