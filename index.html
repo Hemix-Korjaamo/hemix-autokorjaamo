@@ -19,7 +19,6 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            opacity: 1;
             transition: opacity 0.5s ease;
         }
         #preloader.hidden {
@@ -46,17 +45,13 @@
             padding: 0;
             line-height: 1.6;
             scroll-behavior: smooth;
-            background-image: url('background.jpg'), linear-gradient(135deg, #f5f5f5, #e0e0e0); /* Fallback gradient */
+            background-image: url('background.jpg'), linear-gradient(135deg, #f5f5f5, #e0e0e0);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
             overflow-x: hidden;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        body.loaded {
-            opacity: 1;
+            min-height: 100vh; /* Ensure content stretches */
         }
 
         /* Header */
@@ -69,12 +64,12 @@
             border-bottom-right-radius: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             position: sticky;
-            top: -100px; /* Start hidden */
+            top: -100px;
             z-index: 1000;
             transition: top 0.3s ease;
         }
         header.visible {
-            top: 0; /* Slide in when scrolling up */
+            top: 0;
         }
         header h1 {
             margin: 0;
@@ -211,7 +206,7 @@
         #services li:hover {
             transform: scale(1.03);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            color: #3498db; /* Secondary accent */
+            color: #3498db;
         }
 
         /* Contact Section */
@@ -285,12 +280,38 @@
             font-size: 1rem;
         }
 
+        /* Scroll-to-Bottom Button */
+        #scroll-to-bottom {
+            position: fixed;
+            bottom: 5rem;
+            left: 1rem;
+            background: linear-gradient(135deg, #FCBF28, #FFA500);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1001;
+        }
+        #scroll-to-bottom.visible {
+            opacity: 0.8;
+        }
+        #scroll-to-bottom:hover {
+            opacity: 1;
+        }
+
         /* Back-to-Top Button */
         #back-to-top {
             position: fixed;
             bottom: 5rem;
             right: 1rem;
-            background: #3498db;
+            background: linear-gradient(135deg, #FCBF28, #FFA500);
             color: white;
             width: 40px;
             height: 40px;
@@ -309,42 +330,6 @@
         }
         #back-to-top:hover {
             opacity: 1;
-        }
-
-        /* Scroll Down Indicator */
-        .scroll-down {
-            position: fixed;
-            bottom: 4rem;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            color: #fff;
-            font-size: 1rem;
-            font-weight: 500;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            z-index: 1001;
-            display: none;
-            animation: breathe 2s infinite ease-in-out;
-        }
-        .scroll-down span {
-            display: block;
-        }
-        .scroll-down .arrow {
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 8px solid #fff;
-            margin: 0.5rem auto 0;
-        }
-
-        /* Breathing Animation */
-        @keyframes breathe {
-            0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-            50% { transform: translateX(-50%) scale(1.05); opacity: 1; }
-            100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
         }
 
         /* Responsive Design */
@@ -380,10 +365,9 @@
             footer {
                 padding: 0.75rem;
             }
-            .scroll-down {
-                display: block;
-                bottom: 3.5rem;
-                padding: 0.5rem 1rem;
+            #scroll-to-bottom {
+                bottom: 4rem;
+                left: 0.75rem;
             }
             #back-to-top {
                 bottom: 4rem;
@@ -398,11 +382,8 @@
         <div class="loader"></div>
     </div>
 
-    <!-- Scroll Down Indicator -->
-    <div class="scroll-down">
-        <span id="scroll-down">Selaa alas</span>
-        <div class="arrow"></div>
-    </div>
+    <!-- Scroll-to-Bottom Button -->
+    <div id="scroll-to-bottom" title="Scroll to Bottom">↓</div>
 
     <!-- Back-to-Top Button -->
     <div id="back-to-top" title="Back to Top">↑</div>
@@ -495,21 +476,43 @@
     <script>
         // Preloader
         window.addEventListener('load', () => {
-            document.getElementById('preloader').classList.add('hidden');
-            document.body.classList.add('loaded');
+            const preloader = document.getElementById('preloader');
+            preloader.classList.add('hidden');
+            setTimeout(() => preloader.style.display = 'none', 500); // Ensure it’s gone after fade
         });
 
-        // Sticky Header
+        // Sticky Header and Navigation Buttons
         let lastScroll = 0;
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
+            const scrollToBottom = document.getElementById('scroll-to-bottom');
+            const backToTop = document.getElementById('back-to-top');
             const currentScroll = window.scrollY;
+            const documentHeight = document.documentElement.scrollHeight;
+            const windowHeight = window.innerHeight;
+
+            // Header logic
             if (currentScroll > lastScroll && currentScroll > 100) {
                 header.classList.remove('visible');
             } else if (currentScroll < lastScroll) {
                 header.classList.add('visible');
             }
+
+            // Navigation buttons visibility
+            scrollToBottom.classList.toggle('visible', currentScroll < documentHeight - windowHeight - 100);
+            backToTop.classList.toggle('visible', currentScroll > 300);
+
             lastScroll = currentScroll;
+        });
+
+        // Scroll-to-Bottom Button
+        document.getElementById('scroll-to-bottom').addEventListener('click', () => {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        });
+
+        // Back-to-Top Button
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
         // Section Fade-In
@@ -552,8 +555,7 @@
                 "contact-address": "Osoite: Rattitie 15, 00770 Helsinki",
                 "location-title": "Sijaintimme",
                 "location-text": "Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.",
-                "footer-text": "Aukioloajat: Ma-Pe 08.00-16.30",
-                "scroll-down": "Selaa alas"
+                "footer-text": "Aukioloajat: Ma-Pe 08.00-16.30"
             },
             en: {
                 "header-title": "Hemix Car Painting and Auto Repair",
@@ -582,8 +584,7 @@
                 "contact-address": "Address: Rattitie 15, 00770 Helsinki",
                 "location-title": "Our Location",
                 "location-text": "Hemix is conveniently located in Helsinki at Rattitie 15, 00770 Helsinki. Easily accessible by car or public transport, we serve customers throughout the capital region. Visit our modern facility and friendly staff, ready to assist with all your car service needs.",
-                "footer-text": "Opening Hours: Mon-Fri 08:00-16:30",
-                "scroll-down": "Scroll Down"
+                "footer-text": "Opening Hours: Mon-Fri 08:00-16:30"
             },
             ru: {
                 "header-title": "Hemix: Покраска и Ремонт Автомобилей",
@@ -612,8 +613,7 @@
                 "contact-address": "Адрес: Раттитие 15, 00770 Хельсинки",
                 "location-title": "Наше Местоположение",
                 "location-text": "Hemix удобно расположен в Хельсинки по адресу Раттитие 15, 00770 Хельсинки. До нас легко добраться на машине или общественном транспорте, и мы обслуживаем клиентов по всему столичному региону. Посетите наш современный центр и дружелюбный персонал, готовый помочь со всеми вашими потребностями в обслуживании автомобиля.",
-                "footer-text": "Часы работы: Пн-Пт 08:00-16:30",
-                "scroll-down": "Прокрутить вниз"
+                "footer-text": "Часы работы: Пн-Пт 08:00-16:30"
             },
             ar: {
                 "header-title": "هيميكس: طلاء السيارات وإصلاحها",
@@ -642,8 +642,7 @@
                 "contact-address": "العنوان: راتيتي 15، 00770 هلسنكي",
                 "location-title": "موقعنا",
                 "location-text": "يقع هيميكس بسهولة في هلسنكي في راتيتي 15، 00770 هلسنكي. يمكن الوصول إلينا بسهولة بالسيارة أو وسائل النقل العام، ونخدم عملاء منطقة العاصمة على نطاق واسع. تفضل بزيارة منشآتنا الحديثة وطاقمنا الودود، الجاهز لمساعدتك في جميع احتياجات صيانة سيارتك.",
-                "footer-text": "ساعات العمل: الإثنين-الجمعة 08:00-16:30",
-                "scroll-down": "تمرير للأسفل"
+                "footer-text": "ساعات العمل: الإثنين-الجمعة 08:00-16:30"
             }
         };
 
@@ -657,28 +656,10 @@
                 for (const [key, value] of Object.entries(translations[lang])) {
                     const element = document.getElementById(key);
                     if (element) {
-                        element.innerHTML = value; // Use innerHTML for links
+                        element.innerHTML = value;
                     }
                 }
             });
-        });
-
-        // Scroll-Down Indicator
-        window.addEventListener('scroll', () => {
-            const scrollDown = document.querySelector('.scroll-down');
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            const scrollPosition = window.scrollY + windowHeight;
-            scrollDown.style.display = (scrollPosition >= documentHeight - 100) ? 'none' : 'block';
-        });
-
-        // Back-to-Top Button
-        const backToTop = document.getElementById('back-to-top');
-        window.addEventListener('scroll', () => {
-            backToTop.classList.toggle('visible', window.scrollY > 300);
-        });
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
