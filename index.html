@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hemix Automaalaamo ja Autokorjaamo</title>
-    <!-- Google Fonts: Roboto + Open Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* Preloader */
         #preloader {
             position: fixed;
             top: 0;
@@ -37,24 +35,20 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* General Styles */
         body {
             font-family: 'Open Sans', Arial, sans-serif;
             margin: 0;
             padding: 0;
             line-height: 1.6;
             scroll-behavior: smooth;
-            background: url('background1.jpg'), linear-gradient(135deg, #f5f5f5cc, #e0e0e0cc); /* Single static background */
-            background-size: cover; /* Back to original */
+            background: url('background1.jpg'), linear-gradient(135deg, #f5f5f5cc, #e0e0e0cc);
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
             overflow-x: hidden;
             min-height: 100vh;
         }
-
-        /* Header */
         header {
             background: linear-gradient(135deg, #FCBF28 0%, #FFA500 100%);
             color: black;
@@ -84,8 +78,6 @@
             font-weight: 400;
             opacity: 0.9;
         }
-
-        /* Language Switcher */
         .language-switcher {
             display: flex;
             gap: 1rem;
@@ -129,8 +121,6 @@
             background-color: #FF5733;
             color: white;
         }
-
-        /* RTL Support */
         body.rtl {
             direction: rtl;
             text-align: right;
@@ -140,8 +130,6 @@
         body.rtl .text-container {
             direction: ltr;
         }
-
-        /* Sections */
         section {
             padding: 2rem 1rem;
             max-width: 1200px;
@@ -158,21 +146,20 @@
             opacity: 1;
             transform: translateY(0);
         }
-
-        /* About Section */
         #about {
-            text-align: center; /* Center all content */
+            text-align: left;
         }
         #about h2 {
             font-family: 'Roboto', sans-serif;
             font-size: 1.8rem;
             color: #333;
             margin-bottom: 1rem;
+            text-align: center;
         }
         #about p {
             font-size: 1.1rem;
             color: #555;
-            margin: 1rem auto; /* Centered */
+            margin: 1rem auto;
             font-weight: 300;
             line-height: 1.8;
             letter-spacing: 0.5px;
@@ -180,21 +167,20 @@
             max-width: 800px;
         }
         #about p strong {
-            font-weight: 600; /* Bold for <strong> */
+            font-weight: 600;
             color: #333;
         }
         #about-cta {
-            font-size: 1.5rem; /* Larger */
-            font-weight: 600; /* Bold, tweak to 700 if needed */
+            font-size: 1.5rem;
+            font-weight: 600;
             color: #333;
-            margin: 2rem auto; /* Centered */
+            margin: 2rem auto;
             display: block;
             max-width: 800px;
             line-height: 1.4;
             letter-spacing: 1px;
+            text-align: center;
         }
-
-        /* Services Section */
         #services {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -223,14 +209,13 @@
             font-weight: 500;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
+            color: #333; /* Default text color */
         }
         #services li:hover {
             transform: scale(1.03);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            color: #3498db;
+            color: #FF5733; /* Text color changes to orange on hover */
         }
-
-        /* Contact Section */
         #contact h2 {
             font-family: 'Roboto', sans-serif;
             font-size: 1.8rem;
@@ -253,8 +238,6 @@
         #contact a:hover {
             color: #FF5733;
         }
-
-        /* Location Section */
         #location {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -279,8 +262,6 @@
             color: #555;
             font-weight: 300;
         }
-
-        /* Footer */
         footer {
             background: linear-gradient(135deg, #FCBF28 0%, #FFA500 100%);
             color: black;
@@ -300,8 +281,6 @@
             margin: 0;
             font-size: 1rem;
         }
-
-        /* Scroll-to-Bottom Button */
         #scroll-to-bottom {
             display: none;
             position: fixed;
@@ -327,8 +306,6 @@
         #scroll-to-bottom:hover {
             opacity: 1;
         }
-
-        /* Back-to-Top Button */
         #back-to-top {
             display: none;
             position: fixed;
@@ -354,77 +331,33 @@
         #back-to-top:hover {
             opacity: 1;
         }
-
-        /* Responsive Design */
         @media (max-width: 600px) {
-            header {
-                padding: 1rem 0.75rem;
-            }
-            .language-switcher {
-                gap: 0.5rem;
-                padding: 0.5rem 0;
-                border-radius: 10px;
-            }
-            .flag {
-                width: 1.75rem;
-                height: 1.25rem;
-            }
-            .language-text {
-                display: none;
-            }
-            section {
-                margin: 1rem auto;
-                padding: 1.5rem 0.75rem;
-            }
-            #about h2, #services h2, #contact h2, #location h2 {
-                font-size: 1.5rem;
-            }
-            #about p {
-                font-size: 1rem;
-            }
-            #about-cta {
-                font-size: 1.3rem; /* Adjusted for mobile */
-                max-width: 95%;
-            }
-            #services li {
-                font-size: 1rem;
-            }
-            #location .map-container iframe {
-                height: 250px;
-            }
-            footer {
-                padding: 0.75rem;
-            }
-            #scroll-to-bottom {
-                bottom: 4rem;
-                left: 0.75rem;
-            }
-            #back-to-top {
-                bottom: 4rem;
-                right: 0.75rem;
-            }
+            header { padding: 1rem 0.75rem; }
+            .language-switcher { gap: 0.5rem; padding: 0.5rem 0; border-radius: 10px; }
+            .flag { width: 1.75rem; height: 1.25rem; }
+            .language-text { display: none; }
+            section { margin: 1rem auto; padding: 1.5rem 0.75rem; }
+            #about h2, #services h2, #contact h2, #location h2 { font-size: 1.5rem; }
+            #about p { font-size: 1rem; }
+            #about-cta { font-size: 1.3rem; max-width: 95%; }
+            #services li { font-size: 1rem; }
+            #location .map-container iframe { height: 250px; }
+            footer { padding: 0.75rem; }
+            #scroll-to-bottom { bottom: 4rem; left: 0.75rem; }
+            #back-to-top { bottom: 4rem; right: 0.75rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Preloader -->
     <div id="preloader">
         <div class="loader"></div>
     </div>
-
-    <!-- Scroll-to-Bottom Button -->
     <div id="scroll-to-bottom" title="Scroll to Bottom">↓</div>
-
-    <!-- Back-to-Top Button -->
     <div id="back-to-top" title="Back to Top">↑</div>
-
-    <!-- Header -->
     <header>
         <h1 id="header-title">Hemix Automaalaamo ja Autokorjaamo</h1>
         <p id="header-subtitle">Nopeaa ja luotettavaa autohuoltoa</p>
     </header>
-
-    <!-- Language Switcher -->
     <div class="language-switcher">
         <div class="flag-container" data-lang="fi">
             <img src="https://flagcdn.com/w40/fi.png" alt="Finnish Flag" class="flag">
@@ -443,8 +376,6 @@
             <span class="language-text">العربية</span>
         </div>
     </div>
-
-    <!-- About Section -->
     <section id="about">
         <h2 id="about-title">Meistä</h2>
         <p id="about-p1">Hemix on <strong>luotettava kumppanisi</strong> kaikissa automaalaukseen ja autokorjaukseen liittyvissä tarpeissa. Yli kymmenen vuoden kokemuksella alalta tarjoamme asiakkaillemme <strong>ensiluokkaista palvelua</strong>, joka yhdistää ammattitaidon, modernit työvälineet ja henkilökohtaisen lähestymistavan. Oli kyse sitten auton korimaalauksesta, vauriokorjauksista tai mekaanisista huolloista, meillä jokainen auto saa ansaitsemansa huolenpidon, jotta se pysyy turvallisena, toimintakuntoisena ja tyylikkäänä vuodesta toiseen.</p>
@@ -452,8 +383,6 @@
         <p id="about-p3">Sijaintimme Helsingissä, Rattitie 15:ssä, mahdollistaa helpon pääsyn palveluihimme pääkaupunkiseudun asiakkaille. Hemix ei ole pelkkä korjaamo tai maalaamo, vaan <strong>paikka, jossa autosi ulkonäkö ja toimivuus nostetaan uudelle tasolle</strong>.</p>
         <p id="about-cta">Tule käymään tai ota yhteyttä – autamme mielellämme kaikissa automaalaukseen ja -korjaukseen liittyvissä kysymyksissäsi!</p>
     </section>
-
-    <!-- Services Section -->
     <section id="services">
         <div class="service-column">
             <h2 id="services-title">Palvelumme</h2>
@@ -478,16 +407,12 @@
             </ul>
         </div>
     </section>
-
-    <!-- Contact Section -->
     <section id="contact">
         <h2 id="contact-title">Ota yhteyttä</h2>
         <p id="contact-phone">Puhelin: <a href="tel:+358449722221">044 972 2221</a> & <a href="tel:+358449742055">044 974 2055</a></p>
         <p id="contact-email">Sähköposti: <a href="mailto:info@hemix.fi">info@hemix.fi</a></p>
         <p id="contact-address">Osoite: Rattitie 15, 00770 Helsinki</p>
     </section>
-
-    <!-- Location Section -->
     <section id="location">
         <div class="map-container">
             <iframe loading="lazy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1980.987167754614!2d25.046424916179897!3d60.24597598198178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x469209e8e2f2c2ab%3A0x6e8f8e8e8e8e8e8e!2sRattitie%2015%2C%2000770%20Helsinki%2C%20Finland!5e0!3m2!1sen!2sus!4v1698765432109!5m2!1sen!2sus" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -497,22 +422,15 @@
             <p id="location-text">Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.</p>
         </div>
     </section>
-
-    <!-- Footer -->
     <footer>
         <p id="footer-text">Aukioloajat: Ma-Pe 08.00-16.30</p>
     </footer>
-
-    <!-- Scripts -->
     <script>
-        // Preloader
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
             preloader.classList.add('hidden');
             setTimeout(() => preloader.style.display = 'none', 500);
         });
-
-        // Sticky Header and Navigation Buttons
         let lastScroll = 0;
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
@@ -521,13 +439,11 @@
             const currentScroll = window.scrollY;
             const documentHeight = document.documentElement.scrollHeight;
             const windowHeight = window.innerHeight;
-
             if (currentScroll > lastScroll && currentScroll > 100) {
                 header.classList.remove('visible');
             } else if (currentScroll < lastScroll) {
                 header.classList.add('visible');
             }
-
             if (window.innerWidth <= 600) {
                 if (currentScroll < 200) {
                     scrollToBottom.classList.add('visible');
@@ -540,21 +456,14 @@
                     backToTop.classList.remove('visible');
                 }
             }
-
             lastScroll = currentScroll;
         });
-
-        // Scroll-to-Bottom Button
         document.getElementById('scroll-to-bottom').addEventListener('click', () => {
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         });
-
-        // Back-to-Top Button
         document.getElementById('back-to-top').addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
-        // Section Fade-In
         const sections = document.querySelectorAll('section');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -564,8 +473,6 @@
             });
         }, { threshold: 0.1 });
         sections.forEach(section => observer.observe(section));
-
-        // Language Switching
         const translations = {
             fi: {
                 "header-title": "Hemix Automaalaamo ja Autokorjaamo",
@@ -688,7 +595,6 @@
                 "footer-text": "ساعات العمل: الإثنين-الجمعة 08:00-16:30"
             }
         };
-
         document.querySelectorAll('.flag-container').forEach(container => {
             container.addEventListener('click', function() {
                 const lang = this.getAttribute('data-lang');
