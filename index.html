@@ -4,75 +4,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hemix Automaalaamo ja Autokorjaamo</title>
-    <!-- Google Fonts: Roboto -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Roboto + Open Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #FCBF28;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        #preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #fff;
+            border-top: 5px solid #FF5733;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* General Styles */
         body {
-            font-family: 'Roboto', Arial, sans-serif;
+            font-family: 'Open Sans', Arial, sans-serif;
             margin: 0;
             padding: 0;
             line-height: 1.6;
             scroll-behavior: smooth;
-            background-image: url('background.jpg');
+            background-image: url('background.jpg'), linear-gradient(135deg, #f5f5f5, #e0e0e0); /* Fallback gradient */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            background-color: lightgray;
+            overflow-x: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        body.loaded {
+            opacity: 1;
         }
 
         /* Header */
         header {
-            background-color: #FCBF28;
+            background: linear-gradient(135deg, #FCBF28 0%, #FFA500 100%);
             color: black;
-            padding: 20px;
+            padding: 1.5rem 1rem;
             text-align: center;
-            position: relative;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: -100px; /* Start hidden */
+            z-index: 1000;
+            transition: top 0.3s ease;
+        }
+        header.visible {
+            top: 0; /* Slide in when scrolling up */
         }
         header h1 {
             margin: 0;
-            font-size: 2.5em;
+            font-family: 'Roboto', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: 1px;
         }
         header p {
-            margin: 5px 0;
-            font-size: 1.2em;
+            margin: 0.5rem 0 0;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-weight: 400;
+            opacity: 0.9;
         }
 
-        /* Language Switcher with Flags */
+        /* Language Switcher */
         .language-switcher {
             display: flex;
-            gap: 10px;
-            justify-content: center; /* Center flags on all screens */
-            padding: 10px 0; /* Space above and below */
-            background-color: rgba(252, 191, 40, 0.9); /* Match header color */
-            z-index: 1002; /* Above other content */
+            gap: 1rem;
+            justify-content: center;
+            padding: 0.75rem 0;
+            background: rgba(252, 191, 40, 0.95);
+            border-radius: 15px;
+            margin: 0.5rem auto;
+            max-width: 90%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
         .flag-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            padding: 0.25rem;
+            transition: transform 0.3s ease;
         }
         .flag-container:hover {
-            transform: scale(1.1);
-            opacity: 0.8;
+            transform: translateY(-3px);
         }
         .flag {
-            width: 30px;
-            height: 20px;
-            border-radius: 3px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            width: 2rem;
+            height: 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
         .language-text {
-            font-size: 0.7em;
+            font-size: 0.8rem;
             color: #333;
-            margin-top: 3px;
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 2px 4px;
-            border-radius: 3px;
+            margin-top: 0.25rem;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         .flag-container:hover .language-text {
@@ -80,7 +134,7 @@
             color: white;
         }
 
-        /* RTL Support for Arabic */
+        /* RTL Support */
         body.rtl {
             direction: rtl;
             text-align: right;
@@ -88,120 +142,188 @@
         body.rtl .service-column,
         body.rtl .map-container,
         body.rtl .text-container {
-            direction: ltr; /* Keep services and map LTR for layout consistency */
+            direction: ltr;
         }
 
         /* Sections */
         section {
-            padding: 30px 15px;
+            padding: 2rem 1rem;
             max-width: 1200px;
             width: 90%;
-            margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 8px;
+            margin: 1.5rem auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* About Section */
-        #about {
-            /* No solid background */
+        #about h2 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        #about p {
+            font-size: 1rem;
+            color: #555;
+            margin: 0.75rem 0;
+            font-weight: 300;
         }
 
-        /* Services Section (Palvelumme & Huollot) */
+        /* Services Section */
         #services {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
         }
-        #services .service-column {
-            flex: 1;
-            min-width: 300px;
+        .service-column h2 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.6rem;
+            color: #333;
+            text-align: center;
+            margin-bottom: 1rem;
         }
         #services ul {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
             list-style: none;
             padding: 0;
+            display: grid;
+            gap: 0.75rem;
         }
         #services li {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 15px;
-            border-radius: 10px;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 15px;
             text-align: center;
-            font-size: 1.1em;
+            font-size: 1.1rem;
             font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s, color 0.3s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
         #services li:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            color: #FF5733;
+            transform: scale(1.03);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            color: #3498db; /* Secondary accent */
         }
 
         /* Contact Section */
-        #contact {
-            /* No solid background */
+        #contact h2 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.8rem;
+            color: #333;
+            text-align: center;
+            margin-bottom: 1rem;
         }
         #contact p {
-            font-weight: bold;
-            font-size: 1.1em;
-            margin: 10px 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #444;
+            margin: 0.75rem 0;
+            text-align: center;
+        }
+        #contact a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        #contact a:hover {
+            color: #FF5733;
         }
 
         /* Location Section */
         #location {
-            padding-bottom: 80px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding-bottom: 5rem;
         }
-        #location .map-container {
-            flex: 1;
-            min-width: 300px;
+        #location h2 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.8rem;
+            color: #333;
+            text-align: center;
+            margin-bottom: 1rem;
         }
         #location .map-container iframe {
             width: 100%;
-            height: 400px;
-            border: 0;
-            border-radius: 8px;
+            height: 350px;
+            border-radius: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
-        #location .text-container {
-            flex: 1;
-            min-width: 300px;
+        #location .text-container p {
+            font-size: 1rem;
+            color: #555;
+            font-weight: 300;
         }
 
         /* Footer */
         footer {
-            background-color: #FCBF28;
+            background: linear-gradient(135deg, #FCBF28 0%, #FFA500 100%);
             color: black;
             text-align: center;
-            padding: 10px;
+            padding: 1rem;
             position: fixed;
             bottom: 0;
             width: 100%;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
         footer p {
-            font-weight: bold;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 600;
             margin: 0;
+            font-size: 1rem;
+        }
+
+        /* Back-to-Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 5rem;
+            right: 1rem;
+            background: #3498db;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1001;
+        }
+        #back-to-top.visible {
+            opacity: 0.8;
+        }
+        #back-to-top:hover {
+            opacity: 1;
         }
 
         /* Scroll Down Indicator */
         .scroll-down {
             position: fixed;
-            bottom: 60px;
+            bottom: 4rem;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
             color: #fff;
-            font-size: 1em;
+            font-size: 1rem;
             font-weight: 500;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 10px 20px;
-            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
             z-index: 1001;
             display: none;
             animation: breathe 2s infinite ease-in-out;
@@ -215,7 +337,7 @@
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
             border-top: 8px solid #fff;
-            margin: 5px auto 0;
+            margin: 0.5rem auto 0;
         }
 
         /* Breathing Animation */
@@ -227,43 +349,64 @@
 
         /* Responsive Design */
         @media (max-width: 600px) {
-            header h1 {
-                font-size: 1.8em;
-            }
-            header p {
-                font-size: 1em;
+            header {
+                padding: 1rem 0.75rem;
             }
             .language-switcher {
-                gap: 5px; /* Tighter spacing on mobile */
-                padding: 5px 0; /* Less vertical padding */
+                gap: 0.5rem;
+                padding: 0.5rem 0;
+                border-radius: 10px;
             }
             .flag {
-                width: 25px; /* Slightly smaller flags */
-                height: 17px;
+                width: 1.75rem;
+                height: 1.25rem;
             }
             .language-text {
-                display: none; /* Hide text on mobile */
+                display: none;
             }
-            #services {
-                flex-direction: column;
+            section {
+                margin: 1rem auto;
+                padding: 1.5rem 0.75rem;
             }
-            #location iframe {
-                height: 300px;
+            #about h2, #services h2, #contact h2, #location h2 {
+                font-size: 1.5rem;
             }
-            #location {
-                padding-bottom: 60px;
+            #services li {
+                font-size: 1rem;
+            }
+            #location .map-container iframe {
+                height: 250px;
+            }
+            footer {
+                padding: 0.75rem;
             }
             .scroll-down {
                 display: block;
+                bottom: 3.5rem;
+                padding: 0.5rem 1rem;
+            }
+            #back-to-top {
+                bottom: 4rem;
+                right: 0.75rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Scroll Down Indicator -->
     <div class="scroll-down">
         <span id="scroll-down">Selaa alas</span>
         <div class="arrow"></div>
     </div>
+
+    <!-- Back-to-Top Button -->
+    <div id="back-to-top" title="Back to Top">↑</div>
+
     <!-- Header -->
     <header>
         <h1 id="header-title">Hemix Automaalaamo ja Autokorjaamo</h1>
@@ -327,19 +470,19 @@
     <!-- Contact Section -->
     <section id="contact">
         <h2 id="contact-title">Ota yhteyttä</h2>
-        <p id="contact-phone">Puhelin: 044 972 2221 & 044 974 2055</p>
-        <p id="contact-email">Sähköposti: info@hemix.fi</p>
+        <p id="contact-phone">Puhelin: <a href="tel:+358449722221">044 972 2221</a> & <a href="tel:+358449742055">044 974 2055</a></p>
+        <p id="contact-email">Sähköposti: <a href="mailto:info@hemix.fi">info@hemix.fi</a></p>
         <p id="contact-address">Osoite: Rattitie 15, 00770 Helsinki</p>
     </section>
 
     <!-- Location Section -->
     <section id="location">
         <div class="map-container">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1980.987167754614!2d25.046424916179897!3d60.24597598198178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x469209e8e2f2c2ab%3A0x6e8f8e8e8e8e8e8e!2sRattitie%2015%2C%2000770%20Helsinki%2C%20Finland!5e0!3m2!1sen!2sus!4v1698765432109!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe loading="lazy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1980.987167754614!2d25.046424916179897!3d60.24597598198178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x469209e8e2f2c2ab%3A0x6e8f8e8e8e8e8e8e!2sRattitie%2015%2C%2000770%20Helsinki%2C%20Finland!5e0!3m2!1sen!2sus!4v1698765432109!5m2!1sen!2sus" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <div class="text-container">
             <h2 id="location-title">Sijaintimme</h2>
-            <p id="location-text">Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.</p>
+            <p id="location-text">Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.</p>
         </div>
     </section>
 
@@ -348,8 +491,39 @@
         <p id="footer-text">Aukioloajat: Ma-Pe 08.00-16.30</p>
     </footer>
 
-    <!-- Language Switching Script -->
+    <!-- Scripts -->
     <script>
+        // Preloader
+        window.addEventListener('load', () => {
+            document.getElementById('preloader').classList.add('hidden');
+            document.body.classList.add('loaded');
+        });
+
+        // Sticky Header
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const currentScroll = window.scrollY;
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                header.classList.remove('visible');
+            } else if (currentScroll < lastScroll) {
+                header.classList.add('visible');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Section Fade-In
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => observer.observe(section));
+
+        // Language Switching
         const translations = {
             fi: {
                 "header-title": "Hemix Automaalaamo ja Autokorjaamo",
@@ -373,11 +547,11 @@
                 "maintenance-5": "Rengasmyynti ja -työt",
                 "maintenance-6": "Automaattivaihteiston Huuhtelu",
                 "contact-title": "Ota yhteyttä",
-                "contact-phone": "Puhelin: 044 972 2221 & 044 974 2055",
-                "contact-email": "Sähköposti: info@hemix.fi",
+                "contact-phone": "Puhelin: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
+                "contact-email": "Sähköposti: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
                 "contact-address": "Osoite: Rattitie 15, 00770 Helsinki",
                 "location-title": "Sijaintimme",
-                "location-text": "Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.",
+                "location-text": "Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä, ja palvelemme laajasti pääkaupunkiseudun asiakkaita. Meiltä löydät modernit tilat ja ystävällisen henkilökunnan, joka on valmiina auttamaan kaikissa autonhuoltoon liittyvissä tarpeissasi.",
                 "footer-text": "Aukioloajat: Ma-Pe 08.00-16.30",
                 "scroll-down": "Selaa alas"
             },
@@ -403,8 +577,8 @@
                 "maintenance-5": "Tire Sales and Services",
                 "maintenance-6": "Automatic Transmission Flush",
                 "contact-title": "Contact Us",
-                "contact-phone": "Phone: 044 972 2221 & 044 974 2055",
-                "contact-email": "Email: info@hemix.fi",
+                "contact-phone": "Phone: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
+                "contact-email": "Email: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
                 "contact-address": "Address: Rattitie 15, 00770 Helsinki",
                 "location-title": "Our Location",
                 "location-text": "Hemix is conveniently located in Helsinki at Rattitie 15, 00770 Helsinki. Easily accessible by car or public transport, we serve customers throughout the capital region. Visit our modern facility and friendly staff, ready to assist with all your car service needs.",
@@ -433,8 +607,8 @@
                 "maintenance-5": "Продажа и работа с шинами",
                 "maintenance-6": "Промывка автоматической коробки передач",
                 "contact-title": "Связаться с Нами",
-                "contact-phone": "Телефон: 044 972 2221 & 044 974 2055",
-                "contact-email": "Эл. почта: info@hemix.fi",
+                "contact-phone": "Телефон: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
+                "contact-email": "Эл. почта: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
                 "contact-address": "Адрес: Раттитие 15, 00770 Хельсинки",
                 "location-title": "Наше Местоположение",
                 "location-text": "Hemix удобно расположен в Хельсинки по адресу Раттитие 15, 00770 Хельсинки. До нас легко добраться на машине или общественном транспорте, и мы обслуживаем клиентов по всему столичному региону. Посетите наш современный центр и дружелюбный персонал, готовый помочь со всеми вашими потребностями в обслуживании автомобиля.",
@@ -463,8 +637,8 @@
                 "maintenance-5": "بيع وخدمات الإطارات",
                 "maintenance-6": "تنظيف ناقل الحركة الأوتوماتيكي",
                 "contact-title": "تواصل معنا",
-                "contact-phone": "هاتف: 044 972 2221 و 044 974 2055",
-                "contact-email": "البريد الإلكتروني: info@hemix.fi",
+                "contact-phone": "هاتف: <a href=\"tel:+358449722221\">044 972 2221</a> و <a href=\"tel:+358449742055\">044 974 2055</a>",
+                "contact-email": "البريد الإلكتروني: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
                 "contact-address": "العنوان: راتيتي 15، 00770 هلسنكي",
                 "location-title": "موقعنا",
                 "location-text": "يقع هيميكس بسهولة في هلسنكي في راتيتي 15، 00770 هلسنكي. يمكن الوصول إلينا بسهولة بالسيارة أو وسائل النقل العام، ونخدم عملاء منطقة العاصمة على نطاق واسع. تفضل بزيارة منشآتنا الحديثة وطاقمنا الودود، الجاهز لمساعدتك في جميع احتياجات صيانة سيارتك.",
@@ -483,26 +657,28 @@
                 for (const [key, value] of Object.entries(translations[lang])) {
                     const element = document.getElementById(key);
                     if (element) {
-                        element.textContent = value;
+                        element.innerHTML = value; // Use innerHTML for links
                     }
                 }
             });
         });
-    </script>
 
-    <!-- Scroll Hiding Script -->
-    <script>
-        window.addEventListener('scroll', function() {
+        // Scroll-Down Indicator
+        window.addEventListener('scroll', () => {
             const scrollDown = document.querySelector('.scroll-down');
             const windowHeight = window.innerHeight;
             const documentHeight = document.documentElement.scrollHeight;
             const scrollPosition = window.scrollY + windowHeight;
+            scrollDown.style.display = (scrollPosition >= documentHeight - 100) ? 'none' : 'block';
+        });
 
-            if (scrollPosition >= documentHeight - 100) {
-                scrollDown.style.display = 'none';
-            } else {
-                scrollDown.style.display = 'block';
-            }
+        // Back-to-Top Button
+        const backToTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 300);
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
