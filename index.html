@@ -397,14 +397,14 @@
         content: '−';
     }
     .faq-answer {
-        padding: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease, padding 0.3s ease;
-    }
-    .faq-item.active .faq-answer {
-        padding: 1.2rem;
-    }
+    padding: 0 1.2rem; /* Add horizontal padding to match question */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+}
+.faq-item.active .faq-answer {
+    padding: 1.2rem; /* Consistent padding when expanded */
+}
     .faq-answer p {
         font-size: 1rem;
         color: #444;
@@ -669,326 +669,322 @@
         <p style="text-align: center; padding: 1rem; background: var(--secondary-color); color: var(--background-color);">Tämä sivu vaatii JavaScriptin toimiakseen täysin. Ota JavaScript käyttöön selaimessasi.</p>
     </noscript>
     <script>
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            preloader.classList.add('hidden');
-            setTimeout(() => preloader.remove(), 500);
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('preloader');
+        preloader.classList.add('hidden');
+        setTimeout(() => preloader.remove(), 500);
+        updatePositions();
+    });
+
+    const header = document.querySelector('header');
+    const languageSwitcher = document.querySelector('.language-switcher');
+    const body = document.body;
+
+    function updatePositions() {
+        const headerHeight = header.offsetHeight;
+        const languageHeight = languageSwitcher.offsetHeight;
+        const isHeaderHidden = header.classList.contains('hidden');
+        languageSwitcher.style.top = isHeaderHidden ? '0px' : `${headerHeight + 20}px`;
+        body.style.paddingTop = isHeaderHidden ? `${languageHeight}px` : `${headerHeight + languageHeight + 20}px`;
+    }
+
+    let lastScroll = 0;
+    let scrollTimeout;
+    window.addEventListener('scroll', () => {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            const currentScroll = window.scrollY;
+            const documentHeight = document.documentElement.scrollHeight;
+            const windowHeight = window.innerHeight;
+            header.classList.toggle('hidden', currentScroll > 100 && currentScroll > lastScroll);
+            document.getElementById('scroll-to-bottom').classList.toggle('visible', currentScroll < documentHeight - windowHeight - 200);
+            document.getElementById('back-to-top').classList.toggle('visible', currentScroll > 300);
             updatePositions();
-        });
+            lastScroll = currentScroll;
+        }, 10);
+    });
 
-        const header = document.querySelector('header');
-        const languageSwitcher = document.querySelector('.language-switcher');
-        const body = document.body;
+    window.addEventListener('resize', updatePositions);
 
-        function updatePositions() {
-            const headerHeight = header.offsetHeight;
-            const languageHeight = languageSwitcher.offsetHeight;
-            const isHeaderHidden = header.classList.contains('hidden');
-            languageSwitcher.style.top = isHeaderHidden ? '0px' : `${headerHeight + 20}px`;
-            body.style.paddingTop = isHeaderHidden ? `${languageHeight}px` : `${headerHeight + languageHeight + 20}px`;
-        }
+    document.getElementById('scroll-to-bottom').addEventListener('click', () => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    });
+    document.getElementById('back-to-top').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
-        let lastScroll = 0;
-        let scrollTimeout;
-        window.addEventListener('scroll', () => {
-            if (scrollTimeout) clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                const currentScroll = window.scrollY;
-                const documentHeight = document.documentElement.scrollHeight;
-                const windowHeight = window.innerHeight;
-                header.classList.toggle('hidden', currentScroll > 100 && currentScroll > lastScroll);
-                document.getElementById('scroll-to-bottom').classList.toggle('visible', currentScroll < documentHeight - windowHeight - 200);
-                document.getElementById('back-to-top').classList.toggle('visible', currentScroll > 300);
-                updatePositions();
-                lastScroll = currentScroll;
-            }, 10);
-        });
-
-        window.addEventListener('resize', updatePositions);
-
-        document.getElementById('scroll-to-bottom').addEventListener('click', () => {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        });
-        document.getElementById('back-to-top').addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        const sections = document.querySelectorAll('section');
-        try {
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('visible');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.1 });
-                sections.forEach(section => observer.observe(section));
-            } else {
-                sections.forEach(section => section.classList.add('visible'));
-            }
-        } catch (error) {
-            console.error('IntersectionObserver failed:', error);
+    const sections = document.querySelectorAll('section');
+    try {
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            sections.forEach(section => observer.observe(section));
+        } else {
             sections.forEach(section => section.classList.add('visible'));
         }
+    } catch (error) {
+        console.error('IntersectionObserver failed:', error);
+        sections.forEach(section => section.classList.add('visible'));
+    }
 
-        try {
-            document.addEventListener('DOMContentLoaded', () => {
-                const faqItems = document.querySelectorAll('.faq-item');
-                faqItems.forEach(item => {
-                    const question = item.querySelector('.faq-question');
-                    const answer = item.querySelector('.faq-answer');
+    try {
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
 
-                    // Function to update max-height with buffer
-                    const updateHeight = () => {
-                        if (item.classList.contains('active')) {
-                            const height = answer.scrollHeight + 20; // Add buffer for padding/margins
-                            answer.style.maxHeight = `${height}px`;
-                        }
-                    };
+                const updateHeight = () => {
+                    if (item.classList.contains('active')) {
+                        const height = answer.scrollHeight + 20;
+                        answer.style.maxHeight = `${height}px`;
+                    }
+                };
 
-                    question.addEventListener('click', () => {
-                        faqItems.forEach(otherItem => {
-                            if (otherItem !== item && otherItem.classList.contains('active')) {
-                                otherItem.classList.remove('active');
-                                otherItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
-                                otherItem.querySelector('.faq-answer').style.maxHeight = '0';
-                            }
-                        });
-                        const isActive = item.classList.toggle('active');
-                        question.setAttribute('aria-expanded', isActive);
-                        if (isActive) {
-                            updateHeight();
-                            // Recalculate height after content is fully rendered
-                            setTimeout(updateHeight, 0);
-                        } else {
-                            answer.style.maxHeight = '0';
+                question.addEventListener('click', () => {
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                            otherItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                            otherItem.querySelector('.faq-answer').style.maxHeight = '0';
                         }
                     });
-
-                    question.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            question.click();
-                        }
-                    });
-
-                    // Recalculate height on window resize or language change
-                    window.addEventListener('resize', updateHeight);
+                    const isActive = item.classList.toggle('active');
+                    question.setAttribute('aria-expanded', isActive);
+                    if (isActive) {
+                        updateHeight();
+                        setTimeout(updateHeight, 0);
+                    } else {
+                        answer.style.maxHeight = '0';
+                    }
                 });
 
-                // Update heights after language switch
-                document.querySelector('.language-switcher').addEventListener('click', () => {
-                    setTimeout(() => {
-                        faqItems.forEach(item => {
-                            const answer = item.querySelector('.faq-answer');
-                            if (item.classList.contains('active')) {
-                                answer.style.maxHeight = `${answer.scrollHeight + 20}px`;
-                            }
-                        });
-                    }, 100); // Delay to ensure DOM updates
+                question.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        question.click();
+                    }
                 });
+
+                window.addEventListener('resize', updateHeight);
             });
-        } catch (error) {
-            console.error('FAQ accordion failed:', error);
+
+            document.querySelector('.language-switcher').addEventListener('click', () => {
+                setTimeout(() => {
+                    faqItems.forEach(item => {
+                        const answer = item.querySelector('.faq-answer');
+                        if (item.classList.contains('active')) {
+                            answer.style.maxHeight = `${answer.scrollHeight + 20}px`;
+                        }
+                    });
+                }, 100);
+            });
+        });
+    } catch (error) {
+        console.error('FAQ accordion failed:', error);
+    }
+
+    const translations = {
+        fi: {
+            "header-title": "Hemix Oy",
+            "header-subtitle": "Automaalaamo ja Autokorjaamo",
+            "about-title": "Meistä",
+            "about-p1": "Hemix on <strong>luotettava kumppanisi</strong> automaalauksessa ja autokorjauksessa. Yli 10 vuoden kokemuksella tarjoamme <strong>ensiluokkaista palvelua</strong>, yhdistämällä ammattitaidon ja modernit menetelmät.",
+            "about-p2": "Tiimimme koostuu <strong>koulutetuista ammattilaisista</strong>, jotka takaavat laadukkaan lopputuloksen – olipa kyse kolhuista, maalauksesta tai huolloista.",
+            "about-p3": "Sijaitsemme Helsingissä, Rattitie 15:ssä, ja nostamme autosi ulkonäön ja toimivuuden uudelle tasolle.",
+            "about-cta": "Ota yhteyttä nyt!",
+            "services-title": "Palvelumme",
+            "service-1": "Korikorjaukset",
+            "service-2": "Kolarikorjaukset",
+            "service-3": "Automaalaamo",
+            "service-4": "Tuulilasinvaihdot",
+            "service-5": "Ruostekorjaukset",
+            "service-6": "Vahingotarkastukset",
+            "maintenance-title": "Huollot",
+            "maintenance-1": "Katsastuspalvelu",
+            "maintenance-2": "Vikakoodien Luku",
+            "maintenance-3": "Ilmastointihuollot",
+            "maintenance-4": "Nelipyöräsuuntaukset",
+            "maintenance-5": "Rengasmyynti ja -työt",
+            "maintenance-6": "Automaattivaihteiston Huuhtelu",
+            "faq-title": "Usein kysytyt kysymykset",
+            "faq-q1": "Mitä kaikkea kolarikorjaukseen kuuluu?",
+            "faq-a1": "Kolarikorjaus voi sisältää useita eri työvaiheita kuten vaurioituneiden peltiosien oikaisua, vaihtoa uusiin, maalipinnan korjausta sekä tarvittaessa alustan kunnon tarkistamista. Korjauksen laajuus määräytyy vaurioiden vakavuuden ja törmäyksessä aiheutuneiden voimien mukaan.",
+            "faq-q2": "Kuinka pitkään kolarikorjaus tyypillisesti kestää?",
+            "faq-a2": "Pienimuotoiset korjaukset hoituvat yleensä 1-3 työpäivässä. Laajemmat vauriot, jotka vaativat osien tilaamista tai monimutkaisempia korjaustoimenpiteitä, saattavat viedä viikon tai jopa pidempään riippuen vaurioiden laadusta.",
+            "faq-q3": "Kattavatko vakuutukset kolarikorjauksen kustannukset?",
+            "faq-a3": "Useimmiten kasko- tai liikennevakuutus kattaa kolarikorjauksen kulut. Suosittelemme kuitenkin tarkistamaan vakuutusehtosi ja omavastuuosuutesi. Autamme mielellämme vakuutusyhtiön kanssa asioinnissa - ota ensimmäisenä yhteyttä asiakaspalveluumme vaurion sattuessa.",
+            "faq-q4": "Vaaditaanko katsastusta kolarikorjauksen jälkeen?",
+            "faq-a4": "Jos korjaus on kohdistunut auton kantaviin rakenteisiin tai turvallisuuteen vaikuttaviin osiin, jälkitarkastus katsastusasemalla voi olla tarpeen. Tämä ei kuitenkaan ole välttämätöntä, ellei vakuutusyhtiösi sitä erikseen edellytä.",
+            "faq-q5": "Voiko auton korjata ilman vakuutusta?",
+            "faq-a5": "Kyllä voi, mutta tällöin kustannukset tulevat suoraan asiakkaan maksettavaksi. Tarjoamme ennen työn aloittamista tarkan kustannusarvion, jonka perusteella voit arvioida korjauksen kannattavuutta.",
+            "faq-q6": "Myönnättekö takuuta tehdylle työlle?",
+            "faq-a6": "Myönnämme kaikille korjaustöillemme yhden vuoden työtakuun (poikkeuksena ruostevauriokorjaukset, joilla on erillinen takuu).",
+            "contact-title": "Ota yhteyttä",
+            "contact-phone": "Puhelin: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
+            "contact-email": "Sähköposti: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
+            "contact-address": "Osoite: Rattitie 15, 00770 Helsinki",
+            "location-title": "Sijaintimme",
+            "location-text": "Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä.",
+            "footer-text": "Aukioloajat: Ma-Pe 08.00-16.30"
+        },
+        en: {
+            "header-title": "Hemix Oy",
+            "header-subtitle": "Car Painting and Auto Repair",
+            "about-title": "About Us",
+            "about-p1": "Hemix is your <strong>trusted partner</strong> for all car painting and auto repair needs. With over 10 years of experience, we provide <strong>top-notch service</strong> combining expertise and modern methods.",
+            "about-p2": "Our team consists of <strong>trained professionals</strong> who ensure high-quality results – whether it’s dents, painting, or maintenance.",
+            "about-p3": "Located in Helsinki at Rattitie 15, we elevate your car’s appearance and performance to the next level.",
+            "about-cta": "Contact us now!",
+            "services-title": "Our Services",
+            "service-1": "Body Repairs",
+            "service-2": "Collision Repairs",
+            "service-3": "Car Painting",
+            "service-4": "Windshield Replacement",
+            "service-5": "Rust Repairs",
+            "service-6": "Damage Inspections",
+            "maintenance-title": "Maintenance",
+            "maintenance-1": "Inspection Service",
+            "maintenance-2": "Error Code Reading",
+            "maintenance-3": "AC Maintenance",
+            "maintenance-4": "Wheel Alignment",
+            "maintenance-5": "Tire Sales and Services",
+            "maintenance-6": "Automatic Transmission Flush",
+            "faq-title": "Frequently Asked Questions",
+            "faq-q1": "What does collision repair include?",
+            "faq-a1": "Collision repair can include various tasks such as straightening damaged metal parts, replacing them with new ones, repainting the surface, and, if necessary, checking the chassis condition. The scope depends on the severity of the damage and the forces involved in the collision.",
+            "faq-q2": "How long does collision repair typically take?",
+            "faq-a2": "Minor repairs are usually completed in 1-3 working days. More extensive damage requiring parts ordering or complex procedures may take a week or longer, depending on the nature of the damage.",
+            "faq-q3": "Will insurance cover collision repairs?",
+            "faq-a3": "Typically, comprehensive or liability insurance covers collision repair costs. We recommend checking your policy terms and deductible. We’re happy to assist with insurance matters - contact our customer service first after damage occurs.",
+            "faq-q4": "Is inspection required after collision repair?",
+            "faq-a4": "If the repair involves the car’s structural components or safety-related parts, a follow-up inspection at a station may be needed. However, this isn’t mandatory unless your insurance company specifically requires it.",
+            "faq-q5": "Can a car be repaired without insurance?",
+            "faq-a5": "Yes, but the costs will be borne directly by the customer. We provide a detailed cost estimate before starting work, so you can assess whether the repair is worthwhile.",
+            "faq-q6": "Do you provide a warranty for the work?",
+            "faq-a6": "We offer a one-year warranty on all our repair work (except for rust repairs, which have a separate warranty).",
+            "contact-title": "Contact Us",
+            "contact-phone": "Phone: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
+            "contact-email": "Email: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
+            "contact-address": "Address: Rattitie 15, 00770 Helsinki",
+            "location-title": "Our Location",
+            "location-text": "Hemix is conveniently located in Helsinki at Rattitie 15, 00770 Helsinki. Easily accessible by car or public transport.",
+            "footer-text": "Opening Hours: Mon-Fri 08:00-16:30"
+        },
+        ru: {
+            "header-title": "Hemix Oy",
+            "header-subtitle": "Покраска и Ремонт Автомобилей",
+            "about-title": "О Нас",
+            "about-p1": "Hemix — ваш <strong>надежный партнер</strong> во всем, что касается покраски и ремонта автомобилей. С более чем 10-летним опытом мы предоставляем <strong>первоклассные услуги</strong>, сочетая профессионализм и современные методы.",
+            "about-p2": "Наша команда состоит из <strong>обученных профессионалов</strong>, которые гарантируют качественный результат — будь то вмятины, покраска или обслуживание.",
+            "about-p3": "Мы находимся в Хельсинки по адресу Раттитие 15 и поднимаем внешний вид и производительность вашего автомобиля на новый уровень.",
+            "about-cta": "Свяжитесь с нами сейчас!",
+            "services-title": "Наши Услуги",
+            "service-1": "Ремонт кузова",
+            "service-2": "Ремонт после аварий",
+            "service-3": "Покраска автомобилей",
+            "service-4": "Замена лобового стекла",
+            "service-5": "Ремонт ржавчины",
+            "service-6": "Осмотр повреждений",
+            "maintenance-title": "Обслуживание",
+            "maintenance-1": "Услуги техосмотра",
+            "maintenance-2": "Чтение кодов ошибок",
+            "maintenance-3": "Обслуживание кондиционеров",
+            "maintenance-4": "Развал-схождение",
+            "maintenance-5": "Продажа и работа с шинами",
+            "maintenance-6": "Промывка автоматической коробки передач",
+            "faq-title": "Часто Задаваемые Вопросы",
+            "faq-q1": "Что включает в себя ремонт после столкновения?",
+            "faq-a1": "Ремонт после столкновения может включать различные работы, такие как выправление поврежденных металлических частей, их замена на новые, покраска поверхности и, при необходимости, проверка состояния шасси. Объем зависит от степени повреждений и силы удара.",
+            "faq-q2": "Сколько времени обычно занимает ремонт после столкновения?",
+            "faq-a2": "Небольшие ремонты обычно выполняются за 1-3 рабочих дня. Более серьезные повреждения, требующие заказа запчастей или сложных процедур, могут занять неделю или больше, в зависимости от характера повреждений.",
+            "faq-q3": "Покрывает ли страховка ремонт после столкновения?",
+            "faq-a3": "Обычно каско или обязательная страховка покрывают расходы на ремонт после столкновения. Рекомендуем уточнить условия вашего полиса и франшизу. Мы с радостью поможем с делами по страховке — свяжитесь с нашей службой поддержки сразу после повреждения.",
+            "faq-q4": "Требуется ли проверка после ремонта столкновения?",
+            "faq-a4": "Если ремонт затронул несущие конструкции автомобиля или детали, связанные с безопасностью, может потребоваться дополнительная проверка на станции техосмотра. Однако это не обязательно, если страховая компания не указала иное.",
+            "faq-q5": "Можно ли отремонтировать автомобиль без страховки?",
+            "faq-a5": "Да, но в этом случае расходы ложатся непосредственно на клиента. Мы предоставляем подробную смету до начала работ, чтобы вы могли оценить, стоит ли проводить ремонт.",
+            "faq-q6": "Предоставляете ли вы гарантию на работу?",
+            "faq-a6": "Мы предоставляем годовую гарантию на все наши ремонтные работы (за исключением ремонта ржавчины, на который действует отдельная гарантия).",
+            "contact-title": "Связаться с Нами",
+            "contact-phone": "Телефон: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
+            "contact-email": "Эл. почта: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
+            "contact-address": "Адрес: Раттитие 15, 00770 Хельсинки",
+            "location-title": "Наше Местоположение",
+            "location-text": "Hemix удобно расположен в Хельсинки по адресу Раттитие 15, 00770 Хельсинки. До нас легко добраться на машине или общественном транспорте.",
+            "footer-text": "Часы работы: Пн-Пт 08:00-16:30"
+        },
+        ar: {
+            "header-title": "هيميكس أوي",
+            "header-subtitle": "طلاء السيارات وإصلاحها",
+            "about-title": "معلومات عنا",
+            "about-p1": "هيميكس هو <strong>شريكك الموثوق</strong> لجميع احتياجات طلاء السيارات وإصلاحها. مع أكثر من 10 سنوات من الخبرة، نحن نقدم <strong>خدمات متميزة</strong> تجمع بين المهارة والطرق الحديثة.",
+            "about-p2": "يتكون فريقنا من <strong>محترفين مدربين</strong> يضمنون نتائج عالية الجودة – سواء كانت خدوشًا، طلاءً، أو صيانة.",
+            "about-p3": "نقع في هلسنكي في راتيتي 15، ونرفع مظهر سيارتك وأدائها إلى مستوى جديد.",
+            "about-cta": "تواصل معنا الآن!",
+            "services-title": "خدماتنا",
+            "service-1": "إصلاح الهيكل",
+            "service-2": "إصلاح التصادم",
+            "service-3": "طلاء السيارات",
+            "service-4": "استبدال الزجاج الأمامي",
+            "service-5": "إصلاح الصدأ",
+            "service-6": "فحص الأضرار",
+            "maintenance-title": "الصيانة",
+            "maintenance-1": "خدمة الفحص",
+            "maintenance-2": "قراءة رموز الأخطاء",
+            "maintenance-3": "صيانة المكيفات",
+            "maintenance-4": "موازنة العجلات",
+            "maintenance-5": "بيع وخدمات الإطارات",
+            "maintenance-6": "تنظيف ناقل الحركة الأوتوماتيكي",
+            "faq-title": "الأسئلة المتداولة",
+            "faq-q1": "ماذا يشمل إصلاح التصادم؟",
+            "faq-a1": "يمكن أن يشمل إصلاح التصادم مهامًا متنوعة مثل تقويم الأجزاء المعدنية التالفة، استبدالها بأخرى جديدة، إعادة طلاء السطح، وفحص حالة الهيكل إذا لزم الأمر. يعتمد النطاق على شدة الضرر والقوى الناتجة عن التصادم.",
+            "faq-q2": "كم من الوقت يستغرق إصلاح التصادم عادة؟",
+            "faq-a2": "عادةً ما يتم إكمال الإصلاحات البسيطة في غضون 1-3 أيام عمل. قد تستغرق الأضرار الأكثر شمولاً التي تتطلب طلب قطع غيار أو إجراءات معقدة أسبوعًا أو أكثر، حسب طبيعة الضرر.",
+            "faq-q3": "هل سيغطي التأمين إصلاحات التصادم؟",
+            "faq-a3": "عادةً ما يغطي التأمين الشامل أو تأمين المسؤولية تكاليف إصلاح التصادم. نوصي بالتحقق من شروط وثيقتك والمبلغ المقتطع. نحن سعداء بمساعدتك في أمور التأمين - تواصل مع خدمة العملاء لدينا أولاً بعد وقوع الضرر.",
+            "faq-q4": "هل الفحص مطلوب بعد إصلاح التصادم؟",
+            "faq-a4": "إذا شمل الإصلاح مكونات هيكلية أو أجزاء متعلقة بالسلامة، قد يكون فحص لاحق في محطة مطلوبًا. ومع ذلك، هذا ليس إلزاميًا ما لم تطلب شركة التأمين ذلك على وجه التحديد.",
+            "faq-q5": "هل يمكن إصلاح السيارة بدون تأمين؟",
+            "faq-a5": "نعم، ولكن التكاليف ستقع مباشرة على العميل. نحن نوفر تقديرًا تفصيليًا للتكلفة قبل بدء العمل، حتى تتمكن من تقييم ما إذا كان الإصلاح يستحق ذلك.",
+            "faq-q6": "هل تقدمون ضمانًا على العمل؟",
+            "faq-a6": "نقدم ضمانًا لمدة سنة واحدة على جميع أعمال الإصلاح لدينا (باستثناء إصلاحات الصدأ، التي لها ضمان منفصل).",
+            "contact-title": "تواصل معنا",
+            "contact-phone": "هاتف: <a href=\"tel:+358449722221\">044 972 2221</a> و <a href=\"tel:+358449742055\">044 974 2055</a>",
+            "contact-email": "البريد الإلكتروني: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
+            "contact-address": "العنوان: راتيتي 15، 00770 هلسنكي",
+            "location-title": "موقعنا",
+            "location-text": "يقع هيميكس بسهولة في هلسنكي في راتيتي 15، 00770 هلسنكي. يمكن الوصول إلينا بسهولة بالسيارة أو وسائل النقل العام.",
+            "footer-text": "ساعات العمل: الإثنين-الجمعة 08:00-16:30"
         }
+    };
 
-        const translations = {
-            fi: {
-                "header-title": "Hemix Oy",
-                "header-subtitle": "Automaalaamo ja Autokorjaamo",
-                "about-title": "Meistä",
-                "about-p1": "Hemix on <strong>luotettava kumppanisi</strong> automaalauksessa ja autokorjauksessa. Yli 10 vuoden kokemuksella tarjoamme <strong>ensiluokkaista palvelua</strong>, yhdistämällä ammattitaidon ja modernit menetelmät.",
-                "about-p2": "Tiimimme koostuu <strong>koulutetuista ammattilaisista</strong>, jotka takaavat laadukkaan lopputuloksen – olipa kyse kolhuista, maalauksesta tai huolloista.",
-                "about-p3": "Sijaitsemme Helsingissä, Rattitie 15:ssä, ja nostamme autosi ulkonäön ja toimivuuden uudelle tasolle.",
-                "about-cta": "Ota yhteyttä nyt!",
-                "services-title": "Palvelumme",
-                "service-1": "Korikorjaukset",
-                "service-2": "Kolarikorjaukset",
-                "service-3": "Automaalaamo",
-                "service-4": "Tuulilasinvaihdot",
-                "service-5": "Ruostekorjaukset",
-                "service-6": "Vahingotarkastukset",
-                "maintenance-title": "Huollot",
-                "maintenance-1": "Katsastuspalvelu",
-                "maintenance-2": "Vikakoodien Luku",
-                "maintenance-3": "Ilmastointihuollot",
-                "maintenance-4": "Nelipyöräsuuntaukset",
-                "maintenance-5": "Rengasmyynti ja -työt",
-                "maintenance-6": "Automaattivaihteiston Huuhtelu",
-                "faq-title": "Usein kysytyt kysymykset",
-                "faq-q1": "Mitä kaikkea kolarikorjaukseen kuuluu?",
-                "faq-a1": "Kolarikorjaus voi sisältää useita eri työvaiheita kuten vaurioituneiden peltiosien oikaisua, vaihtoa uusiin, maalipinnan korjausta sekä tarvittaessa alustan kunnon tarkistamista. Korjauksen laajuus määräytyy vaurioiden vakavuuden ja törmäyksessä aiheutuneiden voimien mukaan.",
-                "faq-q2": "Kuinka pitkään kolarikorjaus tyypillisesti kestää?",
-                "faq-a2": "Pienimuotoiset korjaukset hoituvat yleensä 1-3 työpäivässä. Laajemmat vauriot, jotka vaativat osien tilaamista tai monimutkaisempia korjaustoimenpiteitä, saattavat viedä viikon tai jopa pidempään riippuen vaurioiden laadusta.",
-                "faq-q3": "Kattavatko vakuutukset kolarikorjauksen kustannukset?",
-                "faq-a3": "Useimmiten kasko- tai liikennevakuutus kattaa kolarikorjauksen kulut. Suosittelemme kuitenkin tarkistamaan vakuutusehtosi ja omavastuuosuutesi. Autamme mielellämme vakuutusyhtiön kanssa asioinnissa - ota ensimmäisenä yhteyttä asiakaspalveluumme vaurion sattuessa.",
-                "faq-q4": "Vaaditaanko katsastusta kolarikorjauksen jälkeen?",
-                "faq-a4": "Jos korjaus on kohdistunut auton kantaviin rakenteisiin tai turvallisuuteen vaikuttaviin osiin, jälkitarkastus katsastusasemalla voi olla tarpeen. Tämä ei kuitenkaan ole välttämätöntä, ellei vakuutusyhtiösi sitä erikseen edellytä.",
-                "faq-q5": "Voiko auton korjata ilman vakuutusta?",
-                "faq-a5": "Kyllä voi, mutta tällöin kustannukset tulevat suoraan asiakkaan maksettavaksi. Tarjoamme ennen työn aloittamista tarkan kustannusarvion, jonka perusteella voit arvioida korjauksen kannattavuutta.",
-                "faq-q6": "Myönnättekö takuuta tehdylle työlle?",
-                "faq-a6": "Myönnämme kaikille korjaustöillemme yhden vuoden työtakuun (poikkeuksena ruostevauriokorjaukset, joilla on erillinen takuu).",
-                "contact-title": "Ota yhteyttä",
-                "contact-phone": "Puhelin: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
-                "contact-email": "Sähköposti: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
-                "contact-address": "Osoite: Rattitie 15, 00770 Helsinki",
-                "location-title": "Sijaintimme",
-                "location-text": "Hemix sijaitsee kätevästi Helsingissä osoitteessa Rattitie 15, 00770 Helsinki. Sijaintimme on helposti saavutettavissa niin autolla kuin julkisilla kulkuvälineillä.",
-                "footer-text": "Aukioloajat: Ma-Pe 08.00-16.30"
-            },
-            en: {
-                "header-title": "Hemix Oy",
-                "header-subtitle": "Car Painting and Auto Repair",
-                "about-title": "About Us",
-                "about-p1": "Hemix is your <strong>trusted partner</strong> for all car painting and auto repair needs. With over 10 years of experience, we provide <strong>top-notch service</strong> combining expertise and modern methods.",
-                "about-p2": "Our team consists of <strong>trained professionals</strong> who ensure high-quality results – whether it’s dents, painting, or maintenance.",
-                "about-p3": "Located in Helsinki at Rattitie 15, we elevate your car’s appearance and performance to the next level.",
-                "about-cta": "Contact us now!",
-                "services-title": "Our Services",
-                "service-1": "Body Repairs",
-                "service-2": "Collision Repairs",
-                "service-3": "Car Painting",
-                "service-4": "Windshield Replacement",
-                "service-5": "Rust Repairs",
-                "service-6": "Damage Inspections",
-                "maintenance-title": "Maintenance",
-                "maintenance-1": "Inspection Service",
-                "maintenance-2": "Error Code Reading",
-                "maintenance-3": "AC Maintenance",
-                "maintenance-4": "Wheel Alignment",
-                "maintenance-5": "Tire Sales and Services",
-                "maintenance-6": "Automatic Transmission Flush",
-                "faq-title": "Frequently Asked Questions",
-                "faq-q1": "What does collision repair include?",
-                "faq-a1": "Collision repair can include various tasks such as straightening damaged metal parts, replacing them with new ones, repainting the surface, and, if necessary, checking the chassis condition. The scope depends on the severity of the damage and the forces involved in the collision.",
-                "faq-q2": "How long does collision repair typically take?",
-                "faq-a2": "Minor repairs are usually completed in 1-3 working days. More extensive damage requiring parts ordering or complex procedures may take a week or longer, depending on the nature of the damage.",
-                "faq-q3": "Will insurance cover collision repairs?",
-                "faq-a3": "Typically, comprehensive or liability insurance covers collision repair costs. We recommend checking your policy terms and deductible. We’re happy to assist with insurance matters - contact our customer service first after damage occurs.",
-                "faq-q4": "Is inspection required after collision repair?",
-                "faq-a4": "If the repair involves the car’s structural components or safety-related parts, a follow-up inspection at a station may be needed. However, this isn’t mandatory unless your insurance company specifically requires it.",
-                "faq-q5": "Can a car be repaired without insurance?",
-                "faq-a5": "Yes, but the costs will be borne directly by the customer. We provide a detailed cost estimate before starting work, so you can assess whether the repair is worthwhile.",
-                "faq-q6": "Do you provide a warranty for the work?",
-                "faq-a6": "We offer a one-year warranty on all our repair work (except for rust repairs, which have a separate warranty).",
-                "contact-title": "Contact Us",
-                "contact-phone": "Phone: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
-                "contact-email": "Email: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
-                "contact-address": "Address: Rattitie 15, 00770 Helsinki",
-                "location-title": "Our Location",
-                "location-text": "Hemix is conveniently located in Helsinki at Rattitie 15, 00770 Helsinki. Easily accessible by car or public transport.",
-                "footer-text": "Opening Hours: Mon-Fri 08:00-16:30"
-            },
-            ru: {
-                "header-title": "Hemix Oy",
-                "header-subtitle": "Покраска и Ремонт Автомобилей",
-                "about-title": "О Нас",
-                "about-p1": "Hemix — ваш <strong>надежный партнер</strong> во всем, что касается покраски и ремонта автомобилей. С более чем 10-летним опытом мы предоставляем <strong>первоклассные услуги</strong>, сочетая профессионализм и современные методы.",
-                "about-p2": "Наша команда состоит из <strong>обученных профессионалов</strong>, которые гарантируют качественный результат — будь то вмятины, покраска или обслуживание.",
-                "about-p3": "Мы находимся в Хельсинки по адресу Раттитие 15 и поднимаем внешний вид и производительность вашего автомобиля на новый уровень.",
-                "about-cta": "Свяжитесь с нами сейчас!",
-                "services-title": "Наши Услуги",
-                "service-1": "Ремонт кузова",
-                "service-2": "Ремонт после аварий",
-                "service-3": "Покраска автомобилей",
-                "service-4": "Замена лобового стекла",
-                "service-5": "Ремонт ржавчины",
-                "service-6": "Осмотр повреждений",
-                "maintenance-title": "Обслуживание",
-                "maintenance-1": "Услуги техосмотра",
-                "maintenance-2": "Чтение кодов ошибок",
-                "maintenance-3": "Обслуживание кондиционеров",
-                "maintenance-4": "Развал-схождение",
-                "maintenance-5": "Продажа и работа с шинами",
-                "maintenance-6": "Промывка автоматической коробки передач",
-                "faq-title": "Часто Задаваемые Вопросы",
-                "faq-q1": "Что включает в себя ремонт после столкновения?",
-                "faq-a1": "Ремонт после столкновения может включать различные работы, такие как выправление поврежденных металлических частей, их замена на новые, покраска поверхности и, при необходимости, проверка состояния шасси. Объем зависит от степени повреждений и силы удара.",
-                "faq-q2": "Сколько времени обычно занимает ремонт после столкновения?",
-                "faq-a2": "Небольшие ремонты обычно выполняются за 1-3 рабочих дня. Более серьезные повреждения, требующие заказа запчастей или сложных процедур, могут занять неделю или больше, в зависимости от характера повреждений.",
-                "faq-q3": "Покрывает ли страховка ремонт после столкновения?",
-                "faq-a3": "Обычно каско или обязательная страховка покрывают расходы на ремонт после столкновения. Рекомендуем уточнить условия вашего полиса и франшизу. Мы с радостью поможем с делами по страховке — свяжитесь с нашей службой поддержки сразу после повреждения.",
-                "faq-q4": "Требуется ли проверка после ремонта столкновения?",
-                "faq-a4": "Если ремонт затронул несущие конструкции автомобиля или детали, связанные с безопасностью, может потребоваться дополнительная проверка на станции техосмотра. Однако это не обязательно, если страховая компания не указала иное.",
-                "faq-q5": "Можно ли отремонтировать автомобиль без страховки?",
-                "faq-a5": "Да, но в этом случае расходы ложатся непосредственно на клиента. Мы предоставляем подробную смету до начала работ, чтобы вы могли оценить, стоит ли проводить ремонт.",
-                "faq-q6": "Предоставляете ли вы гарантию на работу?",
-                "faq-a6": "Мы предоставляем годовую гарантию на все наши ремонтные работы (за исключением ремонта ржавчины, на который действует отдельная гарантия).",
-                "contact-title": "Связаться с Нами",
-                "contact-phone": "Телефон: <a href=\"tel:+358449722221\">044 972 2221</a> & <a href=\"tel:+358449742055\">044 974 2055</a>",
-                "contact-email": "Эл. почта: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
-                "contact-address": "Адрес: Раттитие 15, 00770 Хельсинки",
-                "location-title": "Наше Местоположение",
-                "location-text": "Hemix удобно расположен в Хельсинки по адресу Раттитие 15, 00770 Хельсинки. До нас легко добраться на машине или общественном транспорте.",
-                "footer-text": "Часы работы: Пн-Пт 08:00-16:30"
-            },
-            ar: {
-                "header-title": "هيميكس أوي",
-                "header-subtitle": "طلاء السيارات وإصلاحها",
-                "about-title": "معلومات عنا",
-                "about-p1": "هيميكس هو <strong>شريكك الموثوق</strong> لجميع احتياجات طلاء السيارات وإصلاحها. مع أكثر من 10 سنوات من الخبرة، نحن نقدم <strong>خدمات متميزة</strong> تجمع بين المهارة والطرق الحديثة.",
-                "about-p2": "يتكون فريقنا من <strong>محترفين مدربين</strong> يضمنون نتائج عالية الجودة – سواء كانت خدوشًا، طلاءً، أو صيانة.",
-                "about-p3": "نقع في هلسنكي في راتيتي 15، ونرفع مظهر سيارتك وأدائها إلى مستوى جديد.",
-                "about-cta": "تواصل معنا الآن!",
-                "services-title": "خدماتنا",
-                "service-1": "إصلاح الهيكل",
-                "service-2": "إصلاح التصادم",
-                "service-3": "طلاء السيارات",
-                "service-4": "استبدال الزجاج الأمامي",
-                "service-5": "إصلاح الصدأ",
-                "service-6": "فحص الأضرار",
-                "maintenance-title": "الصيانة",
-                "maintenance-1": "خدمة الفحص",
-                "maintenance-2": "قراءة رموز الأخطاء",
-                "maintenance-3": "صيانة المكيفات",
-                "maintenance-4": "موازنة العجلات",
-                "maintenance-5": "بيع وخدمات الإطارات",
-                "maintenance-6": "تنظيف ناقل الحركة الأوتوماتيكي",
-                "faq-title": "الأسئلة المتداولة",
-                "faq-q1": "ماذا يشمل إصلاح التصادم؟",
-                "faq-a1": "يمكن أن يشمل إصلاح التصادم مهامًا متنوعة مثل تقويم الأجزاء المعدنية التالفة، استبدالها بأخرى جديدة، إعادة طلاء السطح، وفحص حالة الهيكل إذا لزم الأمر. يعتمد النطاق على شدة الضرر والقوى الناتجة عن التصادم.",
-                "faq-q2": "كم من الوقت يستغرق إصلاح التصادم عادة؟",
-                "faq-a2": "عادةً ما يتم إكمال الإصلاحات البسيطة في غضون 1-3 أيام عمل. قد تستغرق الأضرار الأكثر شمولاً التي تتطلب طلب قطع غيار أو إجراءات معقدة أسبوعًا أو أكثر، حسب طبيعة الضرر.",
-                "faq-q3": "هل سيغطي التأمين إصلاحات التصادم؟",
-                "faq-a3": "عادةً ما يغطي التأمين الشامل أو تأمين المسؤولية تكاليف إصلاح التصادم. نوصي بالتحقق من شروط وثيقتك والمبلغ المقتطع. نحن سعداء بمساعدتك في أمور التأمين - تواصل مع خدمة العملاء لدينا أولاً بعد وقوع الضرر.",
-                "faq-q4": "هل الفحص مطلوب بعد إصلاح التصادم؟",
-                "faq-a4": "إذا شمل الإصلاح مكونات هيكلية أو أجزاء متعلقة بالسلامة، قد يكون فحص لاحق في محطة مطلوبًا. ومع ذلك، هذا ليس إلزاميًا ما لم تطلب شركة التأمين ذلك على وجه التحديد.",
-                "faq-q5": "هل يمكن إصلاح السيارة بدون تأمين؟",
-                "faq-a5": "نعم، ولكن التكاليف ستقع مباشرة على العميل. نحن نوفر تقديرًا تفصيليًا للتكلفة قبل بدء العمل، حتى تتمكن من تقييم ما إذا كان الإصلاح يستحق ذلك.",
-                "faq-q6": "هل تقدمون ضمانًا على العمل؟",
-                "faq-a6": "نقدم ضمانًا لمدة سنة واحدة على جميع أعمال الإصلاح لدينا (باستثناء إصلاحات الصدأ، التي لها ضمان منفصل).",
-                "contact-title": "تواصل معنا",
-                "contact-phone": "هاتف: <a href=\"tel:+358449722221\">044 972 2221</a> و <a href=\"tel:+358449742055\">044 974 2055</a>",
-                "contact-email": "البريد الإلكتروني: <a href=\"mailto:info@hemix.fi\">info@hemix.fi</a>",
-                "contact-address": "العنوان: راتيتي 15، 00770 هلسنكي",
-                "location-title": "موقعنا",
-                "location-text": "يقع هيميكس بسهولة في هلسنكي في راتيتي 15، 00770 هلسنكي. يمكن الوصول إلينا بسهولة بالسيارة أو وسائل النقل العام.",
-                "footer-text": "ساعات العمل: الإثنين-الجمعة 08:00-16:30"
+    document.querySelector('.language-switcher').addEventListener('click', (e) => {
+        const container = e.target.closest('.flag-container');
+        if (container) {
+            const lang = container.getAttribute('data-lang');
+            document.body.classList.toggle('rtl', lang === 'ar');
+            document.documentElement.lang = lang;
+            for (const [key, value] of Object.entries(translations[lang])) {
+                const element = document.getElementById(key);
+                if (element) element.innerHTML = value;
             }
-        };
+            updatePositions();
+        }
+    });
 
-        document.querySelector('.language-switcher').addEventListener('click', (e) => {
-            const container = e.target.closest('.flag-container');
-            if (container) {
-                const lang = container.getAttribute('data-lang');
-                document.body.classList.toggle('rtl', lang === 'ar');
-                document.documentElement.lang = lang;
-                for (const [key, value] of Object.entries(translations[lang])) {
-                    const element = document.getElementById(key);
-                    if (element) element.innerHTML = value;
-                }
-                updatePositions();
-            }
-        });
-
-        document.querySelector('.language-switcher').addEventListener('keydown', (e) => {
-            const container = e.target.closest('.flag-container');
-            if (container && (e.key === 'Enter' || e.key === ' ')) {
-                container.click();
-            }
-        });
-    </script>
+    document.querySelector('.language-switcher').addEventListener('keydown', (e) => {
+        const container = e.target.closest('.flag-container');
+        if (container && (e.key === 'Enter' || e.key === ' ')) {
+            container.click();
+        }
+    });
+</script>
 </body>
 </html>
