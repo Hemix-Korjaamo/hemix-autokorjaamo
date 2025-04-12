@@ -3,20 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Hemix Oy - Fast and reliable car repair and painting services in Helsinki.">
-    <meta name="keywords" content="car repair, car painting, Helsinki, auto service, body repair">
+    <meta name="description" content="Hemix Oy - Professional car repair and painting services in Helsinki. Over 15 years of experience in auto body repair, painting, and maintenance.">
+    <meta name="keywords" content="car repair Helsinki, auto painting Finland, body repair, car maintenance, dent removal, professional car services">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="Hemix Oy">
-    <meta property="og:description" content="Fast and reliable car repair and painting services in Helsinki.">
+    
+    <!-- Enhanced Social Media Tags -->
+    <meta property="og:title" content="Hemix Oy - Professional Car Repair & Painting">
+    <meta property="og:description" content="Expert car repair and painting services in Helsinki with over 15 years of experience. Premium quality, reliable service.">
     <meta property="og:image" content="https://i.imgur.com/Vr0AZYi.png">
     <meta property="og:type" content="website">
-    <title>Hemix Oy - Car Repair & Painting in Helsinki</title>
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="fi_FI">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Hemix Oy - Car Repair & Painting">
+    <meta name="twitter:description" content="Expert car repair and painting services in Helsinki">
+    
+    <title>Hemix Oy - Professional Car Repair & Painting Services in Helsinki</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://i.imgur.com/Vr0AZYi.png">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/Vr0AZYi.png">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" as="image" href="background1.jpg">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.hemix.fi">
+    <link rel="alternate" hreflang="fi" href="https://www.hemix.fi/fi">
+    <link rel="alternate" hreflang="en" href="https://www.hemix.fi/en">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Schema.org Markup -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "AutoRepair",
         "name": "Hemix Oy",
-        "description": "Auto painting and repair services in Helsinki",
+        "description": "Professional auto painting and repair services in Helsinki",
+        "image": "https://i.imgur.com/Vr0AZYi.png",
+        "priceRange": "€€",
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "Rattitie 15",
@@ -24,487 +55,351 @@
             "postalCode": "00770",
             "addressCountry": "FI"
         },
-        "telephone": "+358449722221",
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "60.24597598198178",
+            "longitude": "25.046424916179897"
+        },
+        "telephone": ["+358449722221", "+358449742055"],
         "openingHours": "Mo-Fr 08:00-16:30",
         "url": "https://www.hemix.fi"
     }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
-        }
 
-        body {
-            line-height: 1.5;
-            color: #d1d5db;
-            background: #1f2937;
-        }
-
-        .quick-info {
-            background: #374151;
-            padding: 0.5rem;
-            text-align: center;
-            font-size: 0.9rem;
-            position: sticky;
-            top: 0;
-            z-index: 1001;
-        }
-
-        .quick-info p {
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -moz-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            -webkit-text-fill-color: transparent;
-            -moz-text-fill-color: transparent;
-        }
-
-        header {
-            background: linear-gradient(135deg, #374151, #4b5563);
-            color: white;
-            padding: 0.5rem 1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            position: sticky;
-            top: 2rem;
-            z-index: 1000;
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
-
-        nav ul li a:hover {
-            color: #FFD700;
-        }
-
-        .hero {
-            position: relative;
-            background: url('background1.jpg') no-repeat;
-            background-size: cover;
-            background-position: center center;
-            height: 50vh;
-            width: 100%;
-            min-width: 100%;
-            max-width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
-            transform: scale(1);
-        }
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        .hero-text {
-            text-shadow: 0 6px 12px rgba(0, 0, 0, 0.9);
-        }
-
-        .hero-text h1 {
-            font-size: 4.5rem;
-            margin-bottom: 1rem;
-            color: #FFFF00;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: 800;
-            text-shadow: 0 6px 12px rgba(0, 0, 0, 0.9);
-            border-bottom: 3px solid rgba(255, 255, 0, 0.5);
-            padding-bottom: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .hero-text h1:hover {
-            letter-spacing: 5px;
-            color: #FFFF00;
-        }
-
-        .hero-text p {
-            font-size: 1.8rem;
-            line-height: 1.4;
-            max-width: 800px;
-            margin: 0 auto;
-            color: #FFFF00;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-            text-transform: uppercase;
-            text-shadow: 0 6px 12px rgba(0, 0, 0, 0.9);
-        }
-
-        h2, h3 {
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -moz-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            -webkit-text-fill-color: transparent;
-            -moz-text-fill-color: transparent;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        @media (max-width: 768px) {
-            .hero-text h1 {
-                font-size: 3rem;
-                letter-spacing: 3px;
-            }
-            .hero-text p {
-                font-size: 1.4rem;
-            }
-        }
-
-        section {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .services-grid, .maintenance-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .service-item, .maintenance-item {
-            background: #2d3748;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            border-left: 4px solid #FFD700;
-            transition: transform 0.3s;
-        }
-
-        .service-item:hover, .maintenance-item:hover {
-            transform: translateY(-3px);
-        }
-
-        .faq-container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .faq-item {
-            margin: 1rem 0;
-            background: #2d3748;
-            padding: 1rem;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-
-        .faq-question {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #FFD700;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .faq-item:hover .faq-question,
-        .faq-item.active .faq-question {
-            color: #FFA500;
-        }
-
-        .faq-item:hover {
-            background: #374151;
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            color: #d1d5db;
-        }
-
-        .faq-answer p {
-            margin-top: 0.75rem;
-        }
-
-        .faq-item.active .faq-answer {
-            max-height: 300px; /* Adjust this value based on content length */
-        }
-
-        .contact-box {
-            background: #2d3748;
-            padding: 1rem;
-            border-radius: 8px;
-            border: 2px solid #FFD700;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .contact-box p {
-            margin: 0.5rem 0;
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -moz-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            -webkit-text-fill-color: transparent;
-            -moz-text-fill-color: transparent;
-        }
-
-        .contact-box a {
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -moz-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            -webkit-text-fill-color: transparent;
-            -moz-text-fill-color: transparent;
-            text-decoration: none;
-        }
-
-        .contact-box a:hover {
-            color: #FFA500;
-        }
-
-        .map-container iframe {
-            width: 100%;
-            height: 300px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            border: none;
-        }
-
-        footer {
-            background: #374151;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            nav ul {
-                flex-direction: column;
-                gap: 0.75rem;
-                padding: 0.5rem 0;
-            }
-            .hero {
-                height: 40vh;
-            }
-            h2 {
-                font-size: 1.5rem;
-            }
-            .faq-question {
-                font-size: 1.2rem;
-            }
-        }
-    </style>
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="quick-info">
-        <p>Phone: +358 44 972 2221 & +358 44 974 2055 | Address: Rattitie 15, 00770 Helsinki, Finland | Hours: Mon-Fri 08:00–16:30</p>
-    </div>
+    <!-- Skip Navigation for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <header>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#maintenance">Maintenance</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="#home">Hemix Oy</a>
+            </div>
+            <button id="menu-toggle" class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="#home" aria-current="page">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <section id="home" class="hero">
-        <div class="hero-text">
-            <h1>Hemix Oy</h1>
-            <p>Premier Automotive Repair and Refinishing Specialists in Helsinki<br>Unparalleled expertise. Superior quality. Restore your vehicle with assurance.</p>
-        </div>
-    </section>
+    <main id="main-content">
+        <section id="home" class="hero" aria-label="Welcome section">
+            <div class="hero-text animate-on-scroll">
+                <h1>Hemix Oy</h1>
+                <p>Premier Automotive Repair and Refinishing Specialists in Helsinki</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="cta-primary">Book Service</a>
+                    <a href="#services" class="cta-secondary">Our Services</a>
+                </div>
+            </div>
+        </section>
 
-    <section id="about">
-        <h2>Who We Are</h2>
-        <p>At Hemix Oy, we bring passion and precision to every vehicle that rolls into our Helsinki workshop. With over 15 years of experience in car repair and painting, our skilled technicians are committed to delivering top-tier craftsmanship and outstanding customer service. We use cutting-edge tools and techniques to handle everything from minor scratches to full restorations, ensuring your car looks and performs at its best. Located at Rattitie 15, 00770 Helsinki, our mission is to exceed your expectations every time.</p>
-    </section>
+        <section id="about" class="animate-on-scroll">
+            <div class="container">
+                <h2>Who We Are</h2>
+                <p>At Hemix Oy, we bring passion and precision to every vehicle that rolls into our Helsinki workshop. With over 15 years of experience in car repair and painting, our skilled technicians are committed to delivering top-tier craftsmanship and outstanding customer service.</p>
+                <div class="about-features">
+                    <div class="feature">
+                        <i class="fas fa-medal"></i>
+                        <h3>Quality First</h3>
+                        <p>Premium materials and meticulous attention to detail</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-history"></i>
+                        <h3>Experienced Team</h3>
+                        <p>15+ years of professional automotive expertise</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Satisfaction Guaranteed</h3>
+                        <p>We stand behind all our repair and painting work</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <section id="services">
-        <h2>Our Expert Services</h2>
-        <p>From minor fixes to major transformations, we’ve got you covered.</p>
-        <div class="services-grid">
-            <div class="service-item">
-                <h3>Car Body Repair</h3>
-                <p>Accidents happen. Our expert team repairs dents, scratches, and structural damage with precision.</p>
+        <section id="services" class="animate-on-scroll">
+            <div class="container">
+                <h2>Our Expert Services</h2>
+                <div class="services-grid">
+                    <div class="service-item">
+                        <i class="fas fa-car"></i>
+                        <h3>Car Body Repair</h3>
+                        <p>Expert repair for dents, scratches, and structural damage.</p>
+                    </div>
+                    <div class="service-item">
+                        <i class="fas fa-paint-roller"></i>
+                        <h3>Professional Painting</h3>
+                        <p>Premium quality automotive painting and refinishing.</p>
+                    </div>
+                    <div class="service-item">
+                        <i class="fas fa-tools"></i>
+                        <h3>Maintenance Services</h3>
+                        <p>Comprehensive car maintenance and servicing.</p>
+                    </div>
+                    <div class="service-item">
+                        <i class="fas fa-hammer"></i>
+                        <h3>Dent Removal</h3>
+                        <p>Specialized dent repair without affecting your paint.</p>
+                    </div>
+                    <div class="service-item">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <h3>Performance Tuning</h3>
+                        <p>Engine and performance optimization services.</p>
+                    </div>
+                    <div class="service-item">
+                        <i class="fas fa-window-restore"></i>
+                        <h3>Glass Repair</h3>
+                        <p>Windshield and window repair and replacement.</p>
+                    </div>
+                </div>
             </div>
-            <div class="service-item">
-                <h3>Painting</h3>
-                <p>Transform your vehicle with a flawless, custom paint job using premium materials.</p>
-            </div>
-            <div class="service-item">
-                <h3>Scratch Removal</h3>
-                <p>Say goodbye to surface imperfections with our quick, affordable service.</p>
-            </div>
-            <div class="service-item">
-                <h3>Dent Repair</h3>
-                <p>Paintless dent repair restores your car’s smooth look without compromising the finish.</p>
-            </div>
-            <div class="service-item">
-                <h3>Full Car Restoration</h3>
-                <p>Bring your classic or damaged car back to life with comprehensive rebuilds.</p>
-            </div>
-            <div class="service-item">
-                <h3>Glass Replacement</h3>
-                <p>Cracked windshield? We replace windows and glass with speed and safety.</p>
-            </div>
-            <div class="service-item">
-                <h3>Wheel Alignment & Balancing</h3>
-                <p>Ensure a smooth, safe ride with our precise alignment and balancing services.</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="maintenance">
-        <h2>Routine Care, Done Right</h2>
-        <p>Keep your car running smoothly with our expert maintenance services.</p>
-        <div class="maintenance-grid">
-            <div class="maintenance-item">
-                <h3>Oil Changes</h3>
-                <p>Fast, reliable oil changes with high-quality oils to keep your engine in top shape.</p>
+        <section id="gallery" class="gallery-section animate-on-scroll">
+            <div class="container">
+                <h2>Our Work Gallery</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="1.jpg" alt="Car repair before and after" loading="lazy">
+                        <div class="gallery-caption">
+                            <h4>Body Repair Project</h4>
+                            <p>Complete body restoration and repainting</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="2.jpg" alt="Professional car painting process" loading="lazy">
+                        <div class="gallery-caption">
+                            <h4>Paint Restoration</h4>
+                            <p>Custom color matching and finish</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="background1.jpg" alt="Finished car after service" loading="lazy">
+                        <div class="gallery-caption">
+                            <h4>Premium Finish</h4>
+                            <p>Professional detailing and polish</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="maintenance-item">
-                <h3>Brake Service</h3>
-                <p>From inspections to replacements, we ensure your brakes are safe and responsive.</p>
+            <!-- Image Modal -->
+            <div id="image-modal" class="modal">
+                <span class="close-modal">&times;</span>
+                <img id="modal-img" class="modal-content">
             </div>
-            <div class="maintenance-item">
-                <h3>Air Conditioning Repair</h3>
-                <p>Stay cool with our A/C diagnostics and repair services for optimal performance.</p>
-            </div>
-            <div class="maintenance-item">
-                <h3>Engine Diagnostics</h3>
-                <p>Advanced tools pinpoint issues fast, saving you time and money on repairs.</p>
-            </div>
-            <div class="maintenance-item">
-                <h3>Battery Replacement</h3>
-                <p>Quick swaps with premium batteries to keep you powered up.</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="faq">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-container">
-            <div class="faq-item">
-                <div class="faq-question">What does collision repair include?</div>
-                <div class="faq-answer">
-                    <p>Collision repair encompasses a range of services tailored to the damage sustained, including straightening bent metal components, replacing irreparable parts, repainting affected areas, and, if required, inspecting the chassis for structural integrity. The extent of the work varies based on the collision’s severity and impact forces.</p>
+        <section id="testimonials" class="testimonials-section animate-on-scroll">
+            <div class="container">
+                <h2>What Our Customers Say</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <p>Hemix Oy did an incredible job repairing and repainting my BMW after an accident. The finished work was flawless, and you can't even tell it was damaged.</p>
+                            <div class="testimonial-author">
+                                <div class="author-info">
+                                    <h4>Mikko Virtanen</h4>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <p>Professional service from start to finish. They explained everything clearly, completed the work on time, and the quality was exceptional.</p>
+                            <div class="testimonial-author">
+                                <div class="author-info">
+                                    <h4>Liisa Korhonen</h4>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <p>I've tried several car body shops in Helsinki, but Hemix Oy stands out for their attention to detail and customer service. Highly recommended!</p>
+                            <div class="testimonial-author">
+                                <div class="author-info">
+                                    <h4>Juha Mäkinen</h4>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="faq-item">
-                <div class="faq-question">How long does collision repair typically take?</div>
-                <div class="faq-answer">
-                    <p>Minor repairs are generally completed within 1–3 working days. More significant damage, such as that requiring part orders or intricate procedures, may take a week or more, depending on the complexity and scope of the repairs.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Will insurance cover collision repairs?</div>
-                <div class="faq-answer">
-                    <p>Most comprehensive or liability insurance policies cover collision repair expenses. We advise reviewing your policy’s terms and deductible. Our team is available to assist with insurance-related inquiries—please contact us promptly after any incident.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Is inspection required after collision repair?</div>
-                <div class="faq-answer">
-                    <p>A follow-up inspection at a certified station may be necessary if repairs involve structural or safety-critical components. This is not mandatory unless explicitly required by your insurance provider.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Can a car be repaired without insurance?</div>
-                <div class="faq-answer">
-                    <p>Yes, repairs can proceed without insurance, with all costs directly payable by the customer. We provide a detailed estimate beforehand to help you evaluate the repair’s value.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Do you provide a warranty for the work?</div>
-                <div class="faq-answer">
-                    <p>We offer a one-year warranty on all repair work, excluding rust repairs, which carry a separate warranty tailored to their specific nature.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="contact">
-        <h2>Contact</h2>
-        <div class="contact-box">
-            <p>Phone: <a href="tel:+358449722221">+358 44 972 2221</a> & <a href="tel:+358449742055">+358 44 974 2055</a></p>
-            <p>Email: <a href="mailto:info@hemix.fi">info@hemix.fi</a></p>
-            <p>Address: Rattitie 15, 00770 Helsinki, Finland</p>
-            <p>Hours: Mon-Fri 08:00–16:30</p>
-        </div>
-        <div class="map-container">
-            <iframe loading="lazy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1980.987167754614!2d25.046424916179897!3d60.24597598198178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x469209e8e2f2c2ab%3A0x6e8f8e8e8e8e8e8e!2sRattitie%2015%2C%2000770%20Helsinki%2C%20Finland!5e0!3m2!1sen!2sus!4v1698765432109!5m2!1sen!2sus" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Map of Hemix Oy at Rattitie 15, Helsinki"></iframe>
-        </div>
-    </section>
+        <section id="faq" class="faq-section animate-on-scroll">
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>How long does a typical car painting job take?</h3>
+                            <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>A standard car painting job usually takes 3-5 business days, depending on the condition of the vehicle, the type of paint being used, and any additional bodywork needed. For custom paint jobs or complete restorations, the timeline may extend to 1-2 weeks.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Do you offer a warranty on your repair work?</h3>
+                            <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, all of our repair and painting work comes with a 2-year warranty covering workmanship and materials. This ensures your peace of mind and demonstrates our confidence in the quality of our services.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Can you match the original color of my car?</h3>
+                            <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Absolutely! We use advanced color-matching technology to ensure that any new paint perfectly matches your car's original color, even accounting for sun fading and aging. Our technicians are skilled in blending techniques that make repairs seamless.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Do you work with insurance companies?</h3>
+                            <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, we regularly work with all major insurance companies in Finland. We can help guide you through the claims process and work directly with your insurance provider to make the repair process as smooth as possible for you.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section animate-on-scroll">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <div class="contact-grid">
+                    <form id="contact-form" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+358 XX XXX XXXX">
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Service Needed</label>
+                            <select id="service" name="service" required>
+                                <option value="" disabled selected>Please select a service...</option>
+                                <option value="body-repair">Car Body Repair & Restoration</option>
+                                <option value="painting">Professional Auto Painting</option>
+                                <option value="dent-removal">Dent & Scratch Removal</option>
+                                <option value="maintenance">General Maintenance</option>
+                                <option value="glass">Glass Repair & Replacement</option>
+                                <option value="other">Other Services</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-button">Send Message</button>
+                    </form>
+                    <div class="contact-info">
+                        <div class="contact-details">
+                            <h3>Our Location</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> Rattitie 15, 00770 Helsinki</p>
+                            <p><i class="fas fa-phone"></i> +358 44 972 2221</p>
+                            <p><i class="fas fa-envelope"></i> info@hemix.fi</p>
+                            <h3>Business Hours</h3>
+                            <p><i class="fas fa-clock"></i> Monday - Friday: 8:00 - 16:30</p>
+                            <p><i class="fas fa-clock"></i> Saturday - Sunday: Closed</p>
+                        </div>
+                        <div class="map-container">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2102.3037588565184!2d25.04642491617989!3d60.24597598198178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4692098c3a9eeb3b%3A0xd36e9b5a6dccbb59!2sRattitie%2015%2C%2000770%20Helsinki!5e0!3m2!1sen!2sfi!4v1650306102408!5m2!1sen!2sfi" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <p>© 2025 Hemix Oy. All rights reserved.</p>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Rattitie 15, 00770 Helsinki</p>
+                    <p><i class="fas fa-phone"></i> +358 44 972 2221</p>
+                    <p><i class="fas fa-envelope"></i> info@hemix.fi</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Hemix Oy. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
 
-    <script>
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const answer = question.nextElementSibling;
-                const isOpen = answer.style.maxHeight;
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
 
-                // Close all other answers
-                document.querySelectorAll('.faq-answer').forEach(ans => {
-                    if (ans !== answer) {
-                        ans.style.maxHeight = null;
-                        ans.parentElement.classList.remove('active');
-                    }
-                });
-
-                // Toggle the clicked answer
-                if (isOpen) {
-                    answer.style.maxHeight = null;
-                    question.parentElement.classList.remove('active');
-                } else {
-                    answer.style.maxHeight = answer.scrollHeight + 'px';
-                    question.parentElement.classList.add('active');
-                }
-            });
-        });
-    </script>
+    <!-- JavaScript -->
+    <script src="main.js"></script>
 </body>
 </html>
