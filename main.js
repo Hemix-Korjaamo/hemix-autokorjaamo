@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     menuToggle.addEventListener('click', () => {
         menuToggle.classList.toggle('active');
         navMenu.classList.toggle('show');
-        // Toggle aria-expanded for accessibility
         const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
         menuToggle.setAttribute('aria-expanded', !isExpanded);
     });
@@ -16,15 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const languageButtons = document.querySelectorAll('.language-btn');
     let currentLang = 'fi'; // Default to Finnish
 
-    // Set initial language
     setLanguage(currentLang);
-    // Ensure Finnish button is active
     document.querySelector('.language-btn[data-lang="fi"]').classList.add('active');
 
     languageButtons.forEach(button => {
         button.addEventListener('click', () => {
             currentLang = button.getAttribute('data-lang');
-            localStorage.setItem('language', currentLang); // Persist language choice
+            localStorage.setItem('language', currentLang);
             setLanguage(currentLang);
             languageButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
@@ -32,46 +29,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function setLanguage(lang) {
-        // Update all elements with data-fi and data-en attributes
         document.querySelectorAll('[data-fi][data-en]').forEach(element => {
             element.textContent = element.getAttribute(`data-${lang}`);
-            // Update alt text for images
             if (element.tagName === 'IMG' && element.hasAttribute(`data-${lang}`)) {
                 element.alt = element.getAttribute(`data-${lang}`);
             }
         });
-        // Update gallery captions explicitly
         document.querySelectorAll('.gallery-caption h4, .gallery-caption p').forEach(element => {
             element.textContent = element.getAttribute(`data-${lang}`);
         });
-        // Update select options separately to preserve their values
         document.querySelectorAll('select option').forEach(option => {
             if (option.hasAttribute(`data-${lang}`)) {
                 option.textContent = option.getAttribute(`data-${lang}`);
             }
         });
-        // Update form placeholders and labels
         document.querySelectorAll('.form-group label').forEach(label => {
             label.textContent = label.getAttribute(`data-${lang}`);
         });
         document.querySelectorAll('.form-group input[placeholder]').forEach(input => {
             input.placeholder = input.getAttribute(`data-${lang}`) || input.placeholder;
         });
-        // Update HTML lang attribute for accessibility
         document.documentElement.lang = lang;
     }
 
     // Scroll Animations
     const animateElements = document.querySelectorAll('.animate-on-scroll');
-    const observerOptions = {
-        threshold: 0.1
-    };
+    const observerOptions = { threshold: 0.1 };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                observer.unobserve(entry.target); // Stop observing once animated
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
@@ -88,10 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
             faqItems.forEach(i => {
                 i.classList.remove('open');
                 i.querySelector('.faq-answer').style.maxHeight = '0';
-            }); // Close all
+            });
             if (!isOpen) {
                 item.classList.add('open');
-                answer.style.maxHeight = answer.scrollHeight + 'px'; // Animate to content height
+                answer.style.maxHeight = answer.scrollHeight + 'px';
             }
         });
     });
@@ -123,8 +112,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!imgElement) throw new Error('No image found');
             modalImg.src = imgElement.src;
             modalImg.alt = imgElement.getAttribute(`data-${currentLang}`);
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-            modal.focus(); // For accessibility
+            document.body.style.overflow = 'hidden';
+            modal.focus();
+            // Dynamically adjust image size
+            modalImg.onload = () => {
+                const naturalWidth = modalImg.naturalWidth;
+                const naturalHeight = modalImg.naturalHeight;
+                const viewportWidth = window.innerWidth * 0.9; // 90% of viewport
+                const viewportHeight = window.innerHeight * 0.9;
+                const aspectRatio = naturalWidth / naturalHeight;
+                if (naturalWidth > viewportWidth || naturalHeight > viewportHeight) {
+                    if (viewportWidth / aspectRatio <= viewportHeight) {
+                        modalImg.style.width = '100%';
+                        modalImg.style.height = 'auto';
+                    } else {
+                        modalImg.style.width = 'auto';
+                        modalImg.style.height = '100%';
+                    }
+                } else {
+                    modalImg.style.width = 'auto';
+                    modalImg.style.height = 'auto';
+                }
+            };
         } catch (error) {
             console.error('Error opening modal:', error);
             closeModalFunc();
@@ -134,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeModalFunc() {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
-        galleryItems[currentIndex].focus(); // Return focus to the last viewed item
+        galleryItems[currentIndex].focus();
     }
 
     closeModal.addEventListener('click', closeModalFunc);
@@ -153,14 +162,12 @@ document.addEventListener('DOMContentLoaded', () => {
         modalImg.alt = imgElement.getAttribute(`data-${currentLang}`);
     });
 
-    // Keyboard Navigation for Modal
     modal.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeModalFunc();
         if (e.key === 'ArrowRight') nextBtn.click();
         if (e.key === 'ArrowLeft') prevBtn.click();
     });
 
-    // Close modal when clicking outside the image
     modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModalFunc();
     });
@@ -173,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const errors = [];
 
-        // Sanitize inputs (basic example to prevent XSS)
         const sanitizeInput = (input) => {
             const div = document.createElement('div');
             div.textContent = input;
@@ -186,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const service = contactForm.service.value;
         const message = sanitizeInput(contactForm.message.value.trim());
 
-        // Validation
         if (name.length < 2) {
             errors.push(currentLang === 'fi' ? 'Nimi on liian lyhyt.' : 'Name is too short.');
         }
@@ -212,10 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (errors.length > 0) {
             formErrors.textContent = errors.join(' ');
             formErrors.style.display = 'block';
-            formErrors.focus(); // For accessibility
+            formErrors.focus();
         } else {
             formErrors.style.display = 'none';
-            // For Netlify Forms, submission happens automatically
             contactForm.submit();
             alert(currentLang === 'fi' ? 'Viesti lähetetty onnistuneesti!' : 'Message sent successfully!');
             contactForm.reset();
