@@ -1,1 +1,1 @@
-Lataa main.js, index.html, style.css, images kansio ja background.jpg, siinä tarvitta sivun pyörittämiselle. Yhteydenotto lomaketta varten tarvitaan backend.
+Lataa main.js, index.html, style.css, images kansio ja background.jpg, siinä tarvittava sivun pyörittämiselle. Yhteydenotto lomaketta varten tarvitaan backend, muuten ei asiakas voi lähettää sivun kautta suoraan yhteydenottoa.
