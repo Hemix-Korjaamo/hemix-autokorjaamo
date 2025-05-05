@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +19,10 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Hemix Oy - Car Repair & Painting">
     <meta name="twitter:description" content="Expert car repair and painting services in Helsinki">
+    <meta name="twitter:site" content="@HemixOy">
+    
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
     
     <title>Hemix Oy - Professional Car Repair & Painting Services in Helsinki</title>
     
@@ -29,6 +33,8 @@
     <!-- Preload Critical Resources -->
     <link rel="preload" as="image" href="background1.jpg">
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <link rel="preload" as="style" href="styles.css">
+    <link rel="preload" as="script" href="main.js">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     
     <!-- Canonical URL -->
@@ -48,6 +54,7 @@
         "description": "Professional auto painting and repair services in Helsinki",
         "image": "https://i.imgur.com/Vr0AZYi.png",
         "priceRange": "€€",
+        "email": "info@hemix.fi",
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "Rattitie 15",
@@ -62,7 +69,16 @@
         },
         "telephone": ["+358449722221", "+358449742055"],
         "openingHours": "Mo-Fr 08:00-16:30",
-        "url": "https://www.hemix.fi"
+        "url": "https://www.hemix.fi",
+        "review": {
+            "@type": "Review",
+            "author": "Mikko Virtanen",
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": "5"
+            },
+            "reviewBody": "Hemix Oy did an incredible job repairing and repainting my BMW after an accident."
+        }
     }
     </script>
 
@@ -78,20 +94,25 @@
             <div class="logo">
                 <a href="#home">Hemix Oy</a>
             </div>
-            <button id="menu-toggle" class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+            <div class="language-switcher">
+                <button class="language-btn active" data-lang="fi" aria-label="Switch to Finnish">FI</button>
+                <button class="language-btn" data-lang="en" aria-label="Switch to English">EN</button>
+            </div>
+            <button id="menu-toggle" class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
             <nav aria-label="Main navigation">
                 <ul>
-                    <li><a href="#home" aria-current="page">Home</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#gallery">Gallery</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#home" aria-current="page" data-fi="Etusivu" data-en="Home">Etusivu</a></li>
+                    <li><a href="#about" data-fi="Meistä" data-en="About Us">Meistä</a></li>
+                    <li><a href="#services" data-fi="Palvelumme" data-en="Services">Palvelumme</a></li>
+                    <li><a href="#maintenance" data-fi="Huollot" data-en="Maintenance">Huollot</a></li>
+                    <li><a href="#gallery" data-fi="Galleria" data-en="Gallery">Galleria</a></li>
+                    <li><a href="#testimonials" data-fi="Arvostelut" data-en="Testimonials">Arvostelut</a></li>
+                    <li><a href="#faq" data-fi="UKK" data-en="FAQ">UKK</a></li>
+                    <li><a href="#contact" data-fi="Yhteystiedot" data-en="Contact">Yhteystiedot</a></li>
                 </ul>
             </nav>
         </div>
@@ -101,33 +122,33 @@
         <section id="home" class="hero" aria-label="Welcome section">
             <div class="hero-text animate-on-scroll">
                 <h1>Hemix Oy</h1>
-                <p>Premier Automotive Repair and Refinishing Specialists in Helsinki</p>
+                <p data-fi="Autokorjaamomme tarjoaa ammattitaitoista autojen korjausta ja maalausta Helsingissä" data-en="Premier Automotive Repair and Refinishing Specialists in Helsinki">Autokorjaamomme tarjoaa ammattitaitoista autojen korjausta ja maalausta Helsingissä</p>
                 <div class="cta-buttons">
-                    <a href="#contact" class="cta-primary">Book Service</a>
-                    <a href="#services" class="cta-secondary">Our Services</a>
+                    <a href="#contact" class="cta-primary" data-fi="Varaa Aika" data-en="Book Service">Varaa Aika</a>
+                    <a href="#services" class="cta-secondary" data-fi="Palvelumme" data-en="Our Services">Palvelumme</a>
                 </div>
             </div>
         </section>
 
         <section id="about" class="animate-on-scroll">
             <div class="container">
-                <h2>Who We Are</h2>
-                <p>At Hemix Oy, we bring passion and precision to every vehicle that rolls into our Helsinki workshop. With over 15 years of experience in car repair and painting, our skilled technicians are committed to delivering top-tier craftsmanship and outstanding customer service.</p>
+                <h2 data-fi="Keitä Me Olemme" data-en="Who We Are">Keitä Me Olemme</h2>
+                <p data-fi="Hemix Oy:ssä tuomme intohimoa ja tarkkuutta jokaiseen korjaamoomme tulevaan ajoneuvoon. Yli 15 vuoden kokemuksella autojen korjauksessa ja maalauksessa, ammattitaitoiset teknikkome ovat sitoutuneet tarjoamaan huippuluokan ammattitaitoa ja erinomaista asiakaspalvelua." data-en="At Hemix Oy, we bring passion and precision to every vehicle that rolls into our Helsinki workshop. With over 15 years of experience in car repair and painting, our skilled technicians are committed to delivering top-tier craftsmanship and outstanding customer service.">Hemix Oy:ssä tuomme intohimoa ja tarkkuutta jokaiseen korjaamoomme tulevaan ajoneuvoon. Yli 15 vuoden kokemuksella autojen korjauksessa ja maalauksessa, ammattitaitoiset teknikkome ovat sitoutuneet tarjoamaan huippuluokan ammattitaitoa ja erinomaista asiakaspalvelua.</p>
                 <div class="about-features">
-                    <div class="feature">
+                    <div class="feature card">
                         <i class="fas fa-medal"></i>
-                        <h3>Quality First</h3>
-                        <p>Premium materials and meticulous attention to detail</p>
+                        <h3 data-fi="Laatu Ensin" data-en="Quality First">Laatu Ensin</h3>
+                        <p data-fi="Laadukkaat materiaalit ja tarkka huomio yksityiskohtiin" data-en="Premium materials and meticulous attention to detail">Laadukkaat materiaalit ja tarkka huomio yksityiskohtiin</p>
                     </div>
-                    <div class="feature">
+                    <div class="feature card">
                         <i class="fas fa-history"></i>
-                        <h3>Experienced Team</h3>
-                        <p>15+ years of professional automotive expertise</p>
+                        <h3 data-fi="Kokenut Tiimi" data-en="Experienced Team">Kokenut Tiimi</h3>
+                        <p data-fi="Yli 15 vuoden ammattimainen autoalan kokemus" data-en="15+ years of professional automotive expertise">Yli 15 vuoden ammattimainen autoalan kokemus</p>
                     </div>
-                    <div class="feature">
+                    <div class="feature card">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Satisfaction Guaranteed</h3>
-                        <p>We stand behind all our repair and painting work</p>
+                        <h3 data-fi="Tyytyväisyystakuu" data-en="Satisfaction Guaranteed">Tyytyväisyystakuu</h3>
+                        <p data-fi="Seisomme kaikkien korjaus- ja maalaustöidemme takana" data-en="We stand behind all our repair and painting work">Seisomme kaikkien korjaus- ja maalaustöidemme takana</p>
                     </div>
                 </div>
             </div>
@@ -135,37 +156,75 @@
 
         <section id="services" class="animate-on-scroll">
             <div class="container">
-                <h2>Our Expert Services</h2>
+                <h2 data-fi="Palvelumme" data-en="Our Expert Services">Palvelumme</h2>
                 <div class="services-grid">
-                    <div class="service-item">
+                    <div class="service-item card">
                         <i class="fas fa-car"></i>
-                        <h3>Car Body Repair</h3>
-                        <p>Expert repair for dents, scratches, and structural damage.</p>
+                        <h3 data-fi="Korikorjaukset" data-en="Body Repairs">Korikorjaukset</h3>
+                        <p data-fi="Asiantuntevaa korikorjausta ammattitaidolla" data-en="Expert body repair with professional skill">Asiantuntevaa korikorjausta ammattitaidolla</p>
                     </div>
-                    <div class="service-item">
+                    <div class="service-item card">
+                        <i class="fas fa-car-crash"></i>
+                        <h3 data-fi="Kolarikorjaukset" data-en="Collision Repairs">Kolarikorjaukset</h3>
+                        <p data-fi="Kolarivaurioiden korjaus alkuperäiseen kuntoon" data-en="Collision damage repairs to original condition">Kolarivaurioiden korjaus alkuperäiseen kuntoon</p>
+                    </div>
+                    <div class="service-item card">
                         <i class="fas fa-paint-roller"></i>
-                        <h3>Professional Painting</h3>
-                        <p>Premium quality automotive painting and refinishing.</p>
+                        <h3 data-fi="Automaalaus" data-en="Car Painting">Automaalaus</h3>
+                        <p data-fi="Korkealaatuiset automaalaukset ja viimeistelyt" data-en="High-quality car painting and finishing">Korkealaatuiset automaalaukset ja viimeistelyt</p>
                     </div>
-                    <div class="service-item">
-                        <i class="fas fa-tools"></i>
-                        <h3>Maintenance Services</h3>
-                        <p>Comprehensive car maintenance and servicing.</p>
-                    </div>
-                    <div class="service-item">
-                        <i class="fas fa-hammer"></i>
-                        <h3>Dent Removal</h3>
-                        <p>Specialized dent repair without affecting your paint.</p>
-                    </div>
-                    <div class="service-item">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <h3>Performance Tuning</h3>
-                        <p>Engine and performance optimization services.</p>
-                    </div>
-                    <div class="service-item">
+                    <div class="service-item card">
                         <i class="fas fa-window-restore"></i>
-                        <h3>Glass Repair</h3>
-                        <p>Windshield and window repair and replacement.</p>
+                        <h3 data-fi="Tuulilasinvaihdot" data-en="Windshield Replacement">Tuulilasinvaihdot</h3>
+                        <p data-fi="Tuulilasien vaihdot ja korjaukset ammattitaidolla" data-en="Windshield replacement and repair with expertise">Tuulilasien vaihdot ja korjaukset ammattitaidolla</p>
+                    </div>
+                    <div class="service-item card">
+                        <i class="fas fa-hammer"></i>
+                        <h3 data-fi="Ruostekorjaukset" data-en="Rust Repairs">Ruostekorjaukset</h3>
+                        <p data-fi="Ruostevaurioiden korjaus ja ennaltaehkäisy" data-en="Rust damage repair and prevention">Ruostevaurioiden korjaus ja ennaltaehkäisy</p>
+                    </div>
+                    <div class="service-item card">
+                        <i class="fas fa-clipboard-check"></i>
+                        <h3 data-fi="V  Vahinkotarkastukset" data-en="Damage Inspections">Vahinkotarkastukset</h3>
+                        <p data-fi="Vahinkotarkastukset ja vakuutusyhtiöpalvelut" data-en="Damage inspection and insurance services">Vahinkotarkastukset ja vakuutusyhtiöpalvelut</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="maintenance" class="animate-on-scroll">
+            <div class="container">
+                <h2 data-fi="Huollot" data-en="Maintenance Services">Huollot</h2>
+                <div class="services-grid">
+                    <div class="service-item card">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3 data-fi="Katsastuspalvelu" data-en="Inspection Service">Katsastuspalvelu</h3>
+                        <p data-fi="Katsastustarkastus ja -korjaukset" data-en="Inspection checks and repairs">Katsastustarkastus ja -korjaukset</p>
+                    </div>
+                    <div class="service-item card">
+                        <i class="fas fa-laptop-code"></i>
+                        <h3 data-fi="Vikakoodien Luku" data-en="Error Code Reading">Vikakoodien Luku</h3>
+                        <p data-fi="Vikadiagnostiikka ja vikakoodien tulkinta" data-en="Error diagnostics and code interpretation">Vikadiagnostiikka ja vikakoodien tulkinta</p>
+                    </div>
+                    <div class="service-item card">
+                        <i class="fas fa-snowflake"></i>
+                        <h3 data-fi="Ilmastointihuollot" data-en="AC Maintenance">Ilmastointihuollot</h3>
+                        <p data-fi="Ilmastointijärjestelmän huolto ja korjaus" data-en="Air conditioning system maintenance and repair">Ilmastointijärjestelmän huolto ja korjaus</p>
+                    </div>
+                    <div class="service-item card">
+                        <i class="fas fa-compass"></i>
+                        <h3 data-fi="Nelipyöräsuuntaukset" data-en="Four-Wheel Alignment">Nelipyöräsuuntaukset</h3>
+                        <p data-fi="Pyörien suuntaus ja säätö" data-en="Wheel alignment and adjustment">Pyörien suuntaus ja säätö</p>
+                    </div>
+                    <div class="service-item card">
+                        <i class="fas fa-circle-notch"></i>
+                        <h3 data-fi="Rengasmyynti ja -työt" data-en="Tire Sales and Services">Rengasmyynti ja -työt</h3>
+                        <p data-fi="Rengasmyynti, -vaihto ja -säilytys" data-en="Tire sales, change and storage">Rengasmyynti, -vaihto ja -säilytys</p>
+                    </div>
+                    <div class="service-item card">
+                        <i class="fas fa-cogs"></i>
+                        <h3 data-fi="Automaattivaihteiston Huuhtelu" data-en="Automatic Transmission Flush">Automaattivaihteiston Huuhtelu</h3>
+                        <p data-fi="Automaattivaihteiston huuhtelu ja huolto" data-en="Automatic transmission flush and maintenance">Automaattivaihteiston huuhtelu ja huolto</p>
                     </div>
                 </div>
             </div>
@@ -173,45 +232,50 @@
 
         <section id="gallery" class="gallery-section animate-on-scroll">
             <div class="container">
-                <h2>Our Work Gallery</h2>
+                <h2 data-fi="Työnäytteet" data-en="Our Work Gallery">Työnäytteet</h2>
                 <div class="gallery-grid">
                     <div class="gallery-item">
-                        <img src="1.jpg" alt="Car repair before and after" loading="lazy">
+                        <div class="gallery-placeholder"></div>
                         <div class="gallery-caption">
-                            <h4>Body Repair Project</h4>
-                            <p>Complete body restoration and repainting</p>
+                            <h4 data-fi="Korikorjausprojekti" data-en="Body Repair Project">Korikorjausprojekti</h4>
+                            <p data-fi="Täydellinen korin korjaus ja maalaus" data-en="Complete body restoration and repainting">Täydellinen korin korjaus ja maalaus</p>
                         </div>
                     </div>
                     <div class="gallery-item">
-                        <img src="2.jpg" alt="Professional car painting process" loading="lazy">
+                        <div class="gallery-placeholder"></div>
                         <div class="gallery-caption">
-                            <h4>Paint Restoration</h4>
-                            <p>Custom color matching and finish</p>
+                            <h4 data-fi="Maalauksen Entisöinti" data-en="Paint Restoration">Maalauksen Entisöinti</h4>
+                            <p data-fi="Täsmällinen värinsovitus ja viimeistely" data-en="Custom color matching and finish">Täsmällinen värinsovitus ja viimeistely</p>
                         </div>
                     </div>
                     <div class="gallery-item">
-                        <img src="background1.jpg" alt="Finished car after service" loading="lazy">
+                        <div class="gallery-placeholder"></div>
                         <div class="gallery-caption">
-                            <h4>Premium Finish</h4>
-                            <p>Professional detailing and polish</p>
+                            <h4 data-fi="Ensiluokkainen Viimeistely" data-en="Premium Finish">Ensiluokkainen Viimeistely</h4>
+                            <p data-fi="Ammattimainen yksityiskohtainen viimeistely ja kiillotus" data-en="Professional detailing and polish">Ammattimainen yksityiskohtainen viimeistely ja kiillotus</p>
                         </div>
                     </div>
                 </div>
+                <div class="gallery-cta">
+                    <a href="#contact" class="cta-primary" data-fi="Varaa Aika" data-en="Book Now">Varaa Aika</a>
+                </div>
             </div>
             <!-- Image Modal -->
-            <div id="image-modal" class="modal">
-                <span class="close-modal">&times;</span>
-                <img id="modal-img" class="modal-content">
+            <div id="image-modal" class="modal" tabindex="-1">
+                <span class="close-modal">×</span>
+                <span class="modal-nav modal-prev" aria-label="Previous image">←</span>
+                <img id="modal-img" class="modal-content" alt="Gallery image">
+                <span class="modal-nav modal-next" aria-label="Next image">→</span>
             </div>
         </section>
 
         <section id="testimonials" class="testimonials-section animate-on-scroll">
             <div class="container">
-                <h2>What Our Customers Say</h2>
+                <h2 data-fi="Mitä Asiakkaamme Sanovat" data-en="What Our Customers Say">Mitä Asiakkaamme Sanovat</h2>
                 <div class="testimonials-grid">
-                    <div class="testimonial-item">
+                    <div class="testimonial-item card">
                         <div class="testimonial-content">
-                            <p>Hemix Oy did an incredible job repairing and repainting my BMW after an accident. The finished work was flawless, and you can't even tell it was damaged.</p>
+                            <p data-fi="Hemix Oy teki uskomattoman hyvää työtä korjatessaan ja maalatessaan BMW:ni onnettomuuden jälkeen. Työn jälki oli moitteeton, eikä voi edes sanoa, että auto oli vaurioitunut." data-en="Hemix Oy did an incredible job repairing and repainting my BMW after an accident. The finished work was flawless, and you can't even tell it was damaged.">Hemix Oy teki uskomattoman hyvää työtä korjatessaan ja maalatessaan BMW:ni onnettomuuden jälkeen. Työn jälki oli moitteeton, eikä voi edes sanoa, että auto oli vaurioitunut.</p>
                             <div class="testimonial-author">
                                 <div class="author-info">
                                     <h4>Mikko Virtanen</h4>
@@ -226,9 +290,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="testimonial-item">
+                    <div class="testimonial-item card">
                         <div class="testimonial-content">
-                            <p>Professional service from start to finish. They explained everything clearly, completed the work on time, and the quality was exceptional.</p>
+                            <p data-fi="Ammattimaista palvelua alusta loppuun. He selittivät kaiken selkeästi, saivat työn valmiiksi aikataulussa, ja laatu oli poikkeuksellista." data-en="Professional service from start to finish. They explained everything clearly, completed the work on time, and the quality was exceptional.">Ammattimaista palvelua alusta loppuun. He selittivät kaiken selkeästi, saivat työn valmiiksi aikataulussa, ja laatu oli poikkeuksellista.</p>
                             <div class="testimonial-author">
                                 <div class="author-info">
                                     <h4>Liisa Korhonen</h4>
@@ -243,9 +307,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="testimonial-item">
+                    <div class="testimonial-item card">
                         <div class="testimonial-content">
-                            <p>I've tried several car body shops in Helsinki, but Hemix Oy stands out for their attention to detail and customer service. Highly recommended!</p>
+                            <p data-fi="Olen kokeillut useita autokorjaamoja Helsingissä, mutta Hemix Oy erottuu yksityiskohtien huomioimisessa ja asiakaspalvelussa. Suosittelen lämpimästi!" data-en="I've tried several car body shops in Helsinki, but Hemix Oy stands out for their attention to detail and customer service. Highly recommended!">Olen kokeillut useita autokorjaamoja Helsingissä, mutta Hemix Oy erottuu yksityiskohtien huomioimisessa ja asiakaspalvelussa. Suosittelen lämpimästi!</p>
                             <div class="testimonial-author">
                                 <div class="author-info">
                                     <h4>Juha Mäkinen</h4>
@@ -266,42 +330,42 @@
 
         <section id="faq" class="faq-section animate-on-scroll">
             <div class="container">
-                <h2>Frequently Asked Questions</h2>
+                <h2 data-fi="Usein Kysytyt Kysymykset" data-en="Frequently Asked Questions">Usein Kysytyt Kysymykset</h2>
                 <div class="faq-container">
                     <div class="faq-item">
                         <div class="faq-question">
-                            <h3>How long does a typical car painting job take?</h3>
+                            <h3 data-fi="Kuinka kauan tyypillinen auton maalaus kestää?" data-en="How long does a typical car painting job take?">Kuinka kauan tyypillinen auton maalaus kestää?</h3>
                             <span class="faq-toggle"><i class="fas fa-plus"></i></span>
                         </div>
                         <div class="faq-answer">
-                            <p>A standard car painting job usually takes 3-5 business days, depending on the condition of the vehicle, the type of paint being used, and any additional bodywork needed. For custom paint jobs or complete restorations, the timeline may extend to 1-2 weeks.</p>
+                            <p data-fi="Tavallinen auton maalaustyö kestää yleensä 3-5 työpäivää, riippuen ajoneuvon kunnosta, käytettävästä maalityypistä ja tarvittavista lisäkorjauksista. Erikoismaalauksissa tai täydellisissä kunnostuksissa aikataulu voi venyä 1-2 viikkoon." data-en="A standard car painting job usually takes 3-5 business days, depending on the condition of the vehicle, the type of paint being used, and any additional bodywork needed. For custom paint jobs or complete restorations, the timeline may extend to 1-2 weeks.">Tavallinen auton maalaustyö kestää yleensä 3-5 työpäivää, riippuen ajoneuvon kunnosta, käytettävästä maalityypistä ja tarvittavista lisäkorjauksista. Erikoismaalauksissa tai täydellisissä kunnostuksissa aikataulu voi venyä 1-2 viikkoon.</p>
                         </div>
                     </div>
                     <div class="faq-item">
                         <div class="faq-question">
-                            <h3>Do you offer a warranty on your repair work?</h3>
+                            <h3 data-fi="Tarjoatteko takuuta korjaustöillenne?" data-en="Do you offer a warranty on your repair work?">Tarjoatteko takuuta korjaustöillenne?</h3>
                             <span class="faq-toggle"><i class="fas fa-plus"></i></span>
                         </div>
                         <div class="faq-answer">
-                            <p>Yes, all of our repair and painting work comes with a 2-year warranty covering workmanship and materials. This ensures your peace of mind and demonstrates our confidence in the quality of our services.</p>
+                            <p data-fi="Kyllä, kaikille korjaus- ja maalaustöillemme annetaan 2 vuoden takuu, joka kattaa työn laadun ja materiaalit. Tämä varmistaa mielenrauhasi ja osoittaa luottamuksemme palveluidemme laatuun." data-en="Yes, all of our repair and painting work comes with a 2-year warranty covering workmanship and materials. This ensures your peace of mind and demonstrates our confidence in the quality of our services.">Kyllä, kaikille korjaus- ja maalaustöillemme annetaan 2 vuoden takuu, joka kattaa työn laadun ja materiaalit. Tämä varmistaa mielenrauhasi ja osoittaa luottamuksemme palveluidemme laatuun.</p>
                         </div>
                     </div>
                     <div class="faq-item">
                         <div class="faq-question">
-                            <h3>Can you match the original color of my car?</h3>
+                            <h3 data-fi="Voitteko sovittaa autoni alkuperäisen värin?" data-en="Can you match the original color of my car?">Voitteko sovittaa autoni alkuperäisen värin?</h3>
                             <span class="faq-toggle"><i class="fas fa-plus"></i></span>
                         </div>
                         <div class="faq-answer">
-                            <p>Absolutely! We use advanced color-matching technology to ensure that any new paint perfectly matches your car's original color, even accounting for sun fading and aging. Our technicians are skilled in blending techniques that make repairs seamless.</p>
+                            <p data-fi="Ehdottomasti! Käytämme edistynyttä värinmääritysteknologiaa varmistaaksemme, että uusi maali vastaa täydellisesti autosi alkuperäistä väriä, ottaen huomioon myös auringon aiheuttaman haalistumisen ja ikääntymisen. Teknikkomme ovat taitavia sekoitustekniikoissa, jotka tekevät korjauksista saumattomia." data-en="Absolutely! We use advanced color-matching technology to ensure that any new paint perfectly matches your car's original color, even accounting for sun fading and aging. Our technicians are skilled in blending techniques that make repairs seamless.">Ehdottomasti! Käytämme edistynyttä värinmääritysteknologiaa varmistaaksemme, että uusi maali vastaa täydellisesti autosi alkuperäistä väriä, ottaen huomioon myös auringon aiheuttaman haalistumisen ja ikääntymisen. Teknikkomme ovat taitavia sekoitustekniikoissa, jotka tekevät korjauksista saumattomia.</p>
                         </div>
                     </div>
                     <div class="faq-item">
                         <div class="faq-question">
-                            <h3>Do you work with insurance companies?</h3>
+                            <h3 data-fi="Teettekö yhteistyötä vakuutusyhtiöiden kanssa?" data-en="Do you work with insurance companies?">Teettekö yhteistyötä vakuutusyhtiöiden kanssa?</h3>
                             <span class="faq-toggle"><i class="fas fa-plus"></i></span>
                         </div>
                         <div class="faq-answer">
-                            <p>Yes, we regularly work with all major insurance companies in Finland. We can help guide you through the claims process and work directly with your insurance provider to make the repair process as smooth as possible for you.</p>
+                            <p data-fi="Kyllä, teemme säännöllisesti yhteistyötä kaikkien suurimpien vakuutusyhtiöiden kanssa Suomessa. Voimme auttaa sinua korvausvaatimusprosessissa ja työskennellä suoraan vakuutusyhtiösi kanssa tehdäksemme korjausprosessista mahdollisimman sujuvan sinulle." data-en="Yes, we regularly work with all major insurance companies in Finland. We can help guide you through the claims process and work directly with your insurance provider to make the repair process as smooth as possible for you.">Kyllä, teemme säännöllisesti yhteistyötä kaikkien suurimpien vakuutusyhtiöiden kanssa Suomessa. Voimme auttaa sinua korvausvaatimusprosessissa ja työskennellä suoraan vakuutusyhtiösi kanssa tehdäksemme korjausprosessista mahdollisimman sujuvan sinulle.</p>
                         </div>
                     </div>
                 </div>
@@ -310,51 +374,53 @@
 
         <section id="contact" class="contact-section animate-on-scroll">
             <div class="container">
-                <h2>Contact Us</h2>
+                <h2 data-fi="Ota Yhteyttä" data-en="Contact Us">Ota Yhteyttä</h2>
                 <div class="contact-grid">
                     <form id="contact-form" class="contact-form">
+                        <div id="form-errors" class="form-errors" aria-live="polite"></div>
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required>
+                            <label for="name" data-fi="Nimi" data-en="Name">Nimi</label>
+                            <input type="text" id="name" name="name" required minlength="2">
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
+                            <label for="email" data-fi="Sähköposti" data-en="Email">Sähköposti</label>
+                            <input type="email" id="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
                         </div>
                         <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" placeholder="+358 XX XXX XXXX">
+                            <label for="phone" data-fi="Puhelinnumero" data-en="Phone Number">Puhelinnumero</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+358 XX XXX XXXX" pattern="[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}">
                         </div>
                         <div class="form-group">
-                            <label for="service">Service Needed</label>
+                            <label for="service" data-fi="Tarvittava Palvelu" data-en="Service Needed">Tarvittava Palvelu</label>
                             <select id="service" name="service" required>
-                                <option value="" disabled selected>Please select a service...</option>
-                                <option value="body-repair">Car Body Repair & Restoration</option>
-                                <option value="painting">Professional Auto Painting</option>
-                                <option value="dent-removal">Dent & Scratch Removal</option>
-                                <option value="maintenance">General Maintenance</option>
-                                <option value="glass">Glass Repair & Replacement</option>
-                                <option value="other">Other Services</option>
+                                <option value="" disabled selected data-fi="Valitse palvelu..." data-en="Please select a service...">Valitse palvelu...</option>
+                                <option value="body-repair" data-fi="Korikorjaukset" data-en="Car Body Repair & Restoration">Korikorjaukset</option>
+                                <option value="painting" data-fi="Automaalaus" data-en="Professional Auto Painting">Automaalaus</option>
+                                <option value="dent-removal" data-fi="Kolarikorjaukset" data-en="Dent & Scratch Removal">Kolarikorjaukset</option>
+                                <option value="maintenance" data-fi="Huollot" data-en="General Maintenance">Huollot</option>
+                                <option value="glass" data-fi="Tuulilasit" data-en="Glass Repair & Replacement">Tuulilasit</option>
+                                <option value="other" data-fi="Muut Palvelut" data-en="Other Services">Muut Palvelut</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="message">Message</label>
+                            <label for="message" data-fi="Viesti" data-en="Message">Viesti</label>
                             <textarea id="message" name="message" required></textarea>
                         </div>
-                        <button type="submit" class="submit-button">Send Message</button>
+                        <button type="submit" class="submit-button" data-fi="Lähetä Viesti" data-en="Send Message">Lähetä Viesti</button>
                     </form>
                     <div class="contact-info">
                         <div class="contact-details">
-                            <h3>Our Location</h3>
+                            <h3 data-fi="Sijaintimme" data-en="Our Location">Sijaintimme</h3>
                             <p><i class="fas fa-map-marker-alt"></i> Rattitie 15, 00770 Helsinki</p>
                             <p><i class="fas fa-phone"></i> +358 44 972 2221</p>
-                            <p><i class="fas fa-envelope"></i> info@hemix.fi</p>
-                            <h3>Business Hours</h3>
-                            <p><i class="fas fa-clock"></i> Monday - Friday: 8:00 - 16:30</p>
-                            <p><i class="fas fa-clock"></i> Saturday - Sunday: Closed</p>
+                            <p><i class="fas fa-phone"></i> +358 44 974 2055</p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:info@hemix.fi">info@hemix.fi</a></p>
+                            <h3 data-fi="Aukioloajat" data-en="Business Hours">Aukioloajat</h3>
+                            <p><i class="fas fa-clock"></i> <span data-fi="Maanantai - Perjantai: 8:00 - 16:30" data-en="Monday - Friday: 8:00 - 16:30">Maanantai - Perjantai: 8:00 - 16:30</span></p>
+                            <p><i class="fas fa-clock"></i> <span data-fi="Lauantai - Sunnuntai: Suljettu" data-en="Saturday - Sunday: Closed">Lauantai - Sunnuntai: Suljettu</span></p>
                         </div>
                         <div class="map-container">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2102.3037588565184!2d25.04642491617989!3d60.24597598198178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4692098c3a9eeb3b%3A0xd36e9b5a6dccbb59!2sRattitie%2015%2C%2000770%20Helsinki!5e0!3m2!1sen!2sfi!4v1650306102408!5m2!1sen!2sfi" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1983.2130758565184!2d25.046424916179897!3d60.24597598198178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4692098c3a9eeb3b%3A0xd36e9b5a6dccbb59!2sRattitie%2015%2C%2000770%20Helsinki%2C%20Finland!5e0!3m2!1sen!2sfi!4v1698776102408!5m2!1sen!2sfi" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
                 </div>
@@ -366,40 +432,34 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3>Quick Links</h3>
+                    <h3 data-fi="Pikalinkit" data-en="Quick Links">Pikalinkit</h3>
                     <ul>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#gallery">Gallery</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#services" data-fi="Palvelumme" data-en="Services">Palvelumme</a></li>
+                        <li><a href="#maintenance" data-fi="Huollot" data-en="Maintenance">Huollot</a></li>
+                        <li><a href="#about" data-fi="Meistä" data-en="About Us">Meistä</a></li>
+                        <li><a href="#gallery" data-fi="Galleria" data-en="Gallery">Galleria</a></li>
+                        <li><a href="#faq" data-fi="UKK" data-en="FAQ">UKK</a></li>
+                        <li><a href="#contact" data-fi="Yhteystiedot" data-en="Contact">Yhteystiedot</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3>Contact</h3>
+                    <h3 data-fi="Yhteystiedot" data-en="Contact">Yhteystiedot</h3>
                     <p><i class="fas fa-map-marker-alt"></i> Rattitie 15, 00770 Helsinki</p>
                     <p><i class="fas fa-phone"></i> +358 44 972 2221</p>
-                    <p><i class="fas fa-envelope"></i> info@hemix.fi</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Follow Us</h3>
-                    <div class="social-icons">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+                    <p><i class="fas fa-phone"></i> +358 44 974 2055</p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:info@hemix.fi">info@hemix.fi</a></p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Hemix Oy. All rights reserved.</p>
+                <p data-fi="© 2025 Hemix Oy. Kaikki oikeudet pidätetään." data-en="© 2025 Hemix Oy. All rights reserved.">© 2025 Hemix Oy. Kaikki oikeudet pidätetään.</p>
             </div>
         </div>
     </footer>
 
     <!-- Add Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous" media="print" onload="this.media='all'">
 
     <!-- JavaScript -->
-    <script src="main.js"></script>
+    <script src="main.js" defer></script>
 </body>
 </html>
