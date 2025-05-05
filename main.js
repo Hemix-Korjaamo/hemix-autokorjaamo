@@ -14,10 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Language Switcher
     const languageButtons = document.querySelectorAll('.language-btn');
-    let currentLang = localStorage.getItem('language') || 'fi'; // Default to Finnish
+    let currentLang = 'fi'; // Default to Finnish
 
     // Set initial language
     setLanguage(currentLang);
+    // Ensure Finnish button is active
+    document.querySelector('.language-btn[data-lang="fi"]').classList.add('active');
 
     languageButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -33,16 +35,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update all elements with data-fi and data-en attributes
         document.querySelectorAll('[data-fi][data-en]').forEach(element => {
             element.textContent = element.getAttribute(`data-${lang}`);
-            // Update alt text for images if applicable
+            // Update alt text for images
             if (element.tagName === 'IMG' && element.hasAttribute(`data-${lang}`)) {
                 element.alt = element.getAttribute(`data-${lang}`);
             }
+        });
+        // Update gallery captions explicitly
+        document.querySelectorAll('.gallery-caption h4, .gallery-caption p').forEach(element => {
+            element.textContent = element.getAttribute(`data-${lang}`);
         });
         // Update select options separately to preserve their values
         document.querySelectorAll('select option').forEach(option => {
             if (option.hasAttribute(`data-${lang}`)) {
                 option.textContent = option.getAttribute(`data-${lang}`);
             }
+        });
+        // Update form placeholders and labels
+        document.querySelectorAll('.form-group label').forEach(label => {
+            label.textContent = label.getAttribute(`data-${lang}`);
+        });
+        document.querySelectorAll('.form-group input[placeholder]').forEach(input => {
+            input.placeholder = input.getAttribute(`data-${lang}`) || input.placeholder;
         });
         // Update HTML lang attribute for accessibility
         document.documentElement.lang = lang;
@@ -92,20 +105,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextBtn = document.querySelector('.modal-next');
     let currentIndex = 0;
 
+    // Ensure modal is hidden on page load
+    modal.style.display = 'none';
+
     galleryItems.forEach((item, index) => {
-        item.addEventListener('click', () => {
+        const image = item.querySelector('.gallery-image');
+        image.addEventListener('click', () => {
             currentIndex = index;
             openModal();
         });
     });
 
     function openModal() {
-        modal.style.display = 'flex';
-        // Since placeholders are used, we'll simulate an image source
-        modalImg.src = galleryItems[currentIndex].querySelector('.gallery-placeholder') ? '' : galleryItems[currentIndex].querySelector('img').src;
-        modalImg.alt = galleryItems[currentIndex].querySelector('.gallery-caption h4').textContent;
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
-        modal.focus(); // For accessibility
+        try {
+            modal.style.display = 'flex';
+            const imgElement = galleryItems[currentIndex].querySelector('.gallery-image');
+            if (!imgElement) throw new Error('No image found');
+            modalImg.src = imgElement.src;
+            modalImg.alt = imgElement.getAttribute(`data-${currentLang}`);
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            modal.focus(); // For accessibility
+        } catch (error) {
+            console.error('Error opening modal:', error);
+            closeModalFunc();
+        }
     }
 
     function closeModalFunc() {
@@ -118,14 +141,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     nextBtn.addEventListener('click', () => {
         currentIndex = (currentIndex + 1) % galleryItems.length;
-        modalImg.src = galleryItems[currentIndex].querySelector('.gallery-placeholder') ? '' : galleryItems[currentIndex].querySelector('img').src;
-        modalImg.alt = galleryItems[currentIndex].querySelector('.gallery-caption h4').textContent;
+        const imgElement = galleryItems[currentIndex].querySelector('.gallery-image');
+        modalImg.src = imgElement.src;
+        modalImg.alt = imgElement.getAttribute(`data-${currentLang}`);
     });
 
     prevBtn.addEventListener('click', () => {
         currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-        modalImg.src = galleryItems[currentIndex].querySelector('.gallery-placeholder') ? '' : galleryItems[currentIndex].querySelector('img').src;
-        modalImg.alt = galleryItems[currentIndex].querySelector('.gallery-caption h4').textContent;
+        const imgElement = galleryItems[currentIndex].querySelector('.gallery-image');
+        modalImg.src = imgElement.src;
+        modalImg.alt = imgElement.getAttribute(`data-${currentLang}`);
     });
 
     // Keyboard Navigation for Modal
@@ -190,8 +215,8 @@ document.addEventListener('DOMContentLoaded', () => {
             formErrors.focus(); // For accessibility
         } else {
             formErrors.style.display = 'none';
-            // Simulate form submission (replace with actual backend logic)
-            console.log({ name, email, phone, service, message });
+            // For Netlify Forms, submission happens automatically
+            contactForm.submit();
             alert(currentLang === 'fi' ? 'Viesti lähetetty onnistuneesti!' : 'Message sent successfully!');
             contactForm.reset();
         }

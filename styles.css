@@ -2,12 +2,11 @@
 :root {
     --primary-color: #0d2e59;    /* Dark blue */
     --secondary-color: #1e4684;   /* Medium blue */
-    --accent-color: #f7d44c;     /* Yellow */
+    --accent-color: #eab308;     /* Professional yellow */
     --dark-bg: #0a1e3c;
     --light-text: #ffffff;
     --header-bg: #071428;
-    --gradient: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    --text-dark: #1a1a1a;
+    --text-dark: #1a1a1a;        /* Darker text for readability */
     --light-overlay: rgba(255, 255, 255, 0.05);
 }
 
@@ -20,8 +19,13 @@
 body {
     font-family: 'Roboto', Arial, sans-serif;
     line-height: 1.6;
-    color: #334155;
+    color: var(--text-dark);
     background: #f8fafc;
+}
+
+/* Improve text readability on light backgrounds */
+p, li, .form-group label, .contact-details p {
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.1); /* Subtle shadow for readability */
 }
 
 /* Utility Classes */
@@ -91,7 +95,7 @@ header {
 .logo a {
     color: var(--light-text);
     text-decoration: none;
-    font-size: 1.2rem; /* Reduced size to prevent overlap */
+    font-size: 1.2rem;
     font-weight: 700;
 }
 
@@ -127,7 +131,7 @@ header {
 
 nav ul {
     display: flex;
-    gap: 1rem; /* Reduced gap to prevent overlap */
+    gap: 1rem;
     justify-content: center;
     list-style: none;
     padding: 0.5rem;
@@ -137,7 +141,7 @@ nav a {
     color: white;
     text-decoration: none;
     font-weight: 500;
-    padding: 0.3rem 0.6rem; /* Reduced padding */
+    padding: 0.3rem 0.6rem;
     border-radius: 4px;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -165,7 +169,7 @@ nav ul.show {
 .language-switcher {
     display: flex;
     gap: 0.5rem;
-    padding-left: 1rem; /* Added padding to prevent overlap with logo */
+    padding-left: 1rem;
 }
 
 .language-btn {
@@ -235,7 +239,7 @@ nav ul.show {
 
 #about h2 {
     margin-bottom: 2rem;
-    color: var(--accent-color); /* Yellow for readability */
+    color: var(--accent-color);
 }
 
 .about-features {
@@ -265,7 +269,7 @@ nav ul.show {
 .feature h3 {
     margin-bottom: 1rem;
     font-size: 1.5rem;
-    color: var(--accent-color); /* Yellow for titles */
+    color: var(--accent-color);
 }
 
 /* Animated Buttons */
@@ -286,9 +290,9 @@ nav ul.show {
 }
 
 .cta-primary {
-    background: var(--gradient);
-    color: white;
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    background: var(--accent-color);
+    color: var(--text-dark);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .cta-secondary {
@@ -299,7 +303,7 @@ nav ul.show {
 
 .cta-primary:hover, .cta-secondary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Sections */
@@ -311,7 +315,7 @@ section h2 {
     text-align: center;
     margin-bottom: 3rem;
     font-size: 2.5rem;
-    color: var(--accent-color); /* Yellow for all main titles */
+    color: var(--accent-color);
     position: relative;
 }
 
@@ -339,8 +343,8 @@ section h2::after {
 /* Services Section */
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted for 3 items per row */
-    gap: 1.5rem; /* Reduced gap for compactness */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
 }
 
 .service-item {
@@ -356,7 +360,7 @@ section h2::after {
 
 .service-item h3 {
     margin-bottom: 1rem;
-    color: var(--accent-color); /* Yellow for sub-titles */
+    color: var(--accent-color);
 }
 
 /* Gallery Section */
@@ -377,21 +381,15 @@ section h2::after {
     border-radius: 10px;
 }
 
-.gallery-placeholder {
+.gallery-image {
     width: 100%;
     height: 200px;
-    background: var(--gradient);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.2rem;
-    text-align: center;
+    object-fit: cover;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
-.gallery-item:hover .gallery-placeholder {
+.gallery-item:hover .gallery-image {
     transform: scale(1.05);
 }
 
@@ -401,7 +399,7 @@ section h2::after {
 }
 
 .gallery-caption h4 {
-    color: var(--accent-color); /* Yellow for readability */
+    color: var(--accent-color);
 }
 
 .gallery-cta {
@@ -419,20 +417,25 @@ section h2::after {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.9);
+    overflow: auto;
+    display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
 }
 
 .modal-content {
     max-width: 90%;
-    max-height: 80vh;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
     margin: auto;
     display: block;
-    object-fit: contain; /* Ensure image fits without zooming */
+    object-fit: contain;
 }
 
 .close-modal {
-    position: absolute;
+    position: fixed;
     top: 20px;
     right: 30px;
     color: white;
@@ -442,7 +445,7 @@ section h2::after {
 }
 
 .modal-nav {
-    position: absolute;
+    position: fixed;
     top: 50%;
     transform: translateY(-50%);
     color: white;
@@ -506,7 +509,7 @@ section h2::after {
 
 .faq-question h3 {
     font-size: 1.2rem;
-    color: var(--accent-color); /* Yellow for FAQ titles */
+    color: var(--accent-color);
 }
 
 .faq-toggle i {
@@ -527,7 +530,7 @@ section h2::after {
 
 .faq-item.open .faq-answer {
     display: block;
-    max-height: 200px; /* Adjust based on content */
+    max-height: 200px;
 }
 
 /* Contact Section */
@@ -575,8 +578,8 @@ section h2::after {
 }
 
 .submit-button {
-    background: var(--gradient);
-    color: white;
+    background: var(--accent-color);
+    color: var(--text-dark);
     padding: 1rem;
     border: none;
     border-radius: 50px;
@@ -587,7 +590,7 @@ section h2::after {
 
 .submit-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .contact-info {
@@ -597,12 +600,12 @@ section h2::after {
 }
 
 .contact-details h3 {
-    color: var(--accent-color); /* Yellow for titles */
+    color: var(--accent-color);
     margin-bottom: 1.5rem;
 }
 
 .contact-details p {
-    margin-bottom: 1.5rem; /* Increased spacing for better alignment */
+    margin-bottom: 1.5rem;
 }
 
 .contact-details i {
@@ -618,19 +621,25 @@ section h2::after {
 footer {
     background: var(--header-bg);
     color: var(--light-text);
-    padding: 3rem 0;
+    padding: 4rem 0 2rem; /* Increased top padding for more space */
 }
 
 .footer-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
+    gap: 3rem; /* Increased gap for better separation */
     margin-bottom: 2rem;
 }
 
+.footer-section {
+    background: rgba(255, 255, 255, 0.05); /* Subtle background for cohesion */
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
 .footer-section h3 {
-    margin-bottom: 1rem;
-    color: var(--accent-color); /* Yellow for footer titles */
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
 }
 
 .footer-section ul {
@@ -640,11 +649,13 @@ footer {
 .footer-section a {
     color: var(--light-text);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
 }
 
 .footer-section a:hover {
     color: var(--accent-color);
+    transform: scale(1.05); /* Slight scale on hover */
 }
 
 .footer-bottom {
@@ -678,9 +689,21 @@ footer {
     .services-grid {
         grid-template-columns: 1fr;
     }
+
+    .footer-grid {
+        gap: 2rem;
+    }
 }
 
 @media (max-width: 480px) {
+    .hero-text h1 {
+        font-size: 2rem;
+    }
+
+    .hero-text p {
+        font-size: 1rem;
+    }
+
     .cta-buttons {
         flex-direction: column;
         gap: 1rem;
